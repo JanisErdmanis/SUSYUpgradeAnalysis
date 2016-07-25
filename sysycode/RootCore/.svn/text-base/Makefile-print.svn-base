@@ -1,0 +1,22 @@
+OLD_CXXFLAGS := $(CXXFLAGS)
+OLD_LDFLAGS  := $(LDFLAGS)
+
+include $(MAKEFILE_ARCH)
+
+.PHONY: default
+
+CXXFLAGS_OPT := $(CXXFLAGS)
+OPT = 
+OPT2 = 
+
+default:
+	@echo ROOTSYS = $(ROOTSYS)
+	@echo PLATFORM = $(PLATFORM)
+	@echo CXX = $(CXX)
+	@echo CXXFLAGS = $(CXXFLAGS_OPT) $(OLD_CXXFLAGS)
+	@echo CXXFLAGS_NOOPT = $(CXXFLAGS) $(OLD_CXXFLAGS)
+	@echo SOFLAGS = $(SOFLAGS)
+	@echo LD = $(LD)
+	@echo LDFLAGS = $(LDFLAGS) $(OLD_LDFLAGS)
+	@echo ROOTLIBS = $(ROOTLIBS)
+	@echo ROOT_VERSION = $(sh root -b -q | grep ^ROOT)

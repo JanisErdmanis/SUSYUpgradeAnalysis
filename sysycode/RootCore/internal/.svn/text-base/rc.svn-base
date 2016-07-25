@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import subprocess
+
+# Local imports
+from utils import add_exception_handler
+from workarea import WorkArea
+from commands import get_standard_cmd_map, get_internal_cmd_map, get_script_cmd_map
+
+# TODO: use argparse
+
+add_exception_handler ()
+
+# User command dictionary
+rc_cmds = get_standard_cmd_map()
+
+# Internal commands
+if len (sys.argv) > 1 and sys.argv[1] == "--internal":
+    sys.argv = [sys.argv[0]] + sys.argv[2:]
+    rc_cmds.update(get_internal_cmd_map())
+    pass
+
+failure = False
+if len (sys.argv) == 1:
+    print "no command provided for rc"
+    failure = True
+    pass
+
+# Check the command dictionary first
+if not failure:
+    if sys.argv[1] in rc_cmds:
+        rc_cmds[sys.argv[1]] (sys.argv[2:])
+        sys.exit (0)
+        pass
+    pass
+
+# Next, check for a RootCore script
+wa = WorkArea ()
+rc_script_cmds = get_script_cmd_map(wa)
+if not failure:
+    script_path = rc_script_cmds.get(sys.argv[1])
+    if script_path is not None:
+        sys.exit (subprocess.call ([script_path] + sys.argv[2:]))
+    print "unknown command " + sys.argv[1]
+    pass
+
+# Couldn't find the command
+rc_cmds.update(rc_script_cmds)
+print "known commands: " + ", ".join (sorted (rc_cmds.keys()))
+#print "known commands: " + string.join(rc_cmds.keys(), ", ")

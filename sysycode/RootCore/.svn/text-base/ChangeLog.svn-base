@@ -1,0 +1,455 @@
+2016-04-06 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed branch support in tag_package
+	* tagging as RootCore-00-04-61
+
+2016-04-06 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* reworked the tag_package command to handle branches better, and
+	  indicate in the ChangeLog whether a tag was made
+	* tagging as RootCore-00-04-60
+
+2016-04-06 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* suppressed output for successful unit tests during compilation
+	* going into RootCore-00-04-59
+
+2016-03-11 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* updated the grid_test to handle arbitrary test commands
+	* tagging as RootCore-00-04-58
+
+2016-01-27 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed a bug in compile_pkg which made it abort on the first
+	  package that failed compilation, even though --continue was
+	  specified
+	* going into RootCore-00-04-57
+
+2016-01-09 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed the handling of manual tests in integration tests
+	* going into RootCore-00-04-56
+
+2015-12-29 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed some situations in which the same unit test may get
+	  executed twice
+	* going into RootCore-00-04-55
+
+2015-12-21 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed the environment setup to handle setup_external.sh correctly
+	  on MacOS El Capitan
+	* made a verbose info on which DYLD path gets stored/recovered
+	* going into RootCore-00-04-54
+
+2015-12-20 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed (sort of) the handling of the library path in MacOS X - El
+	  Capitan
+	* added a new rc exec command to use with RootCore build binaries
+	  inside scripts on El Capitan
+	* disabled pre-loading GC libraries where available (this was only
+	  ever working in single-threaded mode, if at all)
+	* making tag to allow others to help in debugging
+	* going into RootCore-00-04-53
+
+2015-12-18 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added new conventions for google-test
+	* going into RootCore-00-04-52
+
+2015-12-14 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* moved the RootCore unit tests to a separate package RootCoreTest
+	* going into RootCore-00-04-51
+
+2015-12-02 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* allowed passing multiple packages to compile/compile_pkg
+	* going into RootCore-00-04-50
+
+2015-10-19 Shuwei Ye <yesw@bnl.gov>
+        * Modifed scripts BUILD.sh and SETUP.C under PROOF-INF/NOBUILD,
+          making them same as those under PROOF-INF/LITE
+        * going into RootCore-00-04-49
+
+2015-10-01 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added the ability to add root macros as unit tests
+	* going into RootCore-00-04-48
+
+2015-09-30 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added a check to load_packages.C that avoids executing it twice.
+	  it's a bit of a hack though
+	* going into RootCore-00-04-47
+
+2015-09-30 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added a unit test for running load_packages.C twice
+	* going into RootCore-00-04-47
+
+2015-09-29 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed the problem where load_packages.C get's called twice at the
+	  end of compile
+	* going into RootCore-00-04-46
+
+2015-09-21 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added an extra compilation flag to suppress mis-firing warnings
+	  in my invariant tests
+	* going into RootCore-00-04-45
+
+2015-09-21 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* changed load_packages to report -D flags with the include flags
+	  instead of the compile flags (needed to make xAOD headers work
+	  with aCLiC)
+	* going into RootCore-00-04-44
+
+2015-09-21 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added load_packages.C to rc root command
+	* going into RootCore-00-04-43
+
+2015-09-21 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* bug-fix for PROOF-LITE setup
+	* going into RootCore-00-04-42
+
+2015-09-21 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added a --local option to the version command
+	* going into RootCore-00-04-41
+
+2015-09-21 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* changed it so that rc clean cleans out all architectures (for the
+	  few cases where we use multiple ones)
+	* going into RootCore-00-04-40
+
+2015-09-21 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added support for branches to tag_package
+	* going into RootCore-00-04-39
+
+2015-08-26 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* disabled xAOD accounting in unit tests
+	* going into RootCore-00-04-38
+
+2015-07-14 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* when in verbose mode, added a print-out for each command that
+	  gets called
+	* going into RootCore-00-04-37
+
+2015-05-18 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* switched off the following tests for automatic testing:
+	  ut_grid_test, ut_grid_test_nobuild, ut_grid_test_nocompile,
+	  ut_grid_test_release, ut_make_par, ut_make_par_nobuild,
+	  ut_make_release
+	* going into RootCore-00-04-36
+
+2015-05-12 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* turned on pedantic compilation in the makefiles created by
+	  make_skeleton
+	* going into RootCore-00-04-35
+
+2015-05-01 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added a unit test to verify that CERN_USER is supported
+	* going into RootCore-00-04-34
+
+2015-05-01 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added support for devbranches in the svn code
+	* going into RootCore-00-04-33
+
+2015-04-08 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* disabled deprecated warnings for dictionaries
+	* going into RootCore-00-04-32
+
+2015-04-05 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added the flag -Wdeprecated-declarations to the compiler flags
+	* going into RootCore-00-04-31
+
+2015-03-26 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed the new unit tests I introduced yesterday
+	* going into RootCore-00-04-30
+
+2015-03-25 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* made a fix to the par files that hopefully makes xAODs compatible
+	  with PROOF farms
+	* going into RootCore-00-04-29
+
+2015-03-25 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* introduced the concept of unit tests safe for recursive running
+	* going into RootCore-00-04-28
+
+2015-03-25 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added a --package option to test_ut
+	* stripping a / from the end of package names if necessary in order
+	  to play nicer with tab completion
+	* going into RootCore-00-04-27
+
+2015-03-05 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed a bug in the code that produces links for non-numbered
+	  libraries for externals packages
+	* going into RootCore-00-04-26
+
+2015-02-17 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added an automatic creation of $ROOTCOREBIN/download
+	* going into RootCore-00-04-25
+
+2015-01-25 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* turned failed dependencies into errors
+	* made the package management routines work with pacakges that are
+	  sym-links
+	* going into RootCore-00-04-24
+
+2015-01-11 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* included the doc directory in the doxygen documentation
+	* going into RootCore-00-04-23
+
+2015-01-05 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* made some improvements for the Doxygen options
+	* going into RootCore-00-04-22
+
+2015-01-02 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* removed the check_dep step
+	* going into RootCore-00-04-21
+
+2015-01-02 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed the handling of git packages that are part of a release
+	* going into RootCore-00-04-21
+
+2014-12-30 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* moved the core functionality of "rc check_dep" into "rc compile"
+	* going into RootCore-00-04-20
+
+2014-12-23 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* turned off latex in the doxygen configuration, but with little
+	  effect
+	* going into RootCore-00-04-19
+
+2014-12-22 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* enabled recursive searching when generating doxygen dictionaries
+	* going into RootCore-00-04-18
+
+2014-12-22 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added a make_doxygen command
+	* going into RootCore-00-04-17
+
+2014-12-22 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed some issues with the last commit
+	* fixed the reporting of the checksum errors when downloading
+	  externals tarballs
+	* going into RootCore-00-04-16
+
+2014-12-22 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* made updates for external support (i.e. CLHEP)
+	* going into RootCore-00-04-16
+
+2014-11-20 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed a problem in the grid submission related to the releases
+	* going into RootCore-00-04-15
+
+2014-11-19 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* incorporated a PROOF patch by Alexander Mann
+	* made some changes to the grid submission procedure, hopefully
+	  fixing some of the issues people have been seeing
+	* going into RootCore-00-04-14
+
+2014-10-29 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* put in a fix that prevents a file failing from strip processing
+	  the remaining files.  this is needed for fastjet, which puts a
+	  text file into its binary path.
+	* going into RootCore-00-04-13
+
+2014-10-29 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* removed the restriction to 1 CPU when running on the grid
+	* taking the number of CPUs from ATHENA_PROC_NUMBER if
+	  ROOTCORE_NCPUS is not set.  this is set by the pilot on the grid.
+	* going into RootCore-00-04-12
+
+2014-10-27 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed get_arch, so that it will set ROOTCORECONFIG to
+	  x86_64-slc6-gcc47-opt, which is set by AtlasLocalSetup.  or if
+	  that is not set it will set ROOTCORECONFIG to generic, so that it
+	  will be clear that this is using a custom setup
+	* going into RootCore-00-04-11
+
+2014-10-09 Steve Farrell <steven.farrell@cern.ch>
+	* Adding the --shell option to scripts/setup.sh
+	* Tagging RootCore-00-04-10
+
+2014-10-08 Steve Farrell <steven.farrell@cern.ch>
+	* Updating auto-complete feature in env_setup to only work in bash.
+	  Support for other shells can be added if requested and as solutions
+	  are proposed. This was done by adding a --shell option to env_setup,
+	  which is set appropriately in local_setup.sh
+
+2014-10-01 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added an auto-initialization of the xAOD classes during
+	  load_packages.C
+	* going into RootCore-00-04-09
+
+2014-09-29 Steve Farrell <steven.farrell@cern.ch>
+	* Tagging RootCore-00-04-08
+
+2014-09-28 Steve Farrell <steven.farrell@cern.ch>
+	* Moved command name dictionaries from the rc script into functions in
+	  the commands module. This allowed to simplify the code in the rc
+	  script, and will allow me to add bash auto-completion in env_setup.
+	* Added bash auto-completion for rc commands in env_setup. The
+	  'complete' command is only applied in base_setup, and uses all of
+	  the standard commands and script commands (not the internal
+	  commands).
+
+2014-09-11 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed get_cxxflags and get_ldflags which were broken by the
+	  restructuring of the RootCore python packages
+	* going into RootCore-00-04-07
+
+2014-09-07 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* extended the svn:ignore file to include all compiled python code
+	* going into RootCore-00-04-06
+
+2014-09-07 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added an option to the tag_package command to select the target
+	  tag
+	* going into RootCore-00-04-06
+
+2014-09-05 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed a bug that swallowed the output of genreflex
+	* going into RootCore-00-04-05
+
+2014-09-01 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed a bug that made rc strip fail
+	* going into RootCore-00-04-04
+
+2014-08-30 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed the error message when compilation fails
+	* made it so that unsaved files in emacs don't cause the
+	  compilation to fail
+	* going into RootCore-00-04-03
+
+2014-08-28 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added ROOT_INCLUDE_PATH to the setup to make releases compatible
+	  with root 6
+	* going into RootCore-00-04-02
+
+2014-08-23 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed a bug from the RootCore restructuring, i.e. added another
+	  import statement
+	* going into RootCore-00-04-01
+
+2014-08-22 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed a couple of problems (mostly missing imports) and then
+	  merged the branch back into the trunk
+	* going into RootCore-00-04-00
+
+2014-08-20 Steve Farrell <steven.farrell@cern.ch>
+	* Migrated internal/env_setup script to use the new modules
+
+2014-08-07 Steve Farrell <steven.farrell@cern.ch>
+	* Created development branch RootCore-00-03-59-branch
+	* Splitting internal/RootCore.py into logical modules:
+		* commands.py holds command functions used by rc
+		* compile.py holds the Makefile-related classes
+		* externals.py holds the external lib management functionality
+		* package.py holds the PackageList and PackageInfo classes
+		* svninfo.py holds the SvnInfo classes
+		* utils.py holds the shell utilities and other generic utility
+		  functions
+		* workarea.py holds the RelPath and WorkArea classes
+	* Added rc-dev to test module usage, but I will soon just replace rc
+	  for more complete testing.
+	* Simultaneously updating and cleaning parts of the code
+		* Split up some long lines
+		* Removed usage of deprecated string module functions in favor
+		  of native str methods.
+
+2014-07-31 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* put in a minor fix in the handling of .dylib files, i.e. how they
+	  get linked as .so files so that root can find them...
+	* going into RootCore-00-03-59
+
+2014-07-31 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed the error message that instructs the user how to use
+	  localSetupROOT
+	* going into RootCore-00-03-58
+
+2014-07-23 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* did some changes to make the fastjet external work
+	* going into RootCore-00-03-57
+
+2014-07-21 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* updated get_arch, so that it will use getOSType.sh from
+	  AtlasLocalSetup to determine ROOTCORECONFIG (if AtlasLocalSetup
+	  is available
+	* going into RootCore-00-03-56
+
+2014-07-21 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed a bug that let to RootCore setting up ROOTCOREARCH
+	  incorrectly on the grid.
+	* reduced the number of CPUs used on the grid and batch systems to
+	  1
+	* going into RootCore-00-03-55
+
+2014-07-13 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed a bug/typo introduced in the last commit, which broke the
+	  'rc compile' command when used with a virgin installation
+	* going into RootCore-00-03-55
+
+2014-07-10 Steve Farrell <steven.farrell@cern.ch>
+	* Added a few notes in the form of comments ("# NOTE: ...") to be
+	  followed up on later.
+	* Reworked some long shell_exec lines into smaller statements. There
+	  are still more to do.
+	* Removed imp.load_source usage in 'rc', which shouldn't be necessary
+	  since RootCore can trivially load modules that sit in the same
+	  directory as the script.
+	* Note, I rebased some git commits on top of Nils's recent change, so
+	  in the SVN history there may be some irrelevant comments in places
+	  that I've now removed.
+	* Tagging RootCore-00-03-54
+
+2014-07-10 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* added a lot of comments to RootCore.py to make it easier for
+	  others to understand how it is working
+	* going into RootCore-00-03-53
+
+2014-07-07 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed the detection mechanisms in check_dep
+	* going into RootCore-00-03-52
+
+2014-07-07 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed a bug in 'rc strip' that was reported by Attila
+	* going into RootCore-00-03-51
+
+2014-07-04 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed a problem where find_packages broke after calling compile
+	  when using the analysis release
+	* going into RootCore-00-03-50
+
+2014-07-01 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed a bug from the last time in which auto-dependenciees where
+	  not correctly propageted, causing the 2.0.X nightlies to fail.
+	* going into RootCore-00-03-49
+
+2014-06-24 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed a bug in the last version, that prevented compilation when
+	  taking RootCore from a release.
+	* going into RootCore-00-03-48
+
+2014-06-23 Nils Krumnack <Nils.Erik.Krumnack@cern.ch>
+	* fixed it, so that auto-dependencies get picked up by all packages
+	* fixed it, so that if packages modify their compiler flags it gets
+	  picked up correctly.
+	* going into RootCore-00-03-47
+
+2014-06-01 Attila Krasznahorkay <Attila.Krasznahorkay@cern.ch>
+	* Making RootCore.WorkArea.root_version() fall back on the
+	  result of `root-config --version` in case the manual extraction
+	  doesn't work. To be honest, the code should just do this
+	  all the time instead of doing all the unnecessary string
+	  manipulation all the time. :-/
+	* Added the hacked version of the PCM file installation for the
+	  ROOT 6 compilation. This still only works in local compilation
+	  mode as the PCM files are put into a location that's cleaned up
+	  by "rc strip". But it works to some basic level at least.
+	* Tagging as RootCore-00-03-33
+
+2014-05-07 Attila Krasznahorkay <Attila.Krasznahorkay@cern.ch>
+	* Reduced the number of headers that rc_rootcint would select
+	  for inclusion in the CINT dictionary generation command to the
+	  ones that are actually declared in the current package.
+	* Tagging as RootCore-00-03-21
+
+2014-04-23 Attila Krasznahorkay <Attila.Krasznahorkay@cern.ch>
+	* Changed MakefileObjectReflex in RootCore.py to give the
+	  full path name of the rootmap file to the genreflex command.
+	  Without it the rootmap file ended up in the object directory,
+	  and was never linked to the main library directory.
+	* Had to realise as a result that ROOT 6 dies in very
+	  uninformative ways when it doesn't have a dictionary available.
+	  Only realised what the issue was when using ROOT 5. :-/
+	* Tagging as RootCore-00-03-17

@@ -1,0 +1,36 @@
+Author: Tina Potter
+Date: 7 June  2016
+email: tinapotter@gmail.com
+
+
+########### setting up ###################
+mkdir workdir_Upgrade
+cd workdir_Upgrade
+
+if on lxplus
+export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase; source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh; localSetupROOT
+otherwise, setup the ATLAS software & root on your machine
+
+kinit -f username@CERN.CH
+svn co svn+ssh://chpotter@svn.cern.ch/reps/atlasoff/PhysicsAnalysis/D3PDTools/RootCore/tags/RootCore-00-04-61 RootCore
+svn co svn+ssh://chpotter@svn.cern.ch/reps/atlasusr/chpotter/SUSYUpgradeExample/trunk SUSYUpgradeExample
+svn co svn+ssh://chpotter@svn.cern.ch/reps/atlasgroups/PhysicsAnalysis/Upgrade/SmearingFunctions/UpgradePerformanceFunctions/tags/UpgradePerformanceFunctions-02-04-05 UpgradePerformanceFunctions
+
+edit SUSYUpgradeExample/util/runAna.cxx to point to the location of your DAOD_TRUTH1 samples
+
+rcSetup Base,2.3.45
+rc find_packages
+rc compile
+
+########### each time you log in ###################
+export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase; source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh; localSetupROOT
+rcSetup
+
+########### running ###################
+to run:
+cd SUSYUpgradeExample 
+runAna sample_name
+e.g.
+runAna MC15.999101.MGPy8EG_A14N23LO_C1N2N3_SlepSnu_x0p50_100_1_noFilter
+
+Your histograms will be in outdir_sample_name

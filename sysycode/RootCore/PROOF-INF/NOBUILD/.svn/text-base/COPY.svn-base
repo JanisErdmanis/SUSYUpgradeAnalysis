@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rc grid_submit --nobuild $1

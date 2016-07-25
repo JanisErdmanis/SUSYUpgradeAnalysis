@@ -1,0 +1,35 @@
+K 10
+svn:ignore
+V 285
+bin
+packages
+preload
+include
+autom4te.cache
+config.log
+lib
+config.status
+Makefile-common
+python
+data
+user_scripts
+load
+Makefile-single
+load_packages_success
+RootCore
+raw_packages
+rootcore_config
+local_setup.sh
+local_setup.csh
+load_packages_info_*
+root_config_*
+StandAlone
+obj
+download
+
+K 13
+svn:mergeinfo
+V 156
+/PhysicsAnalysis/D3PDTools/RootCore/branches/RootCore-00-03-59-branch:610842-613133
+/PhysicsAnalysis/D3PDTools/RootCore/tags/RootCore-00-03-20:595495-595803
+END

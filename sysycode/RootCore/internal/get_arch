@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if test "$ROOTCORECONFIG" == "" ; then    
+    if test "$rootCmtConfig" != "" ; then
+	#echo echo setting ROOTCORECONFIG from rootCmtConfig: $rootCmtConfig
+	echo export ROOTCORECONFIG=$rootCmtConfig
+    else
+	#echo echo setting ROOTCORECONFIG to generic
+	echo export ROOTCORECONFIG=generic
+    fi
+fi
+
+#echo echo "ROOTCORECONFIG=$ROOTCORECONFIG"

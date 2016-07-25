@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo please note that calling configure is no longer needed and will
+echo at some point be phased out
+
+if test $# -ne 0
+then
+    echo you now need to pass any arguments to ./configure to find_packages instead 1>&2
+    exit 1
+fi
+true

@@ -1,0 +1,261 @@
+#!/usr/bin/env python
+
+import optparse
+import imp
+import multiprocessing
+import os
+import sys
+import traceback
+import re
+import string
+
+from utils import add_exception_handler, shell_exec, get_field
+from utils import ShellInit, ShellInitSh, ShellInitC, mkdir_p
+from workarea import WorkArea
+from commands import get_standard_cmd_map, get_script_cmd_map
+
+add_exception_handler ()
+
+parser = optparse.OptionParser(usage="usage: %prog [options] script")
+parser.add_option ("--shell", default='', help="name of user's shell")
+#parser.add_option ("script", help="the setup script being executed")
+(args, extra_args) = parser.parse_args()
+if len (extra_args) != 1:
+      parser.error ("incorrect number of arguments")
+      pass
+args.script = extra_args[0]
+
+if not os.path.isabs (args.script):
+      args.script=os.path.join (os.getcwd(), args.script)
+      pass
+
+name=os.path.basename (args.script)
+suffix=name[name.rfind("."):]
+name=name[:name.rfind(".")]
+
+shell_init = ShellInit()
+if suffix == ".sh":
+      shell_init = ShellInitSh()
+      pass
+elif suffix == ".csh":
+      shell_init = ShellInitCSh()
+      pass
+elif suffix == ".C":
+      shell_init = ShellInitC()
+      pass
+else:
+      shell_init.abort ("don't know how to handle shell scripts with extension: " + suffix)
+      pass
+del suffix
+
+def excepthook (exctype, value, trace):
+      message = str (value)
+      if os.getenv ("ROOTCORE_VERBOSE") == "1":
+            message += "\n\n" + string.join (traceback.format_tb (trace))
+            pass
+      shell_init.abort (message)
+      pass
+sys.excepthook = excepthook
+
+RootCoreDir = None
+full_setup = False
+base_setup = True
+external_setup = True
+unsetup = False
+compile = False
+gridEnv = False
+wa = None
+
+if name == "setup":
+      wa = WorkArea (RootCoreBin=os.getenv("ROOTCOREBIN"),
+                     RootCoreDir=os.path.dirname (os.path.dirname (args.script)))
+      full_setup = True
+      pass
+elif name == "setup_external":
+      wa = WorkArea ()
+      base_setup = False
+      pass
+elif name == "unsetup":
+      wa = WorkArea ()
+      base_setup = False
+      external_setup = False
+      unsetup = True
+      pass
+elif name == "local_setup":
+      wa = WorkArea (RootCoreBin=os.path.dirname (args.script))
+      pass
+elif name == "grid_compile":
+      compile = True
+      gridEnv = True
+      pass
+elif name == "grid_compile_nobuild":
+      gridEnv = True
+      pass
+elif name == "grid_run":
+      gridEnv = True
+      pass
+elif name == "grid_run_nobuild":
+      gridEnv = True
+      pass
+else:
+      shell_init.abort ("unknown setup script specified")
+      pass
+
+if (not os.getenv ("DYLD_LIBRARY_PATH")) and os.getenv ("ROOTCORE_DYLD_PATH") :
+      if os.getenv ("ROOTCORE_VERBOSE") == "1" :
+            shell_init.echo ("recovering old DYLD path: $ROOTCORE_DYLD_PATH")
+            pass
+      shell_init.setEnv ("DYLD_LIBRARY_PATH", os.getenv ("ROOTCORE_DYLD_PATH"))
+      pass
+
+if gridEnv:
+      rcb_par_dir = os.path.dirname (os.path.dirname (os.path.dirname (args.script)))
+      wa = WorkArea (RootCoreBin = os.path.join (rcb_par_dir, "RootCoreBin"))
+      mkdir_p (os.path.join (wa.bin(), "download"))
+      #wa = WorkArea (RootCoreBin = os.path.join (os.path.dirname (os.path.dirname (os.path.dirname (sys.argv[1]))), "RootCoreBin"))
+      pass
+
+if gridEnv:
+      shell_init.echo ("compile flags found")
+      shell_init.execCmd ("env | grep -E '(FLAGS|-D__USE_XOPEN2K8)' || true")
+      pass
+
+if base_setup:
+      dir = os.getenv ('ROOTCOREDIR')
+      if dir != None:
+            shell_init.abort ('already using a valid RootCore installation: ' + dir)
+            pass
+      obj = os.getenv ("ROOTCOREOBJ")
+      if obj:
+            wa.m_obj = obj
+            pass
+      if not os.path.isdir (wa.bin()):
+            shell_init.abort ('output directory does not exist, please create it:' +
+                              '\n  mkdir -p ' + wa.bin())
+            pass
+      if not os.getenv ("ROOTCORECONFIG") :
+            arch = None
+            try :
+                  arch = get_field (wa.config(), "rootcoreconf", empty=None)
+                  if arch :
+                        shell_init.setEnv ("ROOTCORECONFIG", arch)
+                        pass
+                  pass
+            except Exception :
+                  pass
+      if not os.getenv ("ROOTCORECONFIG") :
+            arch = None
+            try :
+                  arch = shell_exec ([os.path.join (wa.dir(), "internal", "get_arch")])
+                  pass
+            except Exception :
+                  shell_init.execCmd ("echo WARNING: get_arch failed")
+                  pass
+            if arch :
+                  expr1 = re.compile ("^export (.*)=(.*)$")
+                  expr2 = re.compile ("^echo (.*)$")
+                  for line in string.split (arch, "\n"):
+                        matchobj = expr1.match (line)
+                        if matchobj:
+                              name = string.strip (matchobj.group(1))
+                              value = string.strip (matchobj.group(2))
+                              if os.getenv ("ROOOTCORE_VERBOSE") == "1":
+                                    shell_init.execCmd ("echo setting " + name + " = " + value)
+                                    pass
+                              shell_init.setEnv (name, value)
+                              pass
+                        else:
+                              matchobj = expr2.match (line)
+                              if matchobj:
+                                    shell_init.execCmd ("echo '" + matchobj.group(1) + "'")
+                                    pass
+                              pass
+                        pass
+                  pass
+            pass
+      if not os.getenv ("ROOTCORECONFIG"):
+            shell_init.execCmd ("echo WARNING: ROOTCORECONFIG not set, setting to generic")
+            shell_init.execCmd ("echo WARNING: this is not a bad thing, unless you use an ASG release")
+            shell_init.setEnv ("ROOTCORECONFIG", "generic")
+            pass
+      wa.m_arch = os.getenv ("ROOTCORECONFIG")
+      shell_init.setEnv ("ROOTCOREDIR", wa.dir())
+      shell_init.setEnv ("ROOTCOREBIN", wa.bin())
+      shell_init.setEnv ("ROOTCOREOBJ", wa.obj())
+      shell_init.setEnv ("ROOTCORECONFIG", wa.arch())
+      shell_init.addToPath ('PATH', os.path.join (wa.bin(), "bin", wa.arch()))
+      shell_init.addToPath ('LD_LIBRARY_PATH', os.path.join (wa.bin(), "lib", wa.arch()))
+      shell_init.addToPath ('DYLD_LIBRARY_PATH', os.path.join (wa.bin(), "lib", wa.arch()))
+      shell_init.addToPath ('PYTHONPATH', os.path.join (wa.bin(), "python"))
+      shell_init.addToPath ('ROOT_INCLUDE_PATH', os.path.join (wa.bin(), "include"))
+      if not os.getenv ("ROOTCORE_NCPUS"):
+            ATHENA_PROC_NUMBER = os.getenv ("ATHENA_PROC_NUMBER")
+            if ATHENA_PROC_NUMBER :
+                  shell_init.setEnv ("ROOTCORE_NCPUS", ATHENA_PROC_NUMBER)
+                  pass
+            else :
+                  shell_init.setEnv ("ROOTCORE_NCPUS", str (multiprocessing.cpu_count()))
+                  pass
+            pass
+      try :
+            wa.write_config ()
+            pass
+      except Exception :
+            if os.getenv ("ROOTCORE_VERBOSE") == "1" :
+                  shell_init.echo ("WARNING: couldn't write RootCore config")
+                  pass
+            pass
+      wa.ln_rc ()
+      pass
+
+# Auto-completion of rc commands.
+# Currently only supported in bash.
+if base_setup and "bash" in args.shell:
+      rc_cmd_map = get_standard_cmd_map()
+      rc_cmd_map.update(get_script_cmd_map(wa))
+      cmd_keys = ' '.join(rc_cmd_map.keys())
+      shell_init.execCmd ('complete -W "%s" -f rc' % cmd_keys)
+
+if external_setup and os.path.isfile (os.path.join (wa.bin(), "packages")):
+      for pkg in wa.packages():
+            setup_file = "setup_external.RootCore" + shell_init.m_suffix
+            setup_path = pkg.srcdir() + "/cmt/" + setup_file
+            if os.path.isfile (setup_path):
+                  shell_init.execCmd ('source ' + setup_path + " " + setup_path)
+                  shell_init.execCmd ('rootcore_tmp=$?')
+                  shell_init.execCmd ('cd "' + os.getcwd() + '"')
+                  shell_init.execCmd ('test $rootcore_tmp -ne 0 && echo failed to source ' +
+                                      setup_path + ' && return $rootcore_tmp')
+                  pass
+            pass
+      pass
+
+if gridEnv:
+      shell_init.execCmd ("rc version || true")
+      shell_init.execCmd ("env | grep -E '(ROOTCORE|RootCore)' || true")
+      pass
+
+if compile:
+      shell_init.execCmd ("rc compile || return $?")
+      pass
+
+if unsetup:
+      shell_init.unsetEnv ("ROOTCOREDIR")
+      shell_init.unsetEnv ("ROOTCOREBIN")
+      shell_init.unsetEnv ("ROOTCOREOBJ")
+      shell_init.unsetEnv ("ROOTCORECONFIG")
+      shell_init.removeFromPath ('PATH', os.path.join (wa.bin(), "bin", wa.arch()))
+      shell_init.removeFromPath ('LD_LIBRARY_PATH', os.path.join (wa.bin(), "lib", wa.arch()))
+      shell_init.removeFromPath ('DYLD_LIBRARY_PATH', os.path.join (wa.bin(), "lib", wa.arch()))
+      shell_init.removeFromPath ('PYTHONPATH', os.path.join (wa.bin(), "python"))
+      shell_init.unsetEnv ("ROOTCORE_DYLD_PATH")
+      pass
+else:
+      shell_init.setEnv ("ROOTCORE_DYLD_PATH", "$DYLD_LIBRARY_PATH")
+      if os.getenv ("ROOTCORE_VERBOSE") == "1" :
+            shell_init.execCmd ("echo storing DYLD path for recovery: $ROOTCORE_DYLD_PATH")
+            pass
+      pass
+
+shell_init.execCmd ("true")
+shell_init.makeCmds ()

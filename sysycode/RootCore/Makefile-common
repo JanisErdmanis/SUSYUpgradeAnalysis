@@ -1,0 +1,41 @@
+#
+# author: Nils Krumnack, with input from Attila Krasznahorkay and Max Baak
+#
+
+# For documentation check:
+# https://twiki.cern.ch/twiki/bin/viewauth/Atlas/GoodRunsLists
+
+
+
+#
+# root setup code
+#
+
+ifneq ($(RC_INTERNAL_PREAMBLE),)
+include $(RC_INTERNAL_PREAMBLE)
+else
+include $(shell rc --internal make_preamble $(PACKAGE))
+endif
+
+error:
+	@echo preamble failed to generate a default target
+	@echo please contact PATHelp for assistance
+	@exit 1
+
+#
+# generic configuration options
+#
+
+SILENT=@
+ifeq ($(ROOTCORE_VERBOSE),1)
+SILENT=
+endif
+
+#
+# generic rules
+#
+
+.SECONDARY:
+
+clean:
+	$(SILENT)rc clean_pkg $(PACKAGE)

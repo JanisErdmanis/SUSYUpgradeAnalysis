@@ -1,0 +1,23 @@
+# this makefile also gets parsed by shell scripts
+# therefore it does not support full make syntax and features
+# edit with care
+
+# for full documentation check:
+# https://twiki.cern.ch/twiki/bin/viewauth/Atlas/RootCore#Package_Makefile
+
+PACKAGE          = SUSYUpgradeExample
+PACKAGE_PRELOAD  = Tree Physics 
+#PACKAGE_CXXFLAGS = 
+#PACKAGE_OBJFLAGS = 
+#PACKAGE_LDFLAGS  = 
+PACKAGE_BINFLAGS = 
+#PACKAGE_LIBFLAGS = 
+PACKAGE_CXXFLAGS = -Wextra 
+PACKAGE_LDFLAGS  = 
+PACKAGE_DEP      = UpgradePerformanceFunctions EventLoop  xAODRootAccess AsgTools xAODEventInfo xAODTruth xAODJet xAODMissingET xAODCore
+#PACKAGE_TRYDEP   = 
+#PACKAGE_CLEAN    = 
+PACKAGE_NOOPT    = 0
+#PACKAGE_NOCC     = 0
+
+include $(ROOTCOREDIR)/Makefile-common
