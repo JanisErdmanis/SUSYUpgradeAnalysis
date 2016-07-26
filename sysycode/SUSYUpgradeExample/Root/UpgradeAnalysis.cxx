@@ -369,7 +369,6 @@ EL::StatusCode UpgradeAnalysis :: execute ()
      ===== Smear objects with UpgradePerformanceFunctions ==========
      =============================================================== */
 
-
   SmearedPho.clear();
   SmearedEleMuo.clear();
   SmearedHadTau.clear();
