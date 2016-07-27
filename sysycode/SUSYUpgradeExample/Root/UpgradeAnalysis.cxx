@@ -1,6 +1,6 @@
 // lxplus cleansimulation; lxplus push; lxplus compile; lxplus runAna m100_DeltaM9_N2C1; lxplus pull
 
-//#define Smeared
+#define Smeared
 
 #include <SUSYUpgradeExample/UpgradeAnalysis.h>
 #include <EventLoop/Job.h> // It calls execute method
@@ -75,7 +75,6 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
   m_cuts.push_back("2 leading leptons Pt > 7 GeV");
   m_cuts.push_back("mTauTau>150 GeV");
   m_cuts.push_back("M(1st l + 2nd l)<12 GeV");
-  
 
   for( unsigned int i = 0; i < m_cuts.size(); i++) {
 
@@ -273,29 +272,14 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   xAOD::TEvent* event = wk()->xaodEvent();
   ANA_CHECK_SET_TYPE (EL::StatusCode);
 
+  #ifndef Smearing
+  
   GenPho.clear();
   GenEleMuo.clear();
   GenHadTau.clear();
   GenJet.clear();
   GenBJet.clear();
   
-  // const xAOD::JetContainer* xTruthJets = 0;
-  // event->retrieve( xTruthJets, "AntiKt4TruthJets" );
-  // xAOD::JetContainer::const_iterator jet_itr = xTruthJets->begin();
-  // xAOD::JetContainer::const_iterator jet_end = xTruthJets->end();
-  // for( ; jet_itr != jet_end; ++jet_itr ) {
-  //   if( (*jet_itr)->pt()*GeV < 10 ) continue;
-
-  //   Particle thisPart;
-  //   thisPart.SetPtEtaPhiM( (*jet_itr)->pt(), (*jet_itr)->eta(), (*jet_itr)->phi(), (*jet_itr)->m());
-  //   thisPart.pdgid = fabs((*jet_itr)->auxdata<int>("ConeTruthLabelID"));
-  //   thisPart.Good = true;
-  //   GenJet.push_back(thisPart);
-    
-  // }
-  
-  //getTruthJets();
-
   getTruthPhotons(); 
   getTruthElectrons();
   getTruthMuons();
@@ -337,6 +321,75 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   sort(SmearedHadTau.begin(), SmearedHadTau.end(), compare_pt());   
   sort(SmearedJet.begin(), SmearedJet.end(), compare_pt());   
 
+  m_trigEff = 1.;
+
+  #else
+
+  GenPho.clear();
+  GenEleMuo.clear();
+  GenHadTau.clear();
+  GenJet.clear();
+  GenBJet.clear();
+  
+  getTruthPhotons(); 
+  getTruthElectrons();
+  getTruthMuons();
+  getTruthHadronicTaus();
+  getTruthJets();
+  getTruthMET();
+
+  SmearedPho.clear();
+  SmearedEleMuo.clear();
+  SmearedHadTau.clear();
+  SmearedJet.clear();
+
+  SmearPhotons();
+  SmearElectrons();
+  SmearMuons();
+  SmearHadTaus();
+  SmearJets(); 
+  SmearMET();
+
+  ApplyPhotonFakes();
+  ApplyElectronFakes();
+  ApplyTauFakes();
+  ApplyBtagging();
+
+  sort(SmearedPho.begin(), SmearedPho.end(), compare_pt());   
+  sort(SmearedEleMuo.begin(), SmearedEleMuo.end(), compare_pt());   
+  sort(SmearedHadTau.begin(), SmearedHadTau.end(), compare_pt());   
+  sort(SmearedJet.begin(), SmearedJet.end(), compare_pt());   
+
+  ApplyPtEtaThresholds(); // Selects events
+// //   /* ===============================================================
+// //      ===== Perform basic overlap removal ===========================
+// //      =============================================================== */
+// //   // When electron is not recognized as jet because of threshold of jet algorithm
+  OverlapRemoval(); 
+// //   /* ===============================================================
+// //      ===== Signal leptons: isolation, remove low mass pairs ========
+// //      =============================================================== */
+
+// // //   // Energy around electron should be small
+  ApplyIsolation(); 
+
+// //   // What this thing do?
+  RemoveLowMassPairs(); 
+
+// //   /* ===============================================================
+// //      ===== Trigger effiency.    Analysis dependent, so function ====
+// //      ===== sets m_trigEff to 1 if not edited =======================
+// //      =============================================================== */
+  ApplyTriggerEfficiency();
+
+// //   /* ===============================================================
+// //      ===== Event variables =========================================
+// //      =============================================================== */
+// //   // Like transverse energy
+// // #endif
+
+  #endif
+
   SmearedBJet.clear();
   SmearedNotBJet.clear();
   for( unsigned int i=0; i<SmearedJet.size(); i++){
@@ -347,172 +400,8 @@ EL::StatusCode UpgradeAnalysis :: execute ()
       SmearedNotBJet.push_back(SmearedJet[i]);
   }
 
-  m_trigEff = 1.;
-  //FillHistos("NoCuts");
-  
-// //   if( (m_eventCounter % 1000) ==0 ) Info("execute()", "Event number = %i", m_eventCounter );
-// //   m_eventCounter++;
+  calculateEventVariables();
 
-// //   //----------------------------
-// //   // Event information
-// //   //--------------------------- 
-// //   const xAOD::EventInfo* eventInfo = 0;
-// //   ANA_CHECK(event->retrieve( eventInfo, "EventInfo"));  
-  
-// //   // Do we want something to check the SUSY production process?
-
-
-// //   /* ===============================================================
-// //      ===== Get Gen objects from DAOD_Truth containers ==============
-// //      =============================================================== */
-//   // GenPho.clear();
-//   // GenEleMuo.clear();
-//   // GenHadTau.clear();
-//   // GenJet.clear();
-//   // GenBJet.clear();
-
-//   // //   // Photons
-//   // // getTruthPhotons(); 
-
-//   // // //   /* Electrons and Muons */
-//   // // getTruthElectrons();
-//   // // getTruthMuons();
-
-//   // // /* Hadronically decaying Taus (visible part only) */
-//   // // getTruthHadronicTaus();
-
-//   // /* Jets */
-//   // getTruthJets();
-
-//   // /* MET */
-//   // //getTruthMET();
-
-//   // sort(GenPho.begin(), GenPho.end(), compare_pt());   //Sort objects in vector by Pt
-//   // sort(GenEleMuo.begin(), GenEleMuo.end(), compare_pt()); 
-//   // sort(GenHadTau.begin(), GenHadTau.end(), compare_pt());
-//   // sort(GenJet.begin(), GenJet.end(), compare_pt());
-//   // sort(GenBJet.begin(), GenBJet.end(), compare_pt());
-
-//   // /* ===============================================================
-//   //    ===== Smear objects with UpgradePerformanceFunctions ==========
-//   //    =============================================================== */
-
-//   SmearedPho.clear();
-//   SmearedEleMuo.clear();
-//   SmearedHadTau.clear();
-//   SmearedJet.clear();
-//   //
-
-// // #ifdef Smeared
-  
-// //   SmearPhotons();
-// //   SmearElectrons();
-// //   SmearMuons();
-// //   SmearHadTaus();
-// //   SmearJets(); 
-// //   SmearMET();
-
-// //   // Incorrect detection
-// //   ApplyPhotonFakes();
-// //   ApplyElectronFakes();
-// //   ApplyTauFakes();
-// //   ApplyBtagging();
-
-// // #else
-// //   // Putting generated events into Smeared Vectors here
-// //   //cout << "using generated events instead" << endl;
-
-//   m_trigEff = 1.;
-
-//   for( unsigned int i=0; i<GenPho.size(); i++) {
-//     SmearedPho.push_back(GenPho[i]);
-//   }
-
-//   for( unsigned int i=0; i<GenEleMuo.size(); i++) {
-//     if( fabs(GenEleMuo[i].pdgid)!=11 ) continue;
-//     SmearedEleMuo.push_back(GenEleMuo[i]);
-//   }
-
-//   for( unsigned int i=0; i<GenEleMuo.size(); i++ ){
-//     if( fabs(GenEleMuo[i].pdgid)!=13 ) continue;
-//     SmearedEleMuo.push_back(GenEleMuo[i]);
-//   }
-
-//   for( unsigned int i=0; i<GenHadTau.size(); i++) {
-//     SmearedHadTau.push_back(GenHadTau[i]);
-//   }
-
-//   SmearJets(); 
-//   for( unsigned int i=0; i<GenJet.size(); i++) {
-//     SmearedJet.push_back(GenJet[i]);
-//   }
-
-  // UpgradePerformanceFunctions::MET smearMET = m_upgrade->getMETSmeared( m_GenMETSumet, m_GenMETTLV.Px(), m_GenMETTLV.Py());
-  // m_SmearedMETTLV.SetPxPyPzE(smearMET.first,smearMET.second,0.,TMath::Sqrt(smearMET.first*smearMET.first + smearMET.second*smearMET.second)); // 
-
-
-
-// // #endif
-  
-// //   //Sort particles by Pt (transverse momentum)
-//   // sort(SmearedPho.begin(), SmearedPho.end(), compare_pt());   
-//   // sort(SmearedEleMuo.begin(), SmearedEleMuo.end(), compare_pt());   
-//   // sort(SmearedHadTau.begin(), SmearedHadTau.end(), compare_pt());   
-//   // sort(SmearedJet.begin(), SmearedJet.end(), compare_pt());   
-// //   /* ===============================================================
-// //      ===== Apply Pt and Eta thresholds =============================
-// //      =============================================================== */
-// //   // Does it also mean a cutoff? 
-
-// // #ifdef Smeared
-
-// //   ApplyPtEtaThresholds(); // Selects events
-// //   /* ===============================================================
-// //      ===== Perform basic overlap removal ===========================
-// //      =============================================================== */
-// //   // When electron is not recognized as jet because of threshold of jet algorithm
-// //   OverlapRemoval(); 
-// //   /* ===============================================================
-// //      ===== Signal leptons: isolation, remove low mass pairs ========
-// //      =============================================================== */
-
-// // //   // Energy around electron should be small
-// //   ApplyIsolation(); 
-
-// //   // What this thing do?
-// //   RemoveLowMassPairs(); 
-
-// //   /* ===============================================================
-// //      ===== Trigger effiency.    Analysis dependent, so function ====
-// //      ===== sets m_trigEff to 1 if not edited =======================
-// //      =============================================================== */
-// //   ApplyTriggerEfficiency();
-
-// //   /* ===============================================================
-// //      ===== Event variables =========================================
-// //      =============================================================== */
-// //   // Like transverse energy
-// // #endif
-
-// //   calculateEventVariables();
-
-// //   /* ===============================================================
-// //      ===== Fill histograms for each selection stage ================
-// //      =============================================================== */
-
-//   SmearedBJet.clear();
-//   SmearedNotBJet.clear();
-//   for( unsigned int i=0; i<SmearedJet.size(); i++){
-// //    if( fabs(SmearedJet[i].pdgid)==4) SmearedNotBJet.push_back(SmearedJet[i]);
-//     if( fabs(SmearedJet[i].pdgid)==5)
-//       SmearedBJet.push_back(SmearedJet[i]);
-//     else
-//       SmearedNotBJet.push_back(SmearedJet[i]);
-//   }
-
-  
-  
-// // //  cout << "JEts=" << SmearedNotBJet.size() << "BJets=" << SmearedBJet.size() << endl;
 
 // //   SmearedEle.clear();
 // //   SmearedMuo.clear();
@@ -523,7 +412,6 @@ EL::StatusCode UpgradeAnalysis :: execute ()
 
 // // //   /// Making a histograms
 
-// // // //  #if ANA=1
   FillHistos("NoCuts");
   
   if ( m_SmearedMETTLV.Et()*GeV > 100. ) {
