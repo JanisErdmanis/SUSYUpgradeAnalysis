@@ -8,7 +8,7 @@
 #include "SampleHandler/DiskListLocal.h"
 #include <TSystem.h>
 
-//#include "SUSYUpgradeExample/UpgradeAnalysis.h"
+#include "SUSYUpgradeExample/UpgradeAnalysis.h"
 #include "MyPackage/MyAlgorithm.h"
 
 // standard library stuff
@@ -70,11 +70,11 @@ int main( int argc, char* argv[] ) {
   job.options()->setDouble (EL::Job::optMaxEvents, -1);
 
   // Add our analysis to the job:
-  // UpgradeAnalysis* alg = new UpgradeAnalysis();
-  // job.algsAdd( alg );
-
-  MyAlgorithm* alg = new MyAlgorithm();
+  UpgradeAnalysis* alg = new UpgradeAnalysis();
   job.algsAdd( alg );
+
+  // MyAlgorithm* alg = new MyAlgorithm();
+  // job.algsAdd( alg );
   
   // Run the job using the local/direct driver:
   EL::DirectDriver driver;

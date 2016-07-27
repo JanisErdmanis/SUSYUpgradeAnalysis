@@ -70,40 +70,12 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
 //  #if ANA==1
   m_cuts.push_back("NoCuts");
 
-//   m_cuts.push_back("1stJet Pt>200 GeV");
-//   m_cuts.push_back("MET>200 GeV");
-//   m_cuts.push_back("Dphi(JET,MET)>0.4");
-//   m_cuts.push_back("2 leading muons Pt > 5 GeV");
-//   m_cuts.push_back("BJetCut");
-
-// //#elif ANA==2
-// //  m_cuts.push_back("NoCuts");
-//   m_cuts.push_back("1stJet Pt>100 GeV");
-//   m_cuts.push_back("Big_angle_between_jets");
-//   m_cuts.push_back("Dphi(2nd Jet,MET)>0.5");
-//   m_cuts.push_back("M(1st l + 2nd l)<12 GeV");
-// //  #endif
-
   m_cuts.push_back("MET>100 GeV");
   m_cuts.push_back("1stJet Pt>100 GeV");
   m_cuts.push_back("2 leading leptons Pt > 7 GeV");
   m_cuts.push_back("mTauTau>150 GeV");
   m_cuts.push_back("M(1st l + 2nd l)<12 GeV");
   
-  // m_cuts.push_back("Cut Pt>5 Gev");
-  // m_cuts.push_back("JetCut Pt>100 GeV");
-  // m_cuts.push_back("JetCut Pt>0 GeV");
-  // m_cuts.push_back("JetCut Pt>200 GeV");
-  
-  //   if( AllLeptonPt > 2) FillHistos("Cut Pt>2 Gev");
-  // if( AllLeptonPt > 5) FillHistos("Cut Pt>5 Gev");
-  // if( AllLeptonPt > 10) FillHistos("Cut Pt>10 Gev");
-  
-  // m_cuts.push_back("2L");
-  // m_cuts.push_back("2L_MET100");
-  // m_cuts.push_back("3L");
-  // m_cuts.push_back("3L_Meff100");
-  // m_cuts.push_back("MyCut");
 
   for( unsigned int i = 0; i < m_cuts.size(); i++) {
 
@@ -144,10 +116,6 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
     h_NMuon[m_cuts[i]] = new TH1F("h_NMuon_"+ m_cuts[i], "", 6, -0.5, 5.5); 
     h_NMuon[m_cuts[i]]->SetXTitle("Muon multiplicity");      h_NMuon[m_cuts[i]]->SetYTitle("Events");
     wk()->addOutput (h_NMuon[m_cuts[i]]);
-
-    // h_NMuon[m_cuts[i]] = new TH1F("h_NEl_"+ m_cuts[i], "", 6, -0.5, 5.5); 
-    // h_NMuon[m_cuts[i]]->SetXTitle("Electron multiplicity");      h_NMuon[m_cuts[i]]->SetYTitle("Events");
-    // wk()->addOutput (h_NMuon[m_cuts[i]]);
 
 
     h_NTau[m_cuts[i]] = new TH1F("h_NTau_"+ m_cuts[i], "", 6, -0.5, 5.5); 
@@ -225,23 +193,6 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
     
 
   }
-
-  //   m_mT = -9999999999;
-  // if( SmearedEleMuo.size()>0 ) m_mT = M_T(SmearedEleMuo[0], m_SmearedMETTLV);
-
-  
-  // My histograms
-
-  // h_PtMuonsJetPtCuts["Pt>0"] = new TH1F("firshisto", "", 6, -0.5, 5.5);
-  // h_PtMuonsJetPtCuts["Pt>100"] = new TH1F("sechisto", "", 6, -0.5, 5.5);
-  // h_PtMuonsJetPtCuts["Pt>200"] = new TH1F("thirdhisto", "", 6, -0.5, 5.5);
-  
-  // myhisto["myhisto"] = new TH2F("myhisto","",30,0,25,30,0,200);
-  // wk()->addOutput(myhisto["myhisto"]);
-      
-  // h_NPho[m_cuts[i]] = new TH1F("h_NPho_"+ m_cuts[i], "", 6, -0.5, 5.5); 
-  // h_NPho[m_cuts[i]]->SetXTitle("Photon multiplicity");      h_NPho[m_cuts[i]]->SetYTitle("Events");
-  // wk()->addOutput (h_NPho[m_cuts[i]]);
 
   return EL::StatusCode::SUCCESS;
 }
@@ -322,79 +273,44 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   xAOD::TEvent* event = wk()->xaodEvent();
   ANA_CHECK_SET_TYPE (EL::StatusCode);
 
-  if( (m_eventCounter % 1000) ==0 ) Info("execute()", "Event number = %i", m_eventCounter );
-  m_eventCounter++;
-
-  //----------------------------
-  // Event information
-  //--------------------------- 
-  const xAOD::EventInfo* eventInfo = 0;
-  ANA_CHECK(event->retrieve( eventInfo, "EventInfo"));  
-  
-  // Do we want something to check the SUSY production process?
-
-
-  /* ===============================================================
-     ===== Get Gen objects from DAOD_Truth containers ==============
-     =============================================================== */
   GenPho.clear();
   GenEleMuo.clear();
   GenHadTau.clear();
   GenJet.clear();
   GenBJet.clear();
+  
+  // const xAOD::JetContainer* xTruthJets = 0;
+  // event->retrieve( xTruthJets, "AntiKt4TruthJets" );
+  // xAOD::JetContainer::const_iterator jet_itr = xTruthJets->begin();
+  // xAOD::JetContainer::const_iterator jet_end = xTruthJets->end();
+  // for( ; jet_itr != jet_end; ++jet_itr ) {
+  //   if( (*jet_itr)->pt()*GeV < 10 ) continue;
 
-//   // Photons
+  //   Particle thisPart;
+  //   thisPart.SetPtEtaPhiM( (*jet_itr)->pt(), (*jet_itr)->eta(), (*jet_itr)->phi(), (*jet_itr)->m());
+  //   thisPart.pdgid = fabs((*jet_itr)->auxdata<int>("ConeTruthLabelID"));
+  //   thisPart.Good = true;
+  //   GenJet.push_back(thisPart);
+    
+  // }
+  
+  //getTruthJets();
+
   getTruthPhotons(); 
-
-//   /* Electrons and Muons */
   getTruthElectrons();
   getTruthMuons();
-
-  /* Hadronically decaying Taus (visible part only) */
   getTruthHadronicTaus();
-
-  /* Jets */
   getTruthJets();
-
-  /* MET */
   getTruthMET();
-
-  sort(GenPho.begin(), GenPho.end(), compare_pt());   //Sort objects in vector by Pt
-  sort(GenEleMuo.begin(), GenEleMuo.end(), compare_pt()); 
-  sort(GenHadTau.begin(), GenHadTau.end(), compare_pt());
-  sort(GenJet.begin(), GenJet.end(), compare_pt());
-  sort(GenBJet.begin(), GenBJet.end(), compare_pt());
-
-  /* ===============================================================
-     ===== Smear objects with UpgradePerformanceFunctions ==========
-     =============================================================== */
 
   SmearedPho.clear();
   SmearedEleMuo.clear();
   SmearedHadTau.clear();
   SmearedJet.clear();
-  //
-
-#ifdef Smeared
   
-  SmearPhotons();
-  SmearElectrons();
-  SmearMuons();
-  SmearHadTaus();
-  SmearJets(); 
-  SmearMET();
-
-  // Incorrect detection
-  ApplyPhotonFakes();
-  ApplyElectronFakes();
-  ApplyTauFakes();
-  ApplyBtagging();
-
-#else
-  // Putting generated events into Smeared Vectors here
-  //cout << "using generated events instead" << endl;
-
-  m_trigEff = 1.;
+  for( unsigned int i=0; i<GenJet.size(); i++) {
+    SmearedJet.push_back(GenJet[i]);
+  }
 
   for( unsigned int i=0; i<GenPho.size(); i++) {
     SmearedPho.push_back(GenPho[i]);
@@ -414,139 +330,202 @@ EL::StatusCode UpgradeAnalysis :: execute ()
     SmearedHadTau.push_back(GenHadTau[i]);
   }
 
-  SmearJets(); 
-  for( unsigned int i=0; i<GenJet.size(); i++) {
-    SmearedJet.push_back(GenJet[i]);
-  }
-
-  //UpgradePerformanceFunctions::MET smearMET = m_upgrade->getMETSmeared( m_GenMETSumet, m_GenMETTLV.Px(), m_GenMETTLV.Py());
-  // m_SmearedMETTLV.SetPxPyPzE(smearMET.first,smearMET.second,0.,TMath::Sqrt(smearMET.first*smearMET.first + smearMET.second*smearMET.second)); // 
-
   m_SmearedMETTLV.SetPxPyPzE(m_GenMETTLV.Px(),m_GenMETTLV.Py(),0.,TMath::Sqrt(m_GenMETTLV.Px()*m_GenMETTLV.Px() + m_GenMETTLV.Py()*m_GenMETTLV.Py() ));
-
-#endif
   
-  //Sort particles by Pt (transverse momentum)
   sort(SmearedPho.begin(), SmearedPho.end(), compare_pt());   
   sort(SmearedEleMuo.begin(), SmearedEleMuo.end(), compare_pt());   
   sort(SmearedHadTau.begin(), SmearedHadTau.end(), compare_pt());   
   sort(SmearedJet.begin(), SmearedJet.end(), compare_pt());   
-  // sort(SmearedBJet.begin(), SmearedBJet.end(), compare_pt());   // Decays from B quarqs
-  // sort(SmearedNotBJet.begin(), SmearedNotBJet.end(), compare_pt());   // Decays from B qua
-  /* ===============================================================
-     ===== Apply Pt and Eta thresholds =============================
-     =============================================================== */
-  // Does it also mean a cutoff? 
 
-#ifdef Smeared
-
-  ApplyPtEtaThresholds(); // Selects events
-  /* ===============================================================
-     ===== Perform basic overlap removal ===========================
-     =============================================================== */
-  // When electron is not recognized as jet because of threshold of jet algorithm
-  OverlapRemoval(); 
-  /* ===============================================================
-     ===== Signal leptons: isolation, remove low mass pairs ========
-     =============================================================== */
-
-//   // Energy around electron should be small
-  ApplyIsolation(); 
-
-  // What this thing do?
-  RemoveLowMassPairs(); 
-
-  /* ===============================================================
-     ===== Trigger effiency.    Analysis dependent, so function ====
-     ===== sets m_trigEff to 1 if not edited =======================
-     =============================================================== */
-  ApplyTriggerEfficiency();
-
-  /* ===============================================================
-     ===== Event variables =========================================
-     =============================================================== */
-  // Like transverse energy
-#endif
-
-  calculateEventVariables();
-
-  /* ===============================================================
-     ===== Fill histograms for each selection stage ================
-     =============================================================== */
-
-  // sum of lepton pT
-  // double AllLeptonPt = 0.;
-  // for( unsigned int i = 0; i < SmearedEleMuo.size(); i++)  += SmearedEleMuo[i].Pt();
-
-  // First muaon
-  // I need to make a new container
-
-  // Extracting electrons and muons
-
-  /// Seperating jets from BJets
   SmearedBJet.clear();
   SmearedNotBJet.clear();
   for( unsigned int i=0; i<SmearedJet.size(); i++){
-//    if( fabs(SmearedJet[i].pdgid)==4) SmearedNotBJet.push_back(SmearedJet[i]);
+    //    if( fabs(SmearedJet[i].pdgid)==4) SmearedNotBJet.push_back(SmearedJet[i]);
     if( fabs(SmearedJet[i].pdgid)==5)
       SmearedBJet.push_back(SmearedJet[i]);
     else
       SmearedNotBJet.push_back(SmearedJet[i]);
   }
+
+  m_trigEff = 1.;
+  //FillHistos("NoCuts");
   
-//  cout << "JEts=" << SmearedNotBJet.size() << "BJets=" << SmearedBJet.size() << endl;
+// //   if( (m_eventCounter % 1000) ==0 ) Info("execute()", "Event number = %i", m_eventCounter );
+// //   m_eventCounter++;
 
-  SmearedEle.clear();
-  SmearedMuo.clear();
-  for( unsigned int i=0; i<SmearedEleMuo.size(); i++){
-    if( fabs(SmearedEleMuo[i].pdgid)==11 ) SmearedEle.push_back(SmearedEleMuo[i]);
-    if( fabs(SmearedEleMuo[i].pdgid)==13 ) SmearedMuo.push_back(SmearedEleMuo[i]);
-  }
+// //   //----------------------------
+// //   // Event information
+// //   //--------------------------- 
+// //   const xAOD::EventInfo* eventInfo = 0;
+// //   ANA_CHECK(event->retrieve( eventInfo, "EventInfo"));  
+  
+// //   // Do we want something to check the SUSY production process?
 
-//   /// Making a histograms
 
-// //  #if ANA=1
+// //   /* ===============================================================
+// //      ===== Get Gen objects from DAOD_Truth containers ==============
+// //      =============================================================== */
+//   // GenPho.clear();
+//   // GenEleMuo.clear();
+//   // GenHadTau.clear();
+//   // GenJet.clear();
+//   // GenBJet.clear();
+
+//   // //   // Photons
+//   // // getTruthPhotons(); 
+
+//   // // //   /* Electrons and Muons */
+//   // // getTruthElectrons();
+//   // // getTruthMuons();
+
+//   // // /* Hadronically decaying Taus (visible part only) */
+//   // // getTruthHadronicTaus();
+
+//   // /* Jets */
+//   // getTruthJets();
+
+//   // /* MET */
+//   // //getTruthMET();
+
+//   // sort(GenPho.begin(), GenPho.end(), compare_pt());   //Sort objects in vector by Pt
+//   // sort(GenEleMuo.begin(), GenEleMuo.end(), compare_pt()); 
+//   // sort(GenHadTau.begin(), GenHadTau.end(), compare_pt());
+//   // sort(GenJet.begin(), GenJet.end(), compare_pt());
+//   // sort(GenBJet.begin(), GenBJet.end(), compare_pt());
+
+//   // /* ===============================================================
+//   //    ===== Smear objects with UpgradePerformanceFunctions ==========
+//   //    =============================================================== */
+
+//   SmearedPho.clear();
+//   SmearedEleMuo.clear();
+//   SmearedHadTau.clear();
+//   SmearedJet.clear();
+//   //
+
+// // #ifdef Smeared
+  
+// //   SmearPhotons();
+// //   SmearElectrons();
+// //   SmearMuons();
+// //   SmearHadTaus();
+// //   SmearJets(); 
+// //   SmearMET();
+
+// //   // Incorrect detection
+// //   ApplyPhotonFakes();
+// //   ApplyElectronFakes();
+// //   ApplyTauFakes();
+// //   ApplyBtagging();
+
+// // #else
+// //   // Putting generated events into Smeared Vectors here
+// //   //cout << "using generated events instead" << endl;
+
+//   m_trigEff = 1.;
+
+//   for( unsigned int i=0; i<GenPho.size(); i++) {
+//     SmearedPho.push_back(GenPho[i]);
+//   }
+
+//   for( unsigned int i=0; i<GenEleMuo.size(); i++) {
+//     if( fabs(GenEleMuo[i].pdgid)!=11 ) continue;
+//     SmearedEleMuo.push_back(GenEleMuo[i]);
+//   }
+
+//   for( unsigned int i=0; i<GenEleMuo.size(); i++ ){
+//     if( fabs(GenEleMuo[i].pdgid)!=13 ) continue;
+//     SmearedEleMuo.push_back(GenEleMuo[i]);
+//   }
+
+//   for( unsigned int i=0; i<GenHadTau.size(); i++) {
+//     SmearedHadTau.push_back(GenHadTau[i]);
+//   }
+
+//   SmearJets(); 
+//   for( unsigned int i=0; i<GenJet.size(); i++) {
+//     SmearedJet.push_back(GenJet[i]);
+//   }
+
+  // UpgradePerformanceFunctions::MET smearMET = m_upgrade->getMETSmeared( m_GenMETSumet, m_GenMETTLV.Px(), m_GenMETTLV.Py());
+  // m_SmearedMETTLV.SetPxPyPzE(smearMET.first,smearMET.second,0.,TMath::Sqrt(smearMET.first*smearMET.first + smearMET.second*smearMET.second)); // 
+
+
+
+// // #endif
+  
+// //   //Sort particles by Pt (transverse momentum)
+//   // sort(SmearedPho.begin(), SmearedPho.end(), compare_pt());   
+//   // sort(SmearedEleMuo.begin(), SmearedEleMuo.end(), compare_pt());   
+//   // sort(SmearedHadTau.begin(), SmearedHadTau.end(), compare_pt());   
+//   // sort(SmearedJet.begin(), SmearedJet.end(), compare_pt());   
+// //   /* ===============================================================
+// //      ===== Apply Pt and Eta thresholds =============================
+// //      =============================================================== */
+// //   // Does it also mean a cutoff? 
+
+// // #ifdef Smeared
+
+// //   ApplyPtEtaThresholds(); // Selects events
+// //   /* ===============================================================
+// //      ===== Perform basic overlap removal ===========================
+// //      =============================================================== */
+// //   // When electron is not recognized as jet because of threshold of jet algorithm
+// //   OverlapRemoval(); 
+// //   /* ===============================================================
+// //      ===== Signal leptons: isolation, remove low mass pairs ========
+// //      =============================================================== */
+
+// // //   // Energy around electron should be small
+// //   ApplyIsolation(); 
+
+// //   // What this thing do?
+// //   RemoveLowMassPairs(); 
+
+// //   /* ===============================================================
+// //      ===== Trigger effiency.    Analysis dependent, so function ====
+// //      ===== sets m_trigEff to 1 if not edited =======================
+// //      =============================================================== */
+// //   ApplyTriggerEfficiency();
+
+// //   /* ===============================================================
+// //      ===== Event variables =========================================
+// //      =============================================================== */
+// //   // Like transverse energy
+// // #endif
+
+// //   calculateEventVariables();
+
+// //   /* ===============================================================
+// //      ===== Fill histograms for each selection stage ================
+// //      =============================================================== */
+
+//   SmearedBJet.clear();
+//   SmearedNotBJet.clear();
+//   for( unsigned int i=0; i<SmearedJet.size(); i++){
+// //    if( fabs(SmearedJet[i].pdgid)==4) SmearedNotBJet.push_back(SmearedJet[i]);
+//     if( fabs(SmearedJet[i].pdgid)==5)
+//       SmearedBJet.push_back(SmearedJet[i]);
+//     else
+//       SmearedNotBJet.push_back(SmearedJet[i]);
+//   }
+
+  
+  
+// // //  cout << "JEts=" << SmearedNotBJet.size() << "BJets=" << SmearedBJet.size() << endl;
+
+// //   SmearedEle.clear();
+// //   SmearedMuo.clear();
+// //   for( unsigned int i=0; i<SmearedEleMuo.size(); i++){
+// //     if( fabs(SmearedEleMuo[i].pdgid)==11 ) SmearedEle.push_back(SmearedEleMuo[i]);
+// //     if( fabs(SmearedEleMuo[i].pdgid)==13 ) SmearedMuo.push_back(SmearedEleMuo[i]);
+// //   }
+
+// // //   /// Making a histograms
+
+// // // //  #if ANA=1
   FillHistos("NoCuts");
   
-  // if (SmearedNotBJet.size()>=1) {
-  //   if( SmearedNotBJet[0].Pt()*GeV > 200.) {
-  //     FillHistos("1stJet Pt>200 GeV");
-  //     if( m_SmearedMETTLV.Et()*GeV > 200. ) {
-  //       FillHistos("MET>200 GeV");
-  //       if (SmearedNotBJet[0].DeltaPhi(m_SmearedMETTLV) > 0.4) {
-  //         FillHistos("Dphi(JET,MET)>0.4");
-  //         if ((SmearedEleMuo[0] + SmearedEleMuo[1]).M()*GeV > 5) {
-  //           FillHistos("2 leading muons Pt > 5 GeV");
-
-  //           int s = 0;
-  //           for (int j=0;j<SmearedBJet.size();j++)
-  //             if (SmearedBJet[j].Pt()*GeV>30)
-  //               s += 1;
-                        
-  //           if (s<2) {
-  //             FillHistos("BJetCut");
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-
-  // if (SmearedNotBJet.size()>=2) {
-  //   if( SmearedNotBJet[0].Pt()*GeV > 100.) {
-  //     FillHistos("1stJet Pt>100 GeV");
-  //     if( SmearedNotBJet[0].DeltaPhi(SmearedNotBJet[1])>2.5) {
-  //       FillHistos("Big_angle_between_jets");
-  //       if( SmearedNotBJet[1].DeltaPhi(m_SmearedMETTLV)>0.5) {
-  //         FillHistos("Dphi(2nd Jet,MET)>0.5");
-  //         if( (SmearedEleMuo[0] + SmearedEleMuo[1]).M()*GeV < 12.) {
-  //           FillHistos("M(1st l + 2nd l)<12 GeV");
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-
   if ( m_SmearedMETTLV.Et()*GeV > 100. ) {
     FillHistos("MET>100 GeV");
     if (SmearedNotBJet.size()==1 && SmearedBJet.size()==0) {
@@ -570,45 +549,6 @@ EL::StatusCode UpgradeAnalysis :: execute ()
     }      
   }
   
-//   //if( LeptonPt1st*GeV > 10.) FillHistos("Cut Pt>10 Gev");
-//   // else
-//   // cout << "Very interesting electrons=" << SmearedEle.size() << " " << "muons=" << SmearedMuo.size() << endl;  
-  
-//   // if (SmearedJet.size()>=1) {
-//   //   double JetPt1st = SmearedJet[0].Pt();
-//   //   if (JetPt1st*GeV > 100 ) FillHistos("JetCut Pt>100 GeV");
-//   //   if (JetPt1st*GeV > 200 ) FillHistos("JetCut Pt>200 GeV");
-//   //   if (JetPt1st*GeV > 0 ) FillHistos("JetCut Pt>0 GeV");
-//   // } // else
-//   //   // cout << "Very interesting for Jets" << endl;
-
-  
-  
-  
-//   // Stacked histograms here
-
-//   // The filling of histogram
-//   // if (SmearedJet.size()>=1 && SmearedMuo.size()>=1) {
-//   //   double JetPt1st = SmearedJet[0].Pt();
-//   //   if (JetPt1st*GeV > 0) 
-//   //     h_PtMuonsJetPtCuts["Pt>0"]->Fill( SmearedMuo[0].Pt()*GeV , m_trigEff);
-//   //   if (JetPt1st*GeV > 100)
-//   //     h_PtMuonsJetPtCuts["Pt>0"]->Fill( SmearedMuo[0].Pt()*GeV , m_trigEff);
-//   //   if (JetPt1st*GeV > 200)
-//   //     h_PtMuonsJetPtCuts["Pt>0"]->Fill( SmearedMuo[0].Pt()*GeV , m_trigEff);
-//   // }
-
-  
-//   //double LeptonPt2nd = SmearedEleMuo[1].Pt();
-    
-//   //
-//   // if( SmearedEleMuo.size()>=2 ) FillHistos("2L");
-//   // if( SmearedEleMuo.size()>=2 && m_met*GeV>100 ) FillHistos("2L_MET100");
-//   // //
-//   // if( SmearedEleMuo.size()>=3 ) FillHistos("3L");
-//   // if( SmearedEleMuo.size()>=3 && m_meff*GeV>100 ) FillHistos("3L_Meff100");
-//   // if( m_met*GeV>100 ) FillHistos("MyCut");
-
   return EL::StatusCode::SUCCESS;
 }
 
@@ -655,36 +595,12 @@ EL::StatusCode UpgradeAnalysis :: histFinalize ()
   // that it gets called on all worker nodes regardless of whether
   // they processed input events.
 
-  //THStack *stacked = new THStack("stacked","stacked hist");
-
-  // stacked->Add(h_PtMuonsJetPtCuts["Pt>0"]);
-  // stacked->Add(h_PtMuonsJetPtCuts["Pt>100"]);
-  // stacked->Add(h_PtMuonsJetPtCuts["Pt>200"]);
-
-  // for ( const auto &myPair : h_PtMuonsJetPtCuts ) {
-  //   stacked->Add(h_PtMuonsJetPtCuts[myPair.first]);
-  // }
-
-  //stacked->Draw();
-
-  //for(std::map<Key,Val>::iterator iter = .begin(); iter != myMap.end(); ++iter)
-
-  //   h_PtMuonsJetPtCuts["Pt>0"] = new TH1F("", "", 6, -0.5, 5.5);
-  // h_PtMuonsJetPtCuts["Pt>100"] = new TH1F("", "", 6, -0.5, 5.5);
-  // h_PtMuonsJetPtCuts["Pt>200"] = new TH1F("", "", 6, -0.5, 5.5);
-
   return EL::StatusCode::SUCCESS;
 }
 
 void UpgradeAnalysis::FillHistos(TString cutname)
 {
 
-  // // A nice info about it
-  // if (h_NEvents.find(cutname) == h_NEvents.end()) {
-  //   cout << "Error, cut " << cutname << " not found" << endl;
-  // }
-
-  // // number of events
   h_NEvents[cutname]->Fill( 0.0 , m_trigEff);
   // event variables
   // What is this variable doing
@@ -694,19 +610,6 @@ void UpgradeAnalysis::FillHistos(TString cutname)
   //h_Meff[cutname]->Fill( m_meff*GeV , m_trigEff); // BUGGY
   h_MT[cutname]->Fill( m_mT*GeV , m_trigEff);
   //   h_MT2[cutname]->Fill( m_mT2*GeV , m_trigEff);
-
-  // photon, lepton, tau and jet multiplicities
-  // h_NPho[cutname]->Fill( SmearedPho.size() , m_trigEff);
-  // int nele=0; int nmuo=0;
-  // for( unsigned int i=0; i<SmearedEleMuo.size(); i++){
-  //   if( fabs(SmearedEleMuo[i].pdgid)==11 ) nele++;
-  //   if( fabs(SmearedEleMuo[i].pdgid)==13 ) nmuo++;
-  // }
-  // h_NElec[cutname]->Fill( nele , m_trigEff);
-
-  // // Filling with the number of muons in the process, need to do for different <P_T> (different cuts)
-  //h_NMuon[cutname]->Fill( nmuo , m_trigEff);
-  // h_NTau[cutname]->Fill( SmearedHadTau.size() , m_trigEff);
 
   int sjet = 0;
   for (int j=0;j<SmearedNotBJet.size();j++)
@@ -719,25 +622,6 @@ void UpgradeAnalysis::FillHistos(TString cutname)
     if (SmearedBJet[j].Pt()*GeV>30)
       sbjet += 1;
   h_NBJet[cutname]->Fill( sbjet , m_trigEff);
-
-  // // if (SmearedNotBJet.size() >= 1)
-  // //   if (SmearedNotBJet[0].Pt()*GeV>30)
-  // //     h_NJet[cutname]->Fill( SmearedNotBJet.size() , m_trigEff);
-
-  // // if (SmearedBJet.size() >= 1)
-  // //   if (SmearedBJet[0].Pt()*GeV>30)
-  // //h_NJet[cutname]->Fill( SmearedJet.size() , m_trigEff);
-
-  // // photon, lepton, tau and jet pTs
-  // for( unsigned int i=0; i<SmearedPho.size(); i++) h_PtPhos[cutname]->Fill( SmearedPho[i].Pt()*GeV , m_trigEff);
-  // for( unsigned int i=0; i<SmearedEleMuo.size(); i++){
-  //   if( fabs(SmearedEleMuo[i].pdgid)==11 ) h_PtElecs[cutname]->Fill( SmearedEleMuo[i].Pt()*GeV , m_trigEff);
-  //   if( fabs(SmearedEleMuo[i].pdgid)==13 ) h_PtMuons[cutname]->Fill( SmearedEleMuo[i].Pt()*GeV , m_trigEff);
-  // }
-  // for( unsigned int i=0; i<SmearedHadTau.size(); i++) h_PtTaus[cutname]->Fill( SmearedHadTau[i].Pt()*GeV , m_trigEff);
-  // for( unsigned int i=0; i<SmearedNotBJet.size(); i++) h_PtJets[cutname]->Fill( SmearedNotBJet[i].Pt()*GeV , m_trigEff);
-
-  // // My filling
 
   // // NEED TO CHANGE
   if (SmearedMuo.size()>=1) // Smeared elelctron
@@ -760,7 +644,6 @@ void UpgradeAnalysis::FillHistos(TString cutname)
 
   if (SmearedNotBJet.size()>=1 && SmearedMuo.size()>=1) {
     myhisto[cutname]->Fill(SmearedMuo[0].Pt()*GeV,SmearedNotBJet[0].Pt()*GeV,m_trigEff);
-    //    cout << "x = " << SmearedMuo[0].Pt()*GeV << " y = " << SmearedJet[0].Pt()*GeV << " mtrig = "<< m_trigEff << endl;        
   }
 
   // Skipping tauons for a now
@@ -1252,79 +1135,6 @@ void UpgradeAnalysis::ApplyTriggerEfficiency(){
 
   //set to 100% as default
   m_trigEff = 1.;
-  
-  /* Single electron trigger */
-  /*
-    for( unsigned int i=0; i<SmearedEleMuo.size(); i++){
-    if( fabs(SmearedEleMuo[i].pdgid)!=11 ) continue;
-    m_trigEff =  m_upgrade->getSingleElectronTriggerEfficiency(SmearedEleMuo[i].Pt(), SmearedEleMuo[i].Eta());
-    break;
-    }
-  */
-
-  /* Double electron trigger */
-  /*
-    for( unsigned int i=0; i<SmearedEleMuo.size(); i++){
-    if( fabs(SmearedEleMuo[i].pdgid)!=11 ) continue;
-    for( unsigned int j=0; j<SmearedEleMuo.size(); j++){
-    if( i==j ) continue;
-    if( fabs(SmearedEleMuo[j].pdgid)!=11 ) continue;
-    m_trigEff =  m_upgrade->getDiElectronTriggerEfficiency(SmearedEleMuo[i].Pt(), SmearedEleMuo[j].Pt(), SmearedEleMuo[i].Eta(), SmearedEleMuo[j].Eta());
-    break;
-    }
-    }
-  */
-
-  /* Single muon trigger */
-  /*
-    for( unsigned int i=0; i<SmearedEleMuo.size(); i++){
-    if( fabs(SmearedEleMuo[i].pdgid)!=13 ) continue;
-    m_trigEff =  m_upgrade->getSingleMuonTriggerEfficiency(SmearedEleMuo[i].Pt(), SmearedEleMuo[i].Eta());
-    break;
-    }
-  */
-  /* Double muon trigger */
-  /*
-    for( unsigned int i=0; i<SmearedEleMuo.size(); i++){
-    if( fabs(SmearedEleMuo[i].pdgid)!=13 ) continue;
-    for( unsigned int j=0; j<SmearedEleMuo.size(); j++){
-    if( i==j ) continue;
-    if( fabs(SmearedEleMuo[j].pdgid)!=13 ) continue;
-    m_trigEff =  m_upgrade->getDiMuonTriggerEfficiency(SmearedEleMuo[i].Pt(), SmearedEleMuo[j].Pt(), SmearedEleMuo[i].Eta(), SmearedEleMuo[j].Eta());
-    break;
-    }
-    }
-  */
-
-  /* Electron+Muon trigger */
-  /*
-    for( unsigned int i=0; i<SmearedEleMuo.size(); i++){
-    if( fabs(SmearedEleMuo[i].pdgid)!=11 ) continue;
-    for( unsigned int j=0; j<SmearedEleMuo.size(); j++){
-    if( fabs(SmearedEleMuo[j].pdgid)!=13 ) continue;
-    m_trigEff =  m_upgrade->getElectronMuonTriggerEfficiency(SmearedEleMuo[i].Pt(), SmearedEleMuo[j].Pt(), SmearedEleMuo[i].Eta(), SmearedEleMuo[j].Eta());
-    break;
-    }
-    }
-  */
-
-  /* Single tau trigger */
-  /*
-    for( unsigned int i=0; i<SmearedHadTau.size(); i++){
-    m_trigEff =  m_upgrade->getSingleTauTriggerEfficiency(SmearedHadTau[i].Pt(), SmearedHadTau[i].Eta(), SmearedHadTau[i].nprong);
-    break;
-    }
-  */
-  /* Double tau trigger */
-  /*
-    for( unsigned int i=0; i<SmearedHadTau.size(); i++){
-    for( unsigned int j=0; j<SmearedHadTau.size(); j++){
-    if( i==j ) continue;
-    m_trigEff =  m_upgrade->getDiTauTriggerEfficiency(SmearedHadTau[i].Pt(), SmearedHadTau[j].Pt(), SmearedHadTau[i].Eta(), SmearedHadTau[j].Eta(), SmearedHadTau[i].nprong, SmearedHadTau[j].nprong);
-    break;
-    }
-    }
-  */
 
   return;
 }
