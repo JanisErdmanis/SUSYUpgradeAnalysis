@@ -1,6 +1,6 @@
 // lxplus cleansimulation; lxplus push; lxplus compile; lxplus runAna m100_DeltaM9_N2C1; lxplus pull
 
-#define Smeared
+#define Smearing
 
 #include <SUSYUpgradeExample/UpgradeAnalysis.h>
 #include <EventLoop/Job.h> // It calls execute method
@@ -350,37 +350,37 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   SmearJets(); 
   SmearMET();
 
-  ApplyPhotonFakes();
-  ApplyElectronFakes();
-  ApplyTauFakes();
-  ApplyBtagging();
+//   ApplyPhotonFakes();
+//   ApplyElectronFakes();
+//   ApplyTauFakes();
+//   ApplyBtagging();
 
   sort(SmearedPho.begin(), SmearedPho.end(), compare_pt());   
   sort(SmearedEleMuo.begin(), SmearedEleMuo.end(), compare_pt());   
   sort(SmearedHadTau.begin(), SmearedHadTau.end(), compare_pt());   
   sort(SmearedJet.begin(), SmearedJet.end(), compare_pt());   
 
-  ApplyPtEtaThresholds(); // Selects events
-// //   /* ===============================================================
-// //      ===== Perform basic overlap removal ===========================
-// //      =============================================================== */
-// //   // When electron is not recognized as jet because of threshold of jet algorithm
-  OverlapRemoval(); 
-// //   /* ===============================================================
-// //      ===== Signal leptons: isolation, remove low mass pairs ========
-// //      =============================================================== */
+//   ApplyPtEtaThresholds(); // Selects events
+// // //   /* ===============================================================
+// // //      ===== Perform basic overlap removal ===========================
+// // //      =============================================================== */
+// // //   // When electron is not recognized as jet because of threshold of jet algorithm
+//   OverlapRemoval(); 
+// // //   /* ===============================================================
+// // //      ===== Signal leptons: isolation, remove low mass pairs ========
+// // //      =============================================================== */
 
-// // //   // Energy around electron should be small
-  ApplyIsolation(); 
+// // // //   // Energy around electron should be small
+//   ApplyIsolation(); 
 
-// //   // What this thing do?
-  RemoveLowMassPairs(); 
+// // //   // What this thing do?
+//   RemoveLowMassPairs(); 
 
-// //   /* ===============================================================
-// //      ===== Trigger effiency.    Analysis dependent, so function ====
-// //      ===== sets m_trigEff to 1 if not edited =======================
-// //      =============================================================== */
-  ApplyTriggerEfficiency();
+// // //   /* ===============================================================
+// // //      ===== Trigger effiency.    Analysis dependent, so function ====
+// // //      ===== sets m_trigEff to 1 if not edited =======================
+// // //      =============================================================== */
+   ApplyTriggerEfficiency();
 
 // //   /* ===============================================================
 // //      ===== Event variables =========================================
