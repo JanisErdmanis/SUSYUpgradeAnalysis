@@ -61,6 +61,7 @@ public:
   const double GeV = 0.001;
   int m_eventCounter; //!
 
+  std::map<TString, TH1F*> h_PtJets1stStages;
   std::map<TString, TH1F*> h_NEvents; //!
   std::map<TString, TH1F*> h_MET; //!
   std::map<TString, TH1F*> h_MSFOS; //!
@@ -95,6 +96,7 @@ public:
   // TH2F * myhisto;
   
   std::vector<TString> m_cuts;
+  std::vector<TString> m_Stages;
   //
   TRandom3 m_random3; //!
   UpgradePerformanceFunctions *m_upgrade; //!

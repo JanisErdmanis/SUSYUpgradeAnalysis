@@ -75,6 +75,8 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
   m_cuts.push_back("2 leading leptons Pt > 7 GeV");
   m_cuts.push_back("mTauTau>150 GeV");
   m_cuts.push_back("M(1st l + 2nd l)<12 GeV");
+  m_cuts.push_back("2 leptons");
+  m_cuts.push_back("3 leptons");
 
   for( unsigned int i = 0; i < m_cuts.size(); i++) {
 
@@ -133,6 +135,7 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
     h_PtPhos[m_cuts[i]]->SetXTitle("Photon p_{T} [GeV]");      h_PtPhos[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     //wk()->addOutput (h_PtPhos[m_cuts[i]]);
 
+
     h_PtElecs[m_cuts[i]] = new TH1F("h_PtElecs_"+ m_cuts[i], "", 50, 0, 1000); 
     h_PtElecs[m_cuts[i]]->SetXTitle("Electron p_{T} [GeV]");      h_PtElecs[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     //wk()->addOutput (h_PtElecs[m_cuts[i]]);
@@ -190,6 +193,21 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
     h_Phi1stJetMet[m_cuts[i]]->SetXTitle("DPhi between 1st Jet and MET [rad]"); h_Phi1stJetMet[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     wk()->addOutput (h_Phi1stJetMet[m_cuts[i]]);
     
+
+  }
+
+  m_Stages.push_back("Generator");
+  m_Stages.push_back("Smearing");
+  m_Stages.push_back("Fakes");
+  m_Stages.push_back("OverlapRemoval");
+  m_Stages.push_back("ApplyIsolation");
+  m_Stages.push_back("RemoveLowMassPairs");
+
+  for( unsigned int i = 0; i < m_Stages.size(); i++) {
+
+  h_PtJets1stStages[m_Stages[i]] = new TH1F("h_PtJets1stStages_"+ m_Stages[i], "", 200, 0, 300); 
+  h_PtJets1stStages[m_Stages[i]]->SetXTitle("Jet p_{T} [GeV]");      h_PtJets1stStages[m_Stages[i]]->SetYTitle("Events / 20 GeV");
+  wk()->addOutput (h_PtJets1stStages[m_Stages[i]]);
 
   }
 
@@ -338,6 +356,14 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   getTruthJets();
   getTruthMET();
 
+  // sort(SmearedPho.begin(), SmearedPho.end(), compare_pt());   
+  // sort(SmearedEleMuo.begin(), SmearedEleMuo.end(), compare_pt());   
+  // sort(SmearedHadTau.begin(), SmearedHadTau.end(), compare_pt());   
+  sort(GenJet.begin(), GenJet.end(), compare_pt());   
+
+  if (GenJet.size()>=1)
+    h_PtJets1stStages["Generator"]->Fill( GenJet[0].Pt()*GeV , 1.);
+  
   SmearedPho.clear();
   SmearedEleMuo.clear();
   SmearedHadTau.clear();
@@ -350,37 +376,53 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   SmearJets(); 
   SmearMET();
 
-//   ApplyPhotonFakes();
-//   ApplyElectronFakes();
-//   ApplyTauFakes();
-//   ApplyBtagging();
+  if (SmearedJet.size()>=1)
+    h_PtJets1stStages["Smearing"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
+
+  ApplyPhotonFakes();
+  ApplyElectronFakes();
+  ApplyTauFakes();
+  ApplyBtagging();
 
   sort(SmearedPho.begin(), SmearedPho.end(), compare_pt());   
   sort(SmearedEleMuo.begin(), SmearedEleMuo.end(), compare_pt());   
   sort(SmearedHadTau.begin(), SmearedHadTau.end(), compare_pt());   
-  sort(SmearedJet.begin(), SmearedJet.end(), compare_pt());   
+  sort(SmearedJet.begin(), SmearedJet.end(), compare_pt());
 
-//   ApplyPtEtaThresholds(); // Selects events
+  if (SmearedJet.size()>=1)
+    h_PtJets1stStages["Fakes"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
+
+  ApplyPtEtaThresholds(); // Selects events
 // // //   /* ===============================================================
 // // //      ===== Perform basic overlap removal ===========================
 // // //      =============================================================== */
 // // //   // When electron is not recognized as jet because of threshold of jet algorithm
-//   OverlapRemoval(); 
+  OverlapRemoval(); 
 // // //   /* ===============================================================
 // // //      ===== Signal leptons: isolation, remove low mass pairs ========
 // // //      =============================================================== */
 
+  if (SmearedJet.size()>=1)
+    h_PtJets1stStages["OverlapRemoval"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
+
 // // // //   // Energy around electron should be small
-//   ApplyIsolation(); 
+  ApplyIsolation();
+
+  if (SmearedJet.size()>=1)
+    h_PtJets1stStages["ApplyIsolation"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
 
 // // //   // What this thing do?
-//   RemoveLowMassPairs(); 
+  RemoveLowMassPairs(); 
 
 // // //   /* ===============================================================
 // // //      ===== Trigger effiency.    Analysis dependent, so function ====
 // // //      ===== sets m_trigEff to 1 if not edited =======================
 // // //      =============================================================== */
-   ApplyTriggerEfficiency();
+
+  if (SmearedJet.size()>=1)
+    h_PtJets1stStages["RemoveLowMassPairs"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
+
+  ApplyTriggerEfficiency();
 
 // //   /* ===============================================================
 // //      ===== Event variables =========================================
@@ -402,7 +444,6 @@ EL::StatusCode UpgradeAnalysis :: execute ()
 
   calculateEventVariables();
 
-
 // //   SmearedEle.clear();
 // //   SmearedMuo.clear();
 // //   for( unsigned int i=0; i<SmearedEleMuo.size(); i++){
@@ -411,6 +452,30 @@ EL::StatusCode UpgradeAnalysis :: execute ()
 // //   }
 
 // // //   /// Making a histograms
+
+  // Printing out parameters for tautau cut ( can be copied inside cutoff )
+  if (SmearedEleMuo.size()>=2) {
+    cout << "----------------------------------" << endl;
+    cout <<  m_SmearedMETTLV.Et()*GeV << endl;
+    cout <<  m_SmearedMETTLV.Pt()*GeV << endl;
+    cout <<  m_SmearedMETTLV.Px()*GeV << endl;
+    cout <<  m_SmearedMETTLV.Py()*GeV << endl;
+
+    cout <<  SmearedEleMuo[0].Et()*GeV << endl;
+    cout <<  SmearedEleMuo[0].Pt()*GeV << endl;
+    cout <<  SmearedEleMuo[0].Px()*GeV << endl;
+    cout <<  SmearedEleMuo[0].Py()*GeV << endl;
+    cout <<  SmearedEleMuo[0].M()*GeV << endl;
+    cout <<  SmearedEleMuo[0].Phi() << endl;
+
+    cout <<  SmearedEleMuo[1].Et()*GeV << endl;
+    cout <<  SmearedEleMuo[1].Pt()*GeV << endl;
+    cout <<  SmearedEleMuo[1].Px()*GeV << endl;
+    cout <<  SmearedEleMuo[1].Py()*GeV << endl;
+    cout <<  SmearedEleMuo[1].M()*GeV << endl;
+    cout <<  SmearedEleMuo[1].Phi() << endl;
+    cout << "----------------------------------" << endl;
+  }
 
   FillHistos("NoCuts");
   
@@ -431,6 +496,12 @@ EL::StatusCode UpgradeAnalysis :: execute ()
           FillHistos("mTauTau>150 GeV");
           if( (SmearedEleMuo[0] + SmearedEleMuo[1]).M()*GeV < 12.) {
             FillHistos("M(1st l + 2nd l)<12 GeV");
+
+            if (SmearedEleMuo.size()==2)
+              FillHistos("2 leptons");
+
+            if (SmearedEleMuo.size()==3)
+              FillHistos("3 leptons");
           }
         }
       }
@@ -758,21 +829,21 @@ void UpgradeAnalysis::SmearJets(){
   SmearedBJet.clear();
 
   // Add in pileup jets
-  std::vector<TLorentzVector> pujets;
-  pujets = m_upgrade->getPileupJets();
-  for( unsigned int i = 0; i < pujets.size(); i++) {
-    Particle pujet;
-    pujet.SetPtEtaPhiM(pujets[i].Pt(), pujets[i].Eta(), pujets[i].Phi(), pujets[i].M());
-    if (pujet.Pt() < m_upgrade->getPileupJetPtThresholdMeV() || fabs(pujet.Eta()) > 3) continue;
-    float trackEff = m_upgrade->getTrackJetConfirmEff(pujet.Pt(), pujet.Eta(), "PU");
-    m_random3.SetSeed( (int)(1e+5*fabs( pujet.Phi() ) ) );	
-    float puProb = m_random3.Uniform(1.0);
-    if (puProb < trackEff){
-      pujet.Good=true;
-      pujet.pdgid=-1; //identify PU jets with -1
-      SmearedJet.push_back(pujet);
-    }
-  }
+  // std::vector<TLorentzVector> pujets;
+  // pujets = m_upgrade->getPileupJets();
+  // for( unsigned int i = 0; i < pujets.size(); i++) {
+  //   Particle pujet;
+  //   pujet.SetPtEtaPhiM(pujets[i].Pt(), pujets[i].Eta(), pujets[i].Phi(), pujets[i].M());
+  //   if (pujet.Pt() < m_upgrade->getPileupJetPtThresholdMeV() || fabs(pujet.Eta()) > 3) continue;
+  //   float trackEff = m_upgrade->getTrackJetConfirmEff(pujet.Pt(), pujet.Eta(), "PU");
+  //   m_random3.SetSeed( (int)(1e+5*fabs( pujet.Phi() ) ) );	
+  //   float puProb = m_random3.Uniform(1.0);
+  //   if (puProb < trackEff){
+  //     pujet.Good=true;
+  //     pujet.pdgid=-1; //identify PU jets with -1
+  //     SmearedJet.push_back(pujet);
+  //   }
+  // }
 
   // smear truth jets
   for( unsigned int i=0; i<GenJet.size(); i++) {
@@ -782,6 +853,8 @@ void UpgradeAnalysis::SmearJets(){
     Particle newJet = GenJet[i];
     newJet.SetPtEtaPhiM(smeared_pt,GenJet[i].Eta(),GenJet[i].Phi(),GenJet[i].M());
 
+    //cout << "GenPt=" << GenJet[i].Pt()*GeV << " SmearedPt=" << smeared_pt*GeV << endl;
+    
     // Apply efficiency
     float trackEff = m_upgrade->getTrackJetConfirmEff(newJet.Pt(), newJet.Eta(), "HS");
     m_random3.SetSeed( (int)(1e+5*fabs( newJet.Phi() ) ) );	
