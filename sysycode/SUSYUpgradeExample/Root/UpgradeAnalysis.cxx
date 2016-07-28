@@ -279,8 +279,6 @@ EL::StatusCode UpgradeAnalysis :: initialize ()
   return EL::StatusCode::SUCCESS;
 }
 
-
-
 EL::StatusCode UpgradeAnalysis :: execute ()
 {
   // Here you do everything that needs to be done on every single
@@ -475,6 +473,18 @@ EL::StatusCode UpgradeAnalysis :: execute ()
     cout <<  SmearedEleMuo[1].M()*GeV << endl;
     cout <<  SmearedEleMuo[1].Phi() << endl;
     cout << "----------------------------------" << endl;
+
+    double D = SmearedEleMuo[0].Px()*SmearedEleMuo[1].Py() - SmearedEleMuo[0].Py()*SmearedEleMuo[1].Px();
+    double D1 = m_SmearedMETTLV.Px()*SmearedEleMuo[1].Py() - m_SmearedMETTLV.Py()*SmearedEleMuo[1].Px();
+    double D2 = SmearedEleMuo[0].Px()*m_SmearedMETTLV.Py() - m_SmearedMETTLV.Px()*SmearedEleMuo[0].Py();
+    double xi1 = D1/D;
+    double xi2 = D2/D;
+    cout << xi1 << endl;
+    cout << xi2 << endl;
+    double mtautau = (SmearedEleMuo[0]*(1 + xi1) + SmearedEleMuo[1]*(1 + xi2)).M();
+    cout << mtautau*GeV << endl;
+    cout << "----------------------------------" << endl;
+    
   }
 
   FillHistos("NoCuts");
@@ -828,22 +838,34 @@ void UpgradeAnalysis::SmearJets(){
   SmearedJet.clear();
   SmearedBJet.clear();
 
-  // Add in pileup jets
-  // std::vector<TLorentzVector> pujets;
-  // pujets = m_upgrade->getPileupJets();
-  // for( unsigned int i = 0; i < pujets.size(); i++) {
-  //   Particle pujet;
-  //   pujet.SetPtEtaPhiM(pujets[i].Pt(), pujets[i].Eta(), pujets[i].Phi(), pujets[i].M());
-  //   if (pujet.Pt() < m_upgrade->getPileupJetPtThresholdMeV() || fabs(pujet.Eta()) > 3) continue;
-  //   float trackEff = m_upgrade->getTrackJetConfirmEff(pujet.Pt(), pujet.Eta(), "PU");
-  //   m_random3.SetSeed( (int)(1e+5*fabs( pujet.Phi() ) ) );	
-  //   float puProb = m_random3.Uniform(1.0);
-  //   if (puProb < trackEff){
-  //     pujet.Good=true;
-  //     pujet.pdgid=-1; //identify PU jets with -1
-  //     SmearedJet.push_back(pujet);
-  //   }
-  // }
+  
+  cout << "+++++++++++++++++++++++++" << endl;
+  
+  //Add in pileup jets
+  std::vector<TLorentzVector> pujets;
+  pujets = m_upgrade->getPileupJets();
+  int npiljets = 0;
+  for( unsigned int i = 0; i < pujets.size(); i++) {
+    Particle pujet;
+    pujet.SetPtEtaPhiM(pujets[i].Pt(), pujets[i].Eta(), pujets[i].Phi(), pujets[i].M());
+    if (pujet.Pt() < m_upgrade->getPileupJetPtThresholdMeV() || fabs(pujet.Eta()) > 3) continue;
+    float trackEff = m_upgrade->getTrackJetConfirmEff(pujet.Pt(), pujet.Eta(), "PU");
+    m_random3.SetSeed( (int)(1e+5*fabs( pujet.Phi() ) ) );	
+    float puProb = m_random3.Uniform(1.0);
+    if (puProb < trackEff){
+      pujet.Good=true;
+      pujet.pdgid=-1; //identify PU jets with -1
+      //SmearedJet.push_back(pujet);
+      npiljets+=1;
+    }
+  
+    cout << trackEff << "\t" << pujet.Eta() << endl;
+  }
+
+  cout << "+++++++++++++++++++++++++" << endl;
+  cout << pujets.size() << endl;
+  cout << npiljets << endl;
+  cout << "+++++++++++++++++++++++++" << endl;
 
   // smear truth jets
   for( unsigned int i=0; i<GenJet.size(); i++) {
