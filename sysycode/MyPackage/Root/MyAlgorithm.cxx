@@ -44,7 +44,6 @@ MyAlgorithm :: MyAlgorithm ()
 }
 
 
-
 EL::StatusCode MyAlgorithm :: setupJob (EL::Job& job)
 {
   // Here you put code that sets up the job on the submission object
@@ -161,7 +160,6 @@ EL::StatusCode MyAlgorithm :: execute ()
 }
 
 
-
 EL::StatusCode MyAlgorithm :: postExecute ()
 {
   // Here you do everything that needs to be done after the main event
@@ -169,7 +167,6 @@ EL::StatusCode MyAlgorithm :: postExecute ()
   // code.  It is mainly used in implementing the NTupleSvc.
   return EL::StatusCode::SUCCESS;
 }
-
 
 
 EL::StatusCode MyAlgorithm :: finalize ()
@@ -185,7 +182,6 @@ EL::StatusCode MyAlgorithm :: finalize ()
   // gets called on worker nodes that processed input events.
   return EL::StatusCode::SUCCESS;
 }
-
 
 
 EL::StatusCode MyAlgorithm :: histFinalize ()

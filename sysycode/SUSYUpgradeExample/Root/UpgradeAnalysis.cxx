@@ -192,7 +192,15 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
     h_Phi1stJetMet[m_cuts[i]] = new TH1F("h_Phi1stJetMet"+ m_cuts[i], "", 50, -4, +4); 
     h_Phi1stJetMet[m_cuts[i]]->SetXTitle("DPhi between 1st Jet and MET [rad]"); h_Phi1stJetMet[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     wk()->addOutput (h_Phi1stJetMet[m_cuts[i]]);
-    
+
+
+    h_mtautau1[m_cuts[i]] = new TH1F("h_mtautau1_"+ m_cuts[i], "", 200, 0, 500); 
+    h_mtautau1[m_cuts[i]]->SetXTitle("Mtautau"); h_mtautau1[m_cuts[i]]->SetYTitle("Events / 20 GeV");
+    wk()->addOutput (h_mtautau1[m_cuts[i]]);
+
+    h_mtautau2[m_cuts[i]] = new TH1F("h_mtautau2_"+ m_cuts[i], "", 200, 0, 500); 
+    h_mtautau2[m_cuts[i]]->SetXTitle("Mtautau"); h_mtautau2[m_cuts[i]]->SetYTitle("Events / 20 GeV");
+    wk()->addOutput (h_mtautau2[m_cuts[i]]);
 
   }
 
@@ -474,17 +482,26 @@ EL::StatusCode UpgradeAnalysis :: execute ()
     cout <<  SmearedEleMuo[1].Phi() << endl;
     cout << "----------------------------------" << endl;
 
-    double D = SmearedEleMuo[0].Px()*SmearedEleMuo[1].Py() - SmearedEleMuo[0].Py()*SmearedEleMuo[1].Px();
-    double D1 = m_SmearedMETTLV.Px()*SmearedEleMuo[1].Py() - m_SmearedMETTLV.Py()*SmearedEleMuo[1].Px();
-    double D2 = SmearedEleMuo[0].Px()*m_SmearedMETTLV.Py() - m_SmearedMETTLV.Px()*SmearedEleMuo[0].Py();
-    double xi1 = D1/D;
-    double xi2 = D2/D;
-    cout << xi1 << endl;
-    cout << xi2 << endl;
-    double mtautau = (SmearedEleMuo[0]*(1 + xi1) + SmearedEleMuo[1]*(1 + xi2)).M();
-    cout << mtautau*GeV << endl;
+    // double D = SmearedEleMuo[0].Px()*SmearedEleMuo[1].Py() - SmearedEleMuo[0].Py()*SmearedEleMuo[1].Px();
+    // double D1 = m_SmearedMETTLV.Px()*SmearedEleMuo[1].Py() - m_SmearedMETTLV.Py()*SmearedEleMuo[1].Px();
+    // double D2 = SmearedEleMuo[0].Px()*m_SmearedMETTLV.Py() - m_SmearedMETTLV.Px()*SmearedEleMuo[0].Py();
+    // double xi1 = D1/D;
+    // double xi2 = D2/D;
+    // cout << xi1 << endl;
+    // cout << xi2 << endl;
+    // double px = SmearedEleMuo[0].Px()*(1 + xi1) + SmearedEleMuo[1].Px()*(1 + xi2);
+    // double py = SmearedEleMuo[0].Py()*(1 + xi1) + SmearedEleMuo[1].Py()*(1 + xi2);
+    // double E = SmearedEleMuo[0].Py()*(1 + TMath::Abs(xi1)) + SmearedEleMuo[1].Py()*(1 + TMath::Abs(xi2));
+    // double mtautau = TMath::Sqrt(E*E - px*px - py*py);
+    // cout << mtautau*GeV << endl;
+    // double mtautau1 = (SmearedEleMuo[0] + SmearedEleMuo[1] + m_SmearedMETTLV).M();
+    // double mll = (SmearedEleMuo[0] + SmearedEleMuo[1]).M();
+    // double x1 = SmearedEleMuo[0].Pt()/(SmearedEleMuo[0].Pt() + m_SmearedMETTLV.Pt());
+    // double x2 = SmearedEleMuo[1].Pt()/(SmearedEleMuo[1].Pt() + m_SmearedMETTLV.Pt());
+    // double mtautau2 = mll/TMath::Sqrt(x1*x2);
+    cout << m_mtautau1*GeV << endl;
+    cout << m_mtautau2*GeV << endl;
     cout << "----------------------------------" << endl;
-    
   }
 
   FillHistos("NoCuts");
@@ -502,7 +519,7 @@ EL::StatusCode UpgradeAnalysis :: execute ()
         if ( nmuob>=2 ) {
           FillHistos("2 leading leptons Pt > 7 GeV");
         }
-        if (1==1) {
+        if (m_mtautau2*GeV>150.) {
           FillHistos("mTauTau>150 GeV");
           if( (SmearedEleMuo[0] + SmearedEleMuo[1]).M()*GeV < 12.) {
             FillHistos("M(1st l + 2nd l)<12 GeV");
@@ -593,11 +610,11 @@ void UpgradeAnalysis::FillHistos(TString cutname)
   h_NBJet[cutname]->Fill( sbjet , m_trigEff);
 
   // // NEED TO CHANGE
-  if (SmearedMuo.size()>=1) // Smeared elelctron
-    h_PtMuons1st[cutname]->Fill( SmearedMuo[0].Pt()*GeV , m_trigEff);
+  if (SmearedEleMuo.size()>=1) // Smeared elelctron
+    h_PtMuons1st[cutname]->Fill( SmearedEleMuo[0].Pt()*GeV , m_trigEff);
 
-  if (SmearedMuo.size()>=2) 
-    h_PtMuons2nd[cutname]->Fill( SmearedMuo[1].Pt()*GeV , m_trigEff);
+  if (SmearedEleMuo.size()>=2) 
+    h_PtMuons2nd[cutname]->Fill( SmearedEleMuo[1].Pt()*GeV , m_trigEff);
 
   if (SmearedNotBJet.size()>=1)
     h_PtJets1st[cutname]->Fill( SmearedNotBJet[0].Pt()*GeV , m_trigEff);
@@ -605,14 +622,14 @@ void UpgradeAnalysis::FillHistos(TString cutname)
   if (SmearedNotBJet.size()>=2)
     h_PtJets2nd[cutname]->Fill( SmearedNotBJet[1].Pt()*GeV , m_trigEff);
 
-  if (SmearedMuo.size()>=1) // Smeared elelctron
-    h_angleMuons1st[cutname]->Fill( SmearedMuo[0].Eta() , m_trigEff);
+  if (SmearedEleMuo.size()>=1) // Smeared elelctron
+    h_angleMuons1st[cutname]->Fill( SmearedEleMuo[0].Eta() , m_trigEff);
 
   if (SmearedJet.size()>=1) // Smeared elelctron
     h_angleJets1st[cutname]->Fill( SmearedJet[0].Eta() , m_trigEff);
 
-  if (SmearedNotBJet.size()>=1 && SmearedMuo.size()>=1) {
-    myhisto[cutname]->Fill(SmearedMuo[0].Pt()*GeV,SmearedNotBJet[0].Pt()*GeV,m_trigEff);
+  if (SmearedNotBJet.size()>=1 && SmearedEleMuo.size()>=1) {
+    myhisto[cutname]->Fill(SmearedEleMuo[0].Pt()*GeV,SmearedNotBJet[0].Pt()*GeV,m_trigEff);
   }
 
   // Skipping tauons for a now
@@ -624,6 +641,11 @@ void UpgradeAnalysis::FillHistos(TString cutname)
   if (SmearedNotBJet.size()>=1) {
     auto DPhi = SmearedNotBJet[0].DeltaPhi(m_SmearedMETTLV);
     h_Phi1stJetMet[cutname]->Fill(DPhi,m_trigEff);
+  }
+
+  if (SmearedEleMuo.size()>=2) {
+    h_mtautau1[cutname]->Fill(m_mtautau1*GeV,m_trigEff);
+    h_mtautau2[cutname]->Fill(m_mtautau2*GeV,m_trigEff);
   }
   
   return;
@@ -839,33 +861,33 @@ void UpgradeAnalysis::SmearJets(){
   SmearedBJet.clear();
 
   
-  cout << "+++++++++++++++++++++++++" << endl;
+  // cout << "+++++++++++++++++++++++++" << endl;
   
-  //Add in pileup jets
-  std::vector<TLorentzVector> pujets;
-  pujets = m_upgrade->getPileupJets();
-  int npiljets = 0;
-  for( unsigned int i = 0; i < pujets.size(); i++) {
-    Particle pujet;
-    pujet.SetPtEtaPhiM(pujets[i].Pt(), pujets[i].Eta(), pujets[i].Phi(), pujets[i].M());
-    if (pujet.Pt() < m_upgrade->getPileupJetPtThresholdMeV() || fabs(pujet.Eta()) > 3) continue;
-    float trackEff = m_upgrade->getTrackJetConfirmEff(pujet.Pt(), pujet.Eta(), "PU");
-    m_random3.SetSeed( (int)(1e+5*fabs( pujet.Phi() ) ) );	
-    float puProb = m_random3.Uniform(1.0);
-    if (puProb < trackEff){
-      pujet.Good=true;
-      pujet.pdgid=-1; //identify PU jets with -1
-      //SmearedJet.push_back(pujet);
-      npiljets+=1;
-    }
+  // //Add in pileup jets
+  // std::vector<TLorentzVector> pujets;
+  // pujets = m_upgrade->getPileupJets();
+  // int npiljets = 0;
+  // for( unsigned int i = 0; i < pujets.size(); i++) {
+  //   Particle pujet;
+  //   pujet.SetPtEtaPhiM(pujets[i].Pt(), pujets[i].Eta(), pujets[i].Phi(), pujets[i].M());
+  //   if (pujet.Pt() < m_upgrade->getPileupJetPtThresholdMeV() || fabs(pujet.Eta()) > 3) continue;
+  //   float trackEff = m_upgrade->getTrackJetConfirmEff(pujet.Pt(), pujet.Eta(), "PU");
+  //   m_random3.SetSeed( (int)(1e+5*fabs( pujet.Phi() ) ) );	
+  //   float puProb = m_random3.Uniform(1.0);
+  //   if (puProb < trackEff){
+  //     pujet.Good=true;
+  //     pujet.pdgid=-1; //identify PU jets with -1
+  //     //SmearedJet.push_back(pujet);
+  //     npiljets+=1;
+  //   }
   
-    cout << trackEff << "\t" << pujet.Eta() << endl;
-  }
+  //   cout << trackEff << "\t" << pujet.Eta() << endl;
+  // }
 
-  cout << "+++++++++++++++++++++++++" << endl;
-  cout << pujets.size() << endl;
-  cout << npiljets << endl;
-  cout << "+++++++++++++++++++++++++" << endl;
+  // cout << "+++++++++++++++++++++++++" << endl;
+  // cout << pujets.size() << endl;
+  // cout << npiljets << endl;
+  // cout << "+++++++++++++++++++++++++" << endl;
 
   // smear truth jets
   for( unsigned int i=0; i<GenJet.size(); i++) {
@@ -1163,6 +1185,15 @@ void UpgradeAnalysis::calculateEventVariables(){
 
   // stransverse mass using the two leading leptons
   if( SmearedEleMuo.size() >=2 ) m_mT2=getMT2(SmearedEleMuo[0], SmearedEleMuo[1], m_SmearedMETTLV );
+
+  // Mtautau masses
+  if( SmearedEleMuo.size() >=2) {
+    m_mtautau1 = (SmearedEleMuo[0] + SmearedEleMuo[1] + m_SmearedMETTLV).M();
+    double mll = (SmearedEleMuo[0] + SmearedEleMuo[1]).M();
+    double x1 = SmearedEleMuo[0].Pt()/(SmearedEleMuo[0].Pt() + m_SmearedMETTLV.Pt());
+    double x2 = SmearedEleMuo[1].Pt()/(SmearedEleMuo[1].Pt() + m_SmearedMETTLV.Pt());
+    m_mtautau2 = mll/TMath::Sqrt(x1*x2);
+  }
 
   return;
 }

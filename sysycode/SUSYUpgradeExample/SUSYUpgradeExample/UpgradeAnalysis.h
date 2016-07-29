@@ -89,6 +89,8 @@ public:
   //
   std::map<TString, TH1F*> h_llmass; //!
   std::map<TString, TH1F*> h_Phi1stJetMet;
+  std::map<TString, TH1F*> h_mtautau1;
+  std::map<TString, TH1F*> h_mtautau2;
   
   std::map<TString, TH2F*> myhisto; //!
   
@@ -127,6 +129,9 @@ public:
   double              m_lt; //!
   double              m_meff; //!
   double              m_mT2; //!
+  // My need
+  double m_mtautau1;
+  double m_mtautau2;
   // 
   virtual EL::StatusCode  getTruthPhotons();
   virtual EL::StatusCode  getTruthElectrons();
