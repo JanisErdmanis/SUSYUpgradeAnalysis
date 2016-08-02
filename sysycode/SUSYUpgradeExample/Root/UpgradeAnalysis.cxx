@@ -385,9 +385,9 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   if (SmearedJet.size()>=1)
     h_PtJets1stStages["Smearing"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
 
-  //ApplyPhotonFakes();
+  ApplyPhotonFakes();
   ApplyElectronFakes();
-//  ApplyTauFakes();
+  ApplyTauFakes();
   ApplyBtagging();
 
   sort(SmearedPho.begin(), SmearedPho.end(), compare_pt());   
@@ -460,49 +460,49 @@ EL::StatusCode UpgradeAnalysis :: execute ()
 // // //   /// Making a histograms
 
   // Printing out parameters for tautau cut ( can be copied inside cutoff )
-  if (SmearedEleMuo.size()>=2) {
-    cout << "----------------------------------" << endl;
-    cout <<  m_SmearedMETTLV.Et()*GeV << endl;
-    cout <<  m_SmearedMETTLV.Pt()*GeV << endl;
-    cout <<  m_SmearedMETTLV.Px()*GeV << endl;
-    cout <<  m_SmearedMETTLV.Py()*GeV << endl;
+  // if (SmearedEleMuo.size()>=2) {
+  //   cout << "----------------------------------" << endl;
+  //   cout <<  m_SmearedMETTLV.Et()*GeV << endl;
+  //   cout <<  m_SmearedMETTLV.Pt()*GeV << endl;
+  //   cout <<  m_SmearedMETTLV.Px()*GeV << endl;
+  //   cout <<  m_SmearedMETTLV.Py()*GeV << endl;
 
-    cout <<  SmearedEleMuo[0].Et()*GeV << endl;
-    cout <<  SmearedEleMuo[0].Pt()*GeV << endl;
-    cout <<  SmearedEleMuo[0].Px()*GeV << endl;
-    cout <<  SmearedEleMuo[0].Py()*GeV << endl;
-    cout <<  SmearedEleMuo[0].M()*GeV << endl;
-    cout <<  SmearedEleMuo[0].Phi() << endl;
+  //   cout <<  SmearedEleMuo[0].Et()*GeV << endl;
+  //   cout <<  SmearedEleMuo[0].Pt()*GeV << endl;
+  //   cout <<  SmearedEleMuo[0].Px()*GeV << endl;
+  //   cout <<  SmearedEleMuo[0].Py()*GeV << endl;
+  //   cout <<  SmearedEleMuo[0].M()*GeV << endl;
+  //   cout <<  SmearedEleMuo[0].Phi() << endl;
 
-    cout <<  SmearedEleMuo[1].Et()*GeV << endl;
-    cout <<  SmearedEleMuo[1].Pt()*GeV << endl;
-    cout <<  SmearedEleMuo[1].Px()*GeV << endl;
-    cout <<  SmearedEleMuo[1].Py()*GeV << endl;
-    cout <<  SmearedEleMuo[1].M()*GeV << endl;
-    cout <<  SmearedEleMuo[1].Phi() << endl;
-    cout << "----------------------------------" << endl;
+  //   cout <<  SmearedEleMuo[1].Et()*GeV << endl;
+  //   cout <<  SmearedEleMuo[1].Pt()*GeV << endl;
+  //   cout <<  SmearedEleMuo[1].Px()*GeV << endl;
+  //   cout <<  SmearedEleMuo[1].Py()*GeV << endl;
+  //   cout <<  SmearedEleMuo[1].M()*GeV << endl;
+  //   cout <<  SmearedEleMuo[1].Phi() << endl;
+  //   cout << "----------------------------------" << endl;
 
-    // double D = SmearedEleMuo[0].Px()*SmearedEleMuo[1].Py() - SmearedEleMuo[0].Py()*SmearedEleMuo[1].Px();
-    // double D1 = m_SmearedMETTLV.Px()*SmearedEleMuo[1].Py() - m_SmearedMETTLV.Py()*SmearedEleMuo[1].Px();
-    // double D2 = SmearedEleMuo[0].Px()*m_SmearedMETTLV.Py() - m_SmearedMETTLV.Px()*SmearedEleMuo[0].Py();
-    // double xi1 = D1/D;
-    // double xi2 = D2/D;
-    // cout << xi1 << endl;
-    // cout << xi2 << endl;
-    // double px = SmearedEleMuo[0].Px()*(1 + xi1) + SmearedEleMuo[1].Px()*(1 + xi2);
-    // double py = SmearedEleMuo[0].Py()*(1 + xi1) + SmearedEleMuo[1].Py()*(1 + xi2);
-    // double E = SmearedEleMuo[0].Py()*(1 + TMath::Abs(xi1)) + SmearedEleMuo[1].Py()*(1 + TMath::Abs(xi2));
-    // double mtautau = TMath::Sqrt(E*E - px*px - py*py);
-    // cout << mtautau*GeV << endl;
-    // double mtautau1 = (SmearedEleMuo[0] + SmearedEleMuo[1] + m_SmearedMETTLV).M();
-    // double mll = (SmearedEleMuo[0] + SmearedEleMuo[1]).M();
-    // double x1 = SmearedEleMuo[0].Pt()/(SmearedEleMuo[0].Pt() + m_SmearedMETTLV.Pt());
-    // double x2 = SmearedEleMuo[1].Pt()/(SmearedEleMuo[1].Pt() + m_SmearedMETTLV.Pt());
-    // double mtautau2 = mll/TMath::Sqrt(x1*x2);
-    cout << m_mtautau1*GeV << endl;
-    cout << m_mtautau2*GeV << endl;
-    cout << "----------------------------------" << endl;
-  }
+  //   // double D = SmearedEleMuo[0].Px()*SmearedEleMuo[1].Py() - SmearedEleMuo[0].Py()*SmearedEleMuo[1].Px();
+  //   // double D1 = m_SmearedMETTLV.Px()*SmearedEleMuo[1].Py() - m_SmearedMETTLV.Py()*SmearedEleMuo[1].Px();
+  //   // double D2 = SmearedEleMuo[0].Px()*m_SmearedMETTLV.Py() - m_SmearedMETTLV.Px()*SmearedEleMuo[0].Py();
+  //   // double xi1 = D1/D;
+  //   // double xi2 = D2/D;
+  //   // cout << xi1 << endl;
+  //   // cout << xi2 << endl;
+  //   // double px = SmearedEleMuo[0].Px()*(1 + xi1) + SmearedEleMuo[1].Px()*(1 + xi2);
+  //   // double py = SmearedEleMuo[0].Py()*(1 + xi1) + SmearedEleMuo[1].Py()*(1 + xi2);
+  //   // double E = SmearedEleMuo[0].Py()*(1 + TMath::Abs(xi1)) + SmearedEleMuo[1].Py()*(1 + TMath::Abs(xi2));
+  //   // double mtautau = TMath::Sqrt(E*E - px*px - py*py);
+  //   // cout << mtautau*GeV << endl;
+  //   // double mtautau1 = (SmearedEleMuo[0] + SmearedEleMuo[1] + m_SmearedMETTLV).M();
+  //   // double mll = (SmearedEleMuo[0] + SmearedEleMuo[1]).M();
+  //   // double x1 = SmearedEleMuo[0].Pt()/(SmearedEleMuo[0].Pt() + m_SmearedMETTLV.Pt());
+  //   // double x2 = SmearedEleMuo[1].Pt()/(SmearedEleMuo[1].Pt() + m_SmearedMETTLV.Pt());
+  //   // double mtautau2 = mll/TMath::Sqrt(x1*x2);
+  //   cout << m_mtautau1*GeV << endl;
+  //   cout << m_mtautau2*GeV << endl;
+  //   cout << "----------------------------------" << endl;
+  // }
 
   FillHistos("NoCuts");
   
@@ -900,11 +900,13 @@ void UpgradeAnalysis::SmearJets(){
     //cout << "GenPt=" << GenJet[i].Pt()*GeV << " SmearedPt=" << smeared_pt*GeV << endl;
     
     // Apply efficiency
-    float trackEff = m_upgrade->getTrackJetConfirmEff(newJet.Pt(), newJet.Eta(), "HS");
-    m_random3.SetSeed( (int)(1e+5*fabs( newJet.Phi() ) ) );	
-    float hsProb = m_random3.Uniform(1.0);
-    if (hsProb < trackEff){
-      SmearedJet.push_back(newJet);
+    if (newJet.Pt()*GeV>30.01) {
+      float trackEff = m_upgrade->getTrackJetConfirmEff(newJet.Pt(), newJet.Eta(), "HS");
+      m_random3.SetSeed( (int)(1e+5*fabs( newJet.Phi() ) ) );	
+      float hsProb = m_random3.Uniform(1.0);
+      if (hsProb < trackEff){
+        SmearedJet.push_back(newJet);
+      }
     }
   }
 
@@ -1003,7 +1005,7 @@ void UpgradeAnalysis::SmearMET(){
 
 void UpgradeAnalysis::ApplyPtEtaThresholds(){
 
-  // // photons pT>20 and eta < 2.47
+  // photons pT>20 and eta < 2.47
   // for( unsigned int i=0; i<SmearedPho.size(); i++ ){
   //   if( SmearedPho[i].Pt()*GeV < 50 || fabs(SmearedPho[i].Eta())>2.47 ) SmearedPho[i].Good=false;
   // }
@@ -1011,8 +1013,8 @@ void UpgradeAnalysis::ApplyPtEtaThresholds(){
   // pdgid - ???
   // Segfault problem
   for( unsigned int i=0; i<SmearedEleMuo.size(); i++ ){
-    if( fabs(SmearedEleMuo[i].pdgid) ==11 && (SmearedEleMuo[i].Pt()*GeV < 0 || fabs(SmearedEleMuo[i].Eta())>2.47) ) SmearedEleMuo[i].Good=false;
-    if( fabs(SmearedEleMuo[i].pdgid) ==13 && (SmearedEleMuo[i].Pt()*GeV < 0 || fabs(SmearedEleMuo[i].Eta())>2.5) ) SmearedEleMuo[i].Good=false;
+    if( fabs(SmearedEleMuo[i].pdgid) ==11 && (SmearedEleMuo[i].Pt()*GeV < 5. || fabs(SmearedEleMuo[i].Eta())>2.47) ) SmearedEleMuo[i].Good=false;
+    if( fabs(SmearedEleMuo[i].pdgid) ==13 && (SmearedEleMuo[i].Pt()*GeV < 5. || fabs(SmearedEleMuo[i].Eta())>2.5) ) SmearedEleMuo[i].Good=false;
   }
   // hadronic taus pT>20 and eta < 2.47
   // for( unsigned int i=0; i<SmearedHadTau.size(); i++ ){
@@ -1020,16 +1022,16 @@ void UpgradeAnalysis::ApplyPtEtaThresholds(){
   // }
   // jets pT>20 and eta < 2.5
   for( unsigned int i=0; i<SmearedJet.size(); i++ ){
-    if( SmearedJet[i].Pt()*GeV < 50 || fabs(SmearedJet[i].Eta())>2.5 ) SmearedJet[i].Good=false;
+    if( SmearedJet[i].Pt()*GeV < 50. || fabs(SmearedJet[i].Eta())>2.8 ) SmearedJet[i].Good=false;
   }
   // for( unsigned int i=0; i<SmearedBJet.size(); i++ ){
-  //   if( SmearedBJet[i].Pt()*GeV < 50 || fabs(SmearedBJet[i].Eta())>2.5 ) SmearedBJet[i].Good=false;
+  //   if( SmearedBJet[i].Pt()*GeV < 20 || fabs(SmearedBJet[i].Eta())>2.5 ) SmearedBJet[i].Good=false;
   // }
-  // RemoveBad(SmearedPho);
+//  RemoveBad(SmearedPho);
   RemoveBad(SmearedEleMuo);
-  // RemoveBad(SmearedHadTau);
-  // RemoveBad(SmearedJet);
-  RemoveBad(SmearedBJet);
+//  RemoveBad(SmearedHadTau);
+  RemoveBad(SmearedJet);
+//  RemoveBad(SmearedBJet);
   return;
 }
 
@@ -1059,7 +1061,6 @@ void UpgradeAnalysis::OverlapRemoval(){
   //   }
   // }
   //RemoveBad(SmearedJet);
-  
   // 4. dR(ele,jet)<0.4, discard ele
   for( unsigned int i=0; i<SmearedEleMuo.size(); i++ ){
     if( fabs(SmearedEleMuo[i].pdgid) != 11 ) continue;
@@ -1113,11 +1114,11 @@ void UpgradeAnalysis::ApplyIsolation(){
     if( SmearedEleMuo[i].ptcone30/SmearedEleMuo[i].Pt() > 0.15 ) SmearedEleMuo[i].Good=false;
   }
   RemoveBad(SmearedEleMuo);
-  // for( unsigned int i = 0; i<SmearedPho.size(); i++){
-  //   if( SmearedPho[i].etcone20/SmearedPho[i].Pt() > 0.15 ) SmearedPho[i].Good=false;
-  //   if( SmearedPho[i].ptcone30/SmearedPho[i].Pt() > 0.15 ) SmearedPho[i].Good=false;
-  // }
-  // RemoveBad(SmearedPho);
+  for( unsigned int i = 0; i<SmearedPho.size(); i++){
+    if( SmearedPho[i].etcone20/SmearedPho[i].Pt() > 0.15 ) SmearedPho[i].Good=false;
+    if( SmearedPho[i].ptcone30/SmearedPho[i].Pt() > 0.15 ) SmearedPho[i].Good=false;
+  }
+  RemoveBad(SmearedPho);
   return;
 }
 
