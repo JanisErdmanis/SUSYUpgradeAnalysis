@@ -10,7 +10,9 @@ TLegend *leg;
 
 void SetAtlasStyle();
 
-TString samples[] = {"Wjets_rapidityOrderOff","ttbarJets","TauTauJets","m100_DeltaM9_N2C1","m100_DeltaM9_C1C1","WWJets"};
+//TString samples[] = {"Wjets_rapidityOrderOff","ttbarJets","TauTauJets","m100_DeltaM9_N2C1","m100_DeltaM9_C1C1","WWJets"};
+
+TString samples[] = {"WJets.v1.0","ttbarJets.v1.0","TauTauJets.v2.0","m100_DeltaM9_N2C1.v2.1","m100_DeltaM9_C1C1.v2.1","WWJets.v1.0"};
 
 auto tfile1 = TFile::Open("outdir_"+samples[0]+"/hist-sample.root");
 auto tfile2 = TFile::Open("outdir_"+samples[1]+"/hist-sample.root");
@@ -64,18 +66,18 @@ void plothisto() {
   h6->Scale(sigma6/N6*L);
   h6->SetFillColor(49);
 
-  auto sumh = new TH1F(*h2);
-//  sumh->Add(h1,1.);
-  sumh->Add(h3,1.);
-  sumh->Add(h6,1.);
-  sumh->SetLineWidth(7);
-  sumh->SetLineColor(1);
-  sumh->SetAxisRange(1,sumh->GetMaximum()*5,"Y");
-  sumh->Draw("Samehist");
+//   auto sumh = new TH1F(*h2);
+// //  sumh->Add(h1,1.);
+//   sumh->Add(h3,1.);
+//   sumh->Add(h6,1.);
+//   sumh->SetLineWidth(7);
+//   sumh->SetLineColor(1);
+//   sumh->SetAxisRange(1,sumh->GetMaximum()*5,"Y");
+//   sumh->Draw("Samehist");
   
-//  background->Add(h1);
-  background->Add(h6);
   background->Add(h2);
+  background->Add(h1);
+  background->Add(h6);
   background->Add(h3);
   background->Draw("SameHist");
 
@@ -101,12 +103,12 @@ void plothisto() {
   // leg->AddEntry(h4,samples[3]);
   // leg->AddEntry(h5,samples[4]);
 
-//  leg->AddEntry(h1,"Wjets");
-  leg->AddEntry(h2,"ttbarJets");
-  leg->AddEntry(h3,"TauTauJets");
-  leg->AddEntry(h6,"WWJets");
-  leg->AddEntry(h4,"N2C1");
-  leg->AddEntry(h5,"C1C1");
+  leg->AddEntry(h1,"Wjets","f");
+  leg->AddEntry(h2,"ttbarJets","f");
+  leg->AddEntry(h3,"TauTauJets","f");
+  leg->AddEntry(h6,"WWJets","f");
+  leg->AddEntry(h4,"N2C1","l");
+  leg->AddEntry(h5,"C1C1","l");
   leg->DrawClone("Same");
 
 }
@@ -185,6 +187,60 @@ void plotoverlaping() {
 //   double x = 3.;
 //   cout << integr(&x,&x) << endl;
 // }
+
+void plotsmearing() {
+  
+  auto tfile = tfile6;
+
+  SetAtlasStyle();
+
+  cvs = new TCanvas();
+  // botframe = cvs->DrawFrame(0,1,800,1e8);
+  // xlabel = "MSFOS";
+  // HIST = "h_MSFOS_"+cutname;
+  // plothisto();
+  cvs->SetLogy();
+  // botframe->SetTitle("The title;MSFOS [GeV];Events");
+  // cvs->SaveAs(cutfolder+"/"+"h_MSFOS"+".png");
+
+  
+  auto h1 = (TH1F*)tfile->Get("h_PtJets1stStages_Generator");
+  h1->SetLineColor(60);
+  h1->SetLineWidth(3);
+  //h4->SetFillColor(41);
+  h1->Draw("Hist");
+
+  auto h2 = (TH1F*)tfile->Get("h_PtJets1stStages_Smearing");
+  h2->SetLineColor(50);
+  h2->SetLineWidth(3);
+//  h5->SetFillColor(42);
+  h2->Draw("SameHist");
+
+  auto h3 = (TH1F*)tfile->Get("h_PtJets1stStages_Fakes");
+  h3->SetLineColor(40);
+  h3->SetLineWidth(3);
+  //  h5->SetFillColor(42);
+  h3->Draw("SameHist");
+
+  auto h4 = (TH1F*)tfile->Get("h_PtJets1stStages_OverlapRemoval");
+  h4->SetLineColor(30);
+  h4->SetLineWidth(3);
+  //  h5->SetFillColor(42);
+  h4->Draw("SameHist");
+
+
+  auto leg = new TLegend(.8,.8,1.,1.,"Smearing Stages");
+  leg->SetFillColor(0);
+  leg->AddEntry(h1,"Generator");
+  leg->AddEntry(h2,"Smearing");
+  leg->AddEntry(h3,"Fakes");
+  leg->AddEntry(h4,"OverlapRemoval");
+  leg->DrawClone("Same");
+  
+  cvs->SetLogy();
+  cvs->SaveAs("h_PtJets1stStages.png");
+  
+}
 
 void plotmacros() {
 
@@ -281,7 +337,7 @@ void h_allhistos() {
   HIST = "h_PtMuons1st_"+cutname;
   plothisto();
   cvs->SetLogy();
-  botframe->SetTitle("The title;1st Muon Pt [GeV];Events");
+  botframe->SetTitle("The title;1st lepton Pt [GeV];Events");
   cvs->SaveAs(cutfolder+"/"+"h_PtMuons1st"+".png");
 
   gROOT->Reset();
@@ -301,17 +357,17 @@ void h_allhistos() {
   HIST = "h_angleMuons1st_"+cutname;
   plothisto();
   cvs->SetLogy();
-  botframe->SetTitle("The title;Pseidorapidity of 1st Muon;Events");
+  botframe->SetTitle("The title;Pseidorapidity of 1st lepton;Events");
   cvs->SaveAs(cutfolder+"/"+"h_angleMuons1st"+".png");
 
   gROOT->Reset();
   cvs = new TCanvas();
   botframe = cvs->DrawFrame(0,1,100,1e7);
-  xlabel = "Two leading lepton (excluding taons) mass";
+  xlabel = "Two leading lepton mass";
   HIST = "h_llmass_"+cutname;
   plothisto();
   cvs->SetLogy();
-  botframe->SetTitle("The title;Two leading lepton (excluding taons) mass [GeV];Events");
+  botframe->SetTitle("The title;Two leading lepton mass [GeV];Events");
   cvs->SaveAs(cutfolder+"/"+"h_llmass"+".png");
 
   gROOT->Reset();
@@ -356,9 +412,37 @@ void h_allhistos() {
   cvs->SetLogy();
   botframe->SetTitle("The title;MSFOS [GeV];Events");
   cvs->SaveAs(cutfolder+"/"+"h_MSFOS"+".png");
+
+  gROOT->Reset();
+  cvs = new TCanvas();
+  botframe = cvs->DrawFrame(0,1,800,1e8);
+  xlabel = "Mtautau1";
+  HIST = "h_mtautau1_"+cutname;
+  plothisto();
+  cvs->SetLogy();
+  botframe->SetTitle("The title;Mtautau1 [GeV];Events");
+  cvs->SaveAs(cutfolder+"/"+"h_Mtautau1"+".png");
+
+  gROOT->Reset();
+  cvs = new TCanvas();
+  botframe = cvs->DrawFrame(0,1,800,1e8);
+  xlabel = "Mtautau2";
+  HIST = "h_mtautau2_"+cutname;
+  plothisto();
+  cvs->SetLogy();
+  botframe->SetTitle("The title;Mtautau2 [GeV];Events");
+  cvs->SaveAs(cutfolder+"/"+"h_Mtautau2"+".png");
+
 }
 
 void h_plotwithallcuts() {
+
+  cout << "WJets=" << N1 << endl;
+  cout << "ttbarJets=" << N2 << endl;
+  cout << "TauTauJets=" << N3 << endl;
+  cout << "m100_DeltaM9_N2C1=" << N4 << endl;
+  cout << "m100_DeltaM9_C1C1=" << N5 << endl;
+  cout << "WWJets=" << N6 << endl;
 
   SetAtlasStyle();
     
@@ -385,6 +469,17 @@ void h_plotwithallcuts() {
   cutname = "M(1st l + 2nd l)<12 GeV";
   cutfolder += "/" + cutname;
   h_allhistos();
+
+  auto temp = cutfolder;
+  cutname = "2 leptons";
+  cutfolder = temp + "/" + cutname;
+  h_allhistos();
+
+  cutname = "3 leptons";
+  cutfolder = temp + "/" + cutname;
+  h_allhistos();
+
+
 
   // // cutname = "1stJet Pt>200 GeV";
   // // cutfolder = "NoCuts/" + cutname; // "1stJet Pt>200 GeV"; //CutName1;

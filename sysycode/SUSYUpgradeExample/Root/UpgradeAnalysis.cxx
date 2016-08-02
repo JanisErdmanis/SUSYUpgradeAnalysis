@@ -385,9 +385,9 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   if (SmearedJet.size()>=1)
     h_PtJets1stStages["Smearing"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
 
-  ApplyPhotonFakes();
+  //ApplyPhotonFakes();
   ApplyElectronFakes();
-  ApplyTauFakes();
+//  ApplyTauFakes();
   ApplyBtagging();
 
   sort(SmearedPho.begin(), SmearedPho.end(), compare_pt());   
@@ -1003,10 +1003,10 @@ void UpgradeAnalysis::SmearMET(){
 
 void UpgradeAnalysis::ApplyPtEtaThresholds(){
 
-  // photons pT>20 and eta < 2.47
-  for( unsigned int i=0; i<SmearedPho.size(); i++ ){
-    if( SmearedPho[i].Pt()*GeV < 10 || fabs(SmearedPho[i].Eta())>2.47 ) SmearedPho[i].Good=false;
-  }
+  // // photons pT>20 and eta < 2.47
+  // for( unsigned int i=0; i<SmearedPho.size(); i++ ){
+  //   if( SmearedPho[i].Pt()*GeV < 50 || fabs(SmearedPho[i].Eta())>2.47 ) SmearedPho[i].Good=false;
+  // }
   // electrons and muons pT>10 and eta < 2.47/2.5
   // pdgid - ???
   // Segfault problem
@@ -1015,20 +1015,20 @@ void UpgradeAnalysis::ApplyPtEtaThresholds(){
     if( fabs(SmearedEleMuo[i].pdgid) ==13 && (SmearedEleMuo[i].Pt()*GeV < 0 || fabs(SmearedEleMuo[i].Eta())>2.5) ) SmearedEleMuo[i].Good=false;
   }
   // hadronic taus pT>20 and eta < 2.47
-  for( unsigned int i=0; i<SmearedHadTau.size(); i++ ){
-    if( SmearedHadTau[i].Pt()*GeV < 20 || fabs(SmearedHadTau[i].Eta())>2.47 ) SmearedHadTau[i].Good=false;
-  }
+  // for( unsigned int i=0; i<SmearedHadTau.size(); i++ ){
+  //   if( SmearedHadTau[i].Pt()*GeV < 20 || fabs(SmearedHadTau[i].Eta())>2.47 ) SmearedHadTau[i].Good=false;
+  // }
   // jets pT>20 and eta < 2.5
   for( unsigned int i=0; i<SmearedJet.size(); i++ ){
-    if( SmearedJet[i].Pt()*GeV < 20 || fabs(SmearedJet[i].Eta())>2.5 ) SmearedJet[i].Good=false;
+    if( SmearedJet[i].Pt()*GeV < 50 || fabs(SmearedJet[i].Eta())>2.5 ) SmearedJet[i].Good=false;
   }
-  for( unsigned int i=0; i<SmearedBJet.size(); i++ ){
-    if( SmearedBJet[i].Pt()*GeV < 20 || fabs(SmearedBJet[i].Eta())>2.5 ) SmearedBJet[i].Good=false;
-  }
-  RemoveBad(SmearedPho);
+  // for( unsigned int i=0; i<SmearedBJet.size(); i++ ){
+  //   if( SmearedBJet[i].Pt()*GeV < 50 || fabs(SmearedBJet[i].Eta())>2.5 ) SmearedBJet[i].Good=false;
+  // }
+  // RemoveBad(SmearedPho);
   RemoveBad(SmearedEleMuo);
-  RemoveBad(SmearedHadTau);
-  RemoveBad(SmearedJet);
+  // RemoveBad(SmearedHadTau);
+  // RemoveBad(SmearedJet);
   RemoveBad(SmearedBJet);
   return;
 }
@@ -1037,28 +1037,29 @@ void UpgradeAnalysis::OverlapRemoval(){
 
   // apply OR
   // 1. dR(tau, loose ele/muo)<0.2, discard tau
-  for( unsigned int i=0; i<SmearedEleMuo.size(); i++ ){
-    for( unsigned int j=0; j<SmearedHadTau.size(); j++ ){
-      if( SmearedEleMuo[i].DeltaR(SmearedHadTau[j])<0.2) SmearedHadTau[j].Good=false;
-    }
-  }
-  RemoveBad(SmearedHadTau);
-  // 1. dR(photon, loose ele/muo)<0.4, discard photon
-  for( unsigned int i=0; i<SmearedEleMuo.size(); i++ ){
-    for( unsigned int j=0; j<SmearedPho.size(); j++ ){
-      if( SmearedEleMuo[i].DeltaR(SmearedPho[j])<0.4) SmearedPho[j].Good=false;
-    }
-  }
-  RemoveBad(SmearedPho);
-  // 3. dR(ele, non b-tagged jet)<0.2, discard non b-tagged jet
-  for( unsigned int i=0; i<SmearedEleMuo.size(); i++ ){
-    if( fabs(SmearedEleMuo[i].pdgid) != 11 ) continue;
-    for( unsigned int j=0; j<SmearedJet.size(); j++ ){
-      if( SmearedJet[i].pdgid==5 ) continue;
-      if( SmearedEleMuo[i].DeltaR(SmearedJet[j])<0.2) SmearedJet[j].Good=false;
-    }
-  }
-  RemoveBad(SmearedJet);
+  // for( unsigned int i=0; i<SmearedEleMuo.size(); i++ ){
+  //   for( unsigned int j=0; j<SmearedHadTau.size(); j++ ){
+  //     if( SmearedEleMuo[i].DeltaR(SmearedHadTau[j])<0.2) SmearedHadTau[j].Good=false;
+  //   }
+  // }
+  // RemoveBad(SmearedHadTau);
+  // // 1. dR(photon, loose ele/muo)<0.4, discard photon
+  // for( unsigned int i=0; i<SmearedEleMuo.size(); i++ ){
+  //   for( unsigned int j=0; j<SmearedPho.size(); j++ ){
+  //     if( SmearedEleMuo[i].DeltaR(SmearedPho[j])<0.4) SmearedPho[j].Good=false;
+  //   }
+  // }
+  // RemoveBad(SmearedPho);
+  // // 3. dR(ele, non b-tagged jet)<0.2, discard non b-tagged jet
+  // for( unsigned int i=0; i<SmearedEleMuo.size(); i++ ){
+  //   if( fabs(SmearedEleMuo[i].pdgid) != 11 ) continue;
+  //   for( unsigned int j=0; j<SmearedJet.size(); j++ ){
+  //     if( SmearedJet[i].pdgid==5 ) continue;
+  //     if( SmearedEleMuo[i].DeltaR(SmearedJet[j])<0.2) SmearedJet[j].Good=false;
+  //   }
+  // }
+  //RemoveBad(SmearedJet);
+  
   // 4. dR(ele,jet)<0.4, discard ele
   for( unsigned int i=0; i<SmearedEleMuo.size(); i++ ){
     if( fabs(SmearedEleMuo[i].pdgid) != 11 ) continue;
@@ -1085,20 +1086,20 @@ void UpgradeAnalysis::OverlapRemoval(){
     }
   }
   RemoveBad(SmearedEleMuo);
-  // 7. dR(tau, jet)<0.2, discard jet
-  for( unsigned int i=0; i<SmearedHadTau.size(); i++ ){
-    for( unsigned int j=0; j<SmearedJet.size(); j++ ){
-      if( SmearedHadTau[i].DeltaR(SmearedJet[j])<0.2) SmearedJet[j].Good=false;
-    }
-  }
-  RemoveBad(SmearedJet);
-  // 8. dR(pho, jet)<0.2, discard jet
-  for( unsigned int i=0; i<SmearedPho.size(); i++ ){
-    for( unsigned int j=0; j<SmearedJet.size(); j++ ){
-      if( SmearedPho[i].DeltaR(SmearedJet[j])<0.4) SmearedJet[j].Good=false;
-    }
-  }
-  RemoveBad(SmearedJet);
+  // // 7. dR(tau, jet)<0.2, discard jet
+  // for( unsigned int i=0; i<SmearedHadTau.size(); i++ ){
+  //   for( unsigned int j=0; j<SmearedJet.size(); j++ ){
+  //     if( SmearedHadTau[i].DeltaR(SmearedJet[j])<0.2) SmearedJet[j].Good=false;
+  //   }
+  // }
+  // RemoveBad(SmearedJet);
+  // // 8. dR(pho, jet)<0.2, discard jet
+  // for( unsigned int i=0; i<SmearedPho.size(); i++ ){
+  //   for( unsigned int j=0; j<SmearedJet.size(); j++ ){
+  //     if( SmearedPho[i].DeltaR(SmearedJet[j])<0.4) SmearedJet[j].Good=false;
+  //   }
+  // }
+  // RemoveBad(SmearedJet);
   return;
 }
 
@@ -1112,11 +1113,11 @@ void UpgradeAnalysis::ApplyIsolation(){
     if( SmearedEleMuo[i].ptcone30/SmearedEleMuo[i].Pt() > 0.15 ) SmearedEleMuo[i].Good=false;
   }
   RemoveBad(SmearedEleMuo);
-  for( unsigned int i = 0; i<SmearedPho.size(); i++){
-    if( SmearedPho[i].etcone20/SmearedPho[i].Pt() > 0.15 ) SmearedPho[i].Good=false;
-    if( SmearedPho[i].ptcone30/SmearedPho[i].Pt() > 0.15 ) SmearedPho[i].Good=false;
-  }
-  RemoveBad(SmearedPho);
+  // for( unsigned int i = 0; i<SmearedPho.size(); i++){
+  //   if( SmearedPho[i].etcone20/SmearedPho[i].Pt() > 0.15 ) SmearedPho[i].Good=false;
+  //   if( SmearedPho[i].ptcone30/SmearedPho[i].Pt() > 0.15 ) SmearedPho[i].Good=false;
+  // }
+  // RemoveBad(SmearedPho);
   return;
 }
 

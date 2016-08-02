@@ -1,0 +1,4 @@
+xAOD::Init                INFO    Environment initialised for data access
+SampleHandler:/build1/atnight/localbuilds/nightlies/AnalysisBase-2.3.X/AnalysisBase/rel_nightly/SampleHandler/Root/ToolsDiscovery.cxx:314:exception: failed to read file: /afs/cern.ch/user/j/jerdmani/private/susyexamples/m100_DeltaM9_N2C1.v2.1.list.list
+terminate called after throwing an instance of 'RCU::ExceptionMsg'
+  what():  SampleHandler:/build1/atnight/localbuilds/nightlies/AnalysisBase-2.3.X/AnalysisBase/rel_nightly/SampleHandler/Root/ToolsDiscovery.cxx:314:exception: failed to read file: /afs/cern.ch/user/j/jerdmani/private/susyexamples/m100_DeltaM9_N2C1.v2.1.list.list
