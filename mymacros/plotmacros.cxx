@@ -12,7 +12,7 @@ void SetAtlasStyle();
 
 //TString samples[] = {"Wjets_rapidityOrderOff","ttbarJets","TauTauJets","m100_DeltaM9_N2C1","m100_DeltaM9_C1C1","WWJets"};
 
-TString samples[] = {"WJets.v1.0","ttbarJets.v1.0","TauTauJets.v2.0","m100_DeltaM9_N2C1.v2.1","m100_DeltaM9_C1C1.v2.1","WWJets.v1.0"};
+TString samples[] = {"WJets.v1.0","ttbarJets.v1.0","TauTauJets.v2.0","m100_DeltaM9_N2C1.v2.1","m100_DeltaM9_C1C1.v2.1","WWJets.v1.0","TauTauLowMllJetsFilter.v3.0","TauTauHighMllJetsFilter.v3.0"};
 
 auto tfile1 = TFile::Open("outdir_"+samples[0]+"/hist-sample.root");
 auto tfile2 = TFile::Open("outdir_"+samples[1]+"/hist-sample.root");
@@ -20,6 +20,8 @@ auto tfile3 = TFile::Open("outdir_"+samples[2]+"/hist-sample.root");
 auto tfile4 = TFile::Open("outdir_"+samples[3]+"/hist-sample.root");
 auto tfile5 = TFile::Open("outdir_"+samples[4]+"/hist-sample.root");
 auto tfile6 = TFile::Open("outdir_"+samples[5]+"/hist-sample.root");
+auto tfile7 = TFile::Open("outdir_"+samples[6]+"/hist-sample.root");
+auto tfile8 = TFile::Open("outdir_"+samples[7]+"/hist-sample.root");
 
 auto N1 = ((TH1F*)tfile1->Get("h_NEvents_NoCuts"))->GetEntries();
 auto N2 = ((TH1F*)tfile2->Get("h_NEvents_NoCuts"))->GetEntries();
@@ -27,13 +29,17 @@ auto N3 = ((TH1F*)tfile3->Get("h_NEvents_NoCuts"))->GetEntries();
 auto N4 = ((TH1F*)tfile4->Get("h_NEvents_NoCuts"))->GetEntries();
 auto N5 = ((TH1F*)tfile5->Get("h_NEvents_NoCuts"))->GetEntries();
 auto N6 = ((TH1F*)tfile6->Get("h_NEvents_NoCuts"))->GetEntries();
+auto N7 = ((TH1F*)tfile7->Get("h_NEvents_NoCuts"))->GetEntries();
+auto N8 = ((TH1F*)tfile8->Get("h_NEvents_NoCuts"))->GetEntries();
 
-auto sigma1 = 100; // pb Not known yet
+auto sigma1 = 162; //100; // pb Not known yet
 auto sigma2 = 1014 * 0.094; //pb * 0.094
 auto sigma3 = 8500 * 0.154; //pb * 0.154
 auto sigma4 = 5; // pb
 auto sigma5 = 2.8; //pb
-auto sigma6 = 10; //pb Not known yet
+auto sigma6 = 1.34; //pb Not known yet
+auto sigma7 = 0.40; //pb
+auto sigma8 = 0.93; //pb
 
 auto L = 3000*1000; // pb^-1  //000; 3000 fb
 
@@ -43,6 +49,8 @@ auto scale3 = sigma3/N3*L;
 auto scale4 = sigma4/N4*L;
 auto scale5 = sigma5/N5*L;
 auto scale6 = sigma6/N6*L;
+auto scale7 = sigma7/N7*L;
+auto scale8 = sigma8/N8*L;
 
 void plothisto() {
 
@@ -66,6 +74,15 @@ void plothisto() {
   h6->Scale(sigma6/N6*L);
   h6->SetFillColor(49);
 
+  auto h7 = (TH1F*)tfile7->Get(HIST);
+  h7->Scale(sigma7/N7*L);
+  h7->SetFillColor(70);
+
+  auto h8 = (TH1F*)tfile8->Get(HIST);
+  h8->Scale(sigma8/N8*L);
+  h8->SetFillColor(70);
+
+  
 //   auto sumh = new TH1F(*h2);
 // //  sumh->Add(h1,1.);
 //   sumh->Add(h3,1.);
@@ -74,11 +91,13 @@ void plothisto() {
 //   sumh->SetLineColor(1);
 //   sumh->SetAxisRange(1,sumh->GetMaximum()*5,"Y");
 //   sumh->Draw("Samehist");
-  
+
+  background->Add(h7);
+  background->Add(h8);
   background->Add(h2);
   background->Add(h1);
   background->Add(h6);
-  background->Add(h3);
+//  background->Add(h3);
   background->Draw("SameHist");
 
   auto h4 = (TH1F*)tfile4->Get(HIST);
@@ -105,12 +124,19 @@ void plothisto() {
 
   leg->AddEntry(h1,"Wjets","f");
   leg->AddEntry(h2,"ttbarJets","f");
-  leg->AddEntry(h3,"TauTauJets","f");
+  //leg->AddEntry(h3,"TauTauJets","f");
   leg->AddEntry(h6,"WWJets","f");
   leg->AddEntry(h4,"N2C1","l");
   leg->AddEntry(h5,"C1C1","l");
+  leg->AddEntry(h7,"TauTauJetsLow","f");
+  leg->AddEntry(h7,"TauTauJetsHigh","f");
   leg->DrawClone("Same");
 
+  cout << "---------------------------" << endl;
+  cout << "bkg=" << h7->Integral() + h8->Integral() + h2->Integral() + h1->Integral() + h6->Integral() << endl;
+  cout << "signal=" << h4->Integral() + h5->Integral() << endl;
+  cout << "---------------------------" << endl;
+  
 }
 
 void plotoverlaping() {
@@ -315,10 +341,10 @@ void h_allhistos() {
   botframe->SetTitle("The title;Missing Energy [GeV];Events");
   cvs->SaveAs(cutfolder+"/"+"h_MET"+".png");
 
-  // Here I could do a significance plot!!!
-  cvs = new TCanvas();
-  plotsignificance();
-  cvs->SaveAs(cutfolder+"/"+"h_MET" + "_significance" + ".png");
+  // // Here I could do a significance plot!!!
+  // cvs = new TCanvas();
+  // plotsignificance();
+  // cvs->SaveAs(cutfolder+"/"+"h_MET" + "_significance" + ".png");
   
   gROOT->Reset();
   cvs = new TCanvas();
@@ -391,17 +417,17 @@ void h_allhistos() {
   botframe->SetTitle("The title;Number of B Jets in the event;Events");
   cvs->SaveAs(cutfolder+"/"+"h_NBJet"+".png");
 
-  // First Jet Pt without normalisation
-  gROOT->Reset();
-  cvs = new TCanvas();
-  botframe = cvs->DrawFrame(0,1,300,1e9);
-  xlabel = "1st Jet Pt";
-  HIST = "h_PtJets1st_"+cutname;
-  //plothisto();
-  plotoverlaping();
-  cvs->SetLogy();
-  //SEGFAULT  botframe->SetTitle("The title;1st Jet Pt [GeV];Events");
-  cvs->SaveAs(cutfolder+"/"+"h_PtJets1st_Brian"+".png");
+  // // First Jet Pt without normalisation
+  // gROOT->Reset();
+  // cvs = new TCanvas();
+  // botframe = cvs->DrawFrame(0,1,300,1e9);
+  // xlabel = "1st Jet Pt";
+  // HIST = "h_PtJets1st_"+cutname;
+  // //plothisto();
+  // plotoverlaping();
+  // cvs->SetLogy();
+  // //SEGFAULT  botframe->SetTitle("The title;1st Jet Pt [GeV];Events");
+  // cvs->SaveAs(cutfolder+"/"+"h_PtJets1st_Brian"+".png");
 
   gROOT->Reset();
   cvs = new TCanvas();
