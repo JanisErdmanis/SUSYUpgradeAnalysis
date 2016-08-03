@@ -84,11 +84,11 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
     wk()->addOutput (h_NEvents[m_cuts[i]]);
 
     // The missing energy is here
-    h_MET[m_cuts[i]] = new TH1F("h_MET_"+ m_cuts[i], "", 50, 0, 1000); 
+    h_MET[m_cuts[i]] = new TH1F("h_MET_"+ m_cuts[i], "", 15, 0, 1000); 
     h_MET[m_cuts[i]]->SetXTitle("#it{E}_{T}^{miss} [GeV]");      h_MET[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     wk()->addOutput (h_MET[m_cuts[i]]);
     
-    h_MSFOS[m_cuts[i]] = new TH1F("h_MSFOS_"+ m_cuts[i], "", 100, 0, 1000); 
+    h_MSFOS[m_cuts[i]] = new TH1F("h_MSFOS_"+ m_cuts[i], "", 50, 0, 1000); 
     h_MSFOS[m_cuts[i]]->SetXTitle("m_{SFOS} [GeV]");      h_MSFOS[m_cuts[i]]->SetYTitle("Events / 10 GeV");
     wk()->addOutput (h_MSFOS[m_cuts[i]]);
 
@@ -102,7 +102,7 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
 
     h_MT2[m_cuts[i]] = new TH1F("h_MT2_"+ m_cuts[i], "", 50, 0, 1000); 
     h_MT2[m_cuts[i]]->SetXTitle("m_{T2} [GeV]");      h_MT2[m_cuts[i]]->SetYTitle("Events / 20 GeV");
-    //wk()->addOutput (h_MT2[m_cuts[i]]);
+    wk()->addOutput (h_MT2[m_cuts[i]]);
 
     //
 
@@ -117,7 +117,6 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
     h_NMuon[m_cuts[i]] = new TH1F("h_NMuon_"+ m_cuts[i], "", 6, -0.5, 5.5); 
     h_NMuon[m_cuts[i]]->SetXTitle("Muon multiplicity");      h_NMuon[m_cuts[i]]->SetYTitle("Events");
     wk()->addOutput (h_NMuon[m_cuts[i]]);
-
 
     h_NTau[m_cuts[i]] = new TH1F("h_NTau_"+ m_cuts[i], "", 6, -0.5, 5.5); 
     h_NTau[m_cuts[i]]->SetXTitle("Tau multiplicity");      h_NTau[m_cuts[i]]->SetYTitle("Events");
@@ -148,25 +147,25 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
     h_PtTaus[m_cuts[i]]->SetXTitle("Tau p_{T} [GeV]");      h_PtTaus[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     //wk()->addOutput (h_PtTaus[m_cuts[i]]);
 
-    h_PtJets[m_cuts[i]] = new TH1F("h_PtJets_"+ m_cuts[i], "", 50, 0, 1000); 
+    h_PtJets[m_cuts[i]] = new TH1F("h_PtJets_"+ m_cuts[i], "", 10, 0, 1000); 
     h_PtJets[m_cuts[i]]->SetXTitle("Jet p_{T} [GeV]");      h_PtJets[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     //wk()->addOutput (h_PtJets[m_cuts[i]]);
 
     // My histograms
 
-    h_PtMuons1st[m_cuts[i]] = new TH1F("h_PtMuons1st_"+ m_cuts[i], "", 50, 0, 25); 
+    h_PtMuons1st[m_cuts[i]] = new TH1F("h_PtMuons1st_"+ m_cuts[i], "", 20, 0, 25); 
     h_PtMuons1st[m_cuts[i]]->SetXTitle("Muon p_{T} [GeV]");      h_PtMuons1st[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     wk()->addOutput (h_PtMuons1st[m_cuts[i]]);
 
-    h_PtMuons2nd[m_cuts[i]] = new TH1F("h_PtMuons2nd_"+ m_cuts[i], "", 50, 0, 25); 
+    h_PtMuons2nd[m_cuts[i]] = new TH1F("h_PtMuons2nd_"+ m_cuts[i], "", 20, 0, 25); 
     h_PtMuons2nd[m_cuts[i]]->SetXTitle("Muon p_{T} [GeV]");      h_PtMuons2nd[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     wk()->addOutput (h_PtMuons2nd[m_cuts[i]]);
 
-    h_PtJets1st[m_cuts[i]] = new TH1F("h_PtJets1st_"+ m_cuts[i], "", 200, 0, 300); 
+    h_PtJets1st[m_cuts[i]] = new TH1F("h_PtJets1st_"+ m_cuts[i], "", 50, 0, 300); 
     h_PtJets1st[m_cuts[i]]->SetXTitle("Jet p_{T} [GeV]");      h_PtJets1st[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     wk()->addOutput (h_PtJets1st[m_cuts[i]]);
 
-    h_PtJets2nd[m_cuts[i]] = new TH1F("h_PtJets2nd_"+ m_cuts[i], "", 200, 0, 300); 
+    h_PtJets2nd[m_cuts[i]] = new TH1F("h_PtJets2nd_"+ m_cuts[i], "", 50, 0, 300); 
     h_PtJets2nd[m_cuts[i]]->SetXTitle("Jet p_{T} [GeV]");      h_PtJets2nd[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     wk()->addOutput (h_PtJets2nd[m_cuts[i]]);
 
@@ -177,28 +176,28 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
 
     // A new set
 
-    h_angleMuons1st[m_cuts[i]] = new TH1F("h_angleMuons1st_"+ m_cuts[i], "", 50, -4, +4); 
+    h_angleMuons1st[m_cuts[i]] = new TH1F("h_angleMuons1st_"+ m_cuts[i], "", 15, -4, +4); 
     h_angleMuons1st[m_cuts[i]]->SetXTitle("1st Muon pseidorapidity");      h_angleMuons1st[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     wk()->addOutput (h_angleMuons1st[m_cuts[i]]);
 
-    h_angleJets1st[m_cuts[i]] = new TH1F("h_angleJets1st_"+ m_cuts[i], "", 50, -4, +4); 
+    h_angleJets1st[m_cuts[i]] = new TH1F("h_angleJets1st_"+ m_cuts[i], "", 15, -4, +4); 
     h_angleJets1st[m_cuts[i]]->SetXTitle("1st Jet pseidorapidity");      h_angleJets1st[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     wk()->addOutput (h_angleJets1st[m_cuts[i]]);
 
-    h_llmass[m_cuts[i]] = new TH1F("h_llmass_"+ m_cuts[i], "", 200, 0, +100); 
+    h_llmass[m_cuts[i]] = new TH1F("h_llmass_"+ m_cuts[i], "", 25, 0, +100); 
     h_llmass[m_cuts[i]]->SetXTitle("M_ll [GeV]"); h_llmass[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     wk()->addOutput (h_llmass[m_cuts[i]]);
 
-    h_Phi1stJetMet[m_cuts[i]] = new TH1F("h_Phi1stJetMet"+ m_cuts[i], "", 50, -4, +4); 
+    h_Phi1stJetMet[m_cuts[i]] = new TH1F("h_Phi1stJetMet"+ m_cuts[i], "", 25, -4, +4); 
     h_Phi1stJetMet[m_cuts[i]]->SetXTitle("DPhi between 1st Jet and MET [rad]"); h_Phi1stJetMet[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     wk()->addOutput (h_Phi1stJetMet[m_cuts[i]]);
 
 
-    h_mtautau1[m_cuts[i]] = new TH1F("h_mtautau1_"+ m_cuts[i], "", 200, 0, 500); 
+    h_mtautau1[m_cuts[i]] = new TH1F("h_mtautau1_"+ m_cuts[i], "", 25, 0, 500); 
     h_mtautau1[m_cuts[i]]->SetXTitle("Mtautau"); h_mtautau1[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     wk()->addOutput (h_mtautau1[m_cuts[i]]);
 
-    h_mtautau2[m_cuts[i]] = new TH1F("h_mtautau2_"+ m_cuts[i], "", 200, 0, 500); 
+    h_mtautau2[m_cuts[i]] = new TH1F("h_mtautau2_"+ m_cuts[i], "", 25, 0, 500); 
     h_mtautau2[m_cuts[i]]->SetXTitle("Mtautau"); h_mtautau2[m_cuts[i]]->SetYTitle("Events / 20 GeV");
     wk()->addOutput (h_mtautau2[m_cuts[i]]);
 
@@ -210,12 +209,17 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
   m_Stages.push_back("OverlapRemoval");
   m_Stages.push_back("ApplyIsolation");
   m_Stages.push_back("RemoveLowMassPairs");
+  m_Stages.push_back("PtEtaThresholds");
 
   for( unsigned int i = 0; i < m_Stages.size(); i++) {
 
   h_PtJets1stStages[m_Stages[i]] = new TH1F("h_PtJets1stStages_"+ m_Stages[i], "", 200, 0, 300); 
   h_PtJets1stStages[m_Stages[i]]->SetXTitle("Jet p_{T} [GeV]");      h_PtJets1stStages[m_Stages[i]]->SetYTitle("Events / 20 GeV");
   wk()->addOutput (h_PtJets1stStages[m_Stages[i]]);
+
+  h_PtEleMuo1stStages[m_Stages[i]] = new TH1F("h_PtEleMuo1stStages_"+ m_Stages[i], "", 200, 0, 300); 
+  h_PtEleMuo1stStages[m_Stages[i]]->SetXTitle("Lepton p_{T} [GeV]");      h_PtEleMuo1stStages[m_Stages[i]]->SetYTitle("Events / 20 GeV");
+  wk()->addOutput (h_PtEleMuo1stStages[m_Stages[i]]);
 
   }
 
@@ -369,6 +373,9 @@ EL::StatusCode UpgradeAnalysis :: execute ()
 
   if (GenJet.size()>=1)
     h_PtJets1stStages["Generator"]->Fill( GenJet[0].Pt()*GeV , 1.);
+
+  if (GenEleMuo.size()>=1)
+    h_PtEleMuo1stStages["Generator"]->Fill( GenEleMuo[0].Pt()*GeV , 1.);
   
   SmearedPho.clear();
   SmearedEleMuo.clear();
@@ -385,6 +392,9 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   if (SmearedJet.size()>=1)
     h_PtJets1stStages["Smearing"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
 
+  if (SmearedEleMuo.size()>=1)
+    h_PtEleMuo1stStages["Smearing"]->Fill( SmearedEleMuo[0].Pt()*GeV , 1.);
+
   ApplyPhotonFakes();
   ApplyElectronFakes();
   ApplyTauFakes();
@@ -398,7 +408,17 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   if (SmearedJet.size()>=1)
     h_PtJets1stStages["Fakes"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
 
+  if (SmearedEleMuo.size()>=1)
+    h_PtEleMuo1stStages["Fakes"]->Fill( SmearedEleMuo[0].Pt()*GeV , 1.);
+
   ApplyPtEtaThresholds(); // Selects events
+
+  if (SmearedJet.size()>=1)
+    h_PtJets1stStages["PtEtaThresholds"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
+
+  if (SmearedEleMuo.size()>=1)
+    h_PtEleMuo1stStages["PtEtaThresholds"]->Fill( SmearedEleMuo[0].Pt()*GeV , 1.);
+  
 // // //   /* ===============================================================
 // // //      ===== Perform basic overlap removal ===========================
 // // //      =============================================================== */
@@ -411,11 +431,17 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   if (SmearedJet.size()>=1)
     h_PtJets1stStages["OverlapRemoval"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
 
+  if (SmearedEleMuo.size()>=1)
+    h_PtEleMuo1stStages["OverlapRemoval"]->Fill( SmearedEleMuo[0].Pt()*GeV , 1.);
+
 // // // //   // Energy around electron should be small
   ApplyIsolation();
 
   if (SmearedJet.size()>=1)
     h_PtJets1stStages["ApplyIsolation"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
+
+  if (SmearedEleMuo.size()>=1)
+    h_PtEleMuo1stStages["ApplyIsolation"]->Fill( SmearedEleMuo[0].Pt()*GeV , 1.);
 
 // // //   // What this thing do?
   RemoveLowMassPairs(); 
@@ -427,6 +453,9 @@ EL::StatusCode UpgradeAnalysis :: execute ()
 
   if (SmearedJet.size()>=1)
     h_PtJets1stStages["RemoveLowMassPairs"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
+
+  if (SmearedEleMuo.size()>=1)
+    h_PtEleMuo1stStages["RemoveLowMassPairs"]->Fill( SmearedEleMuo[0].Pt()*GeV , 1.);
 
   ApplyTriggerEfficiency();
 
@@ -504,8 +533,14 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   //   cout << "----------------------------------" << endl;
   // }
 
+  // As we are concerned only about muons
+  for (int j=0;j<SmearedEleMuo.size();j++) {
+    if (fabs(SmearedEleMuo[j].pdgid)==11)
+      SmearedEleMuo[j].Good=false;
+  }
+  RemoveBad(SmearedEleMuo);
+
   FillHistos("NoCuts");
-  
   if ( m_SmearedMETTLV.Et()*GeV > 100. ) {
     FillHistos("MET>100 GeV");
     if (SmearedNotBJet.size()==1 && SmearedBJet.size()==0) {
@@ -595,7 +630,7 @@ void UpgradeAnalysis::FillHistos(TString cutname)
   h_MSFOS[cutname]->Fill( m_mll*GeV , m_trigEff);
   //h_Meff[cutname]->Fill( m_meff*GeV , m_trigEff); // BUGGY
   h_MT[cutname]->Fill( m_mT*GeV , m_trigEff);
-  //   h_MT2[cutname]->Fill( m_mT2*GeV , m_trigEff);
+  h_MT2[cutname]->Fill( m_mT2*GeV , m_trigEff);
 
   int sjet = 0;
   for (int j=0;j<SmearedNotBJet.size();j++)
@@ -608,6 +643,19 @@ void UpgradeAnalysis::FillHistos(TString cutname)
     if (SmearedBJet[j].Pt()*GeV>30)
       sbjet += 1;
   h_NBJet[cutname]->Fill( sbjet , m_trigEff);
+
+  // CHECK HERE
+  int nel = 0;
+  int nmuon = 0;
+  for (int j=0;j<SmearedEleMuo.size();j++) {
+    if (fabs(SmearedEleMuo[j].pdgid)==11)
+      nel += 1;
+    if (fabs(SmearedEleMuo[j].pdgid)==13)
+      nmuon += 1;
+  }
+  
+  h_NElec[cutname]->Fill(nel,m_trigEff);
+  h_NMuon[cutname]->Fill(nmuon,m_trigEff);
 
   // // NEED TO CHANGE
   if (SmearedEleMuo.size()>=1) // Smeared elelctron
@@ -1204,11 +1252,11 @@ void UpgradeAnalysis::calculateEventVariables(){
 /* =========================================================================================================================== */
 float getMT2(Particle p1, Particle p2, TLorentzVector met, double invisiblemass_1, double invisiblemass_2)
 {
-  // TLorentzVector pA = p1;
-  // TLorentzVector pB = p2;
-  // ComputeMT2 mycalc = ComputeMT2(pA,pB,met, invisiblemass_1, invisiblemass_2);
+  TLorentzVector pA = p1;
+  TLorentzVector pB = p2;
+  ComputeMT2 mycalc = ComputeMT2(pA,pB,met, invisiblemass_1, invisiblemass_2);
   
-  return 1; //mycalc.Compute();  
+  return mycalc.Compute();  
 }
 
 

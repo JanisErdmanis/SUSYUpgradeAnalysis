@@ -62,6 +62,8 @@ public:
   int m_eventCounter; //!
 
   std::map<TString, TH1F*> h_PtJets1stStages;
+  std::map<TString, TH1F*> h_PtEleMuo1stStages;
+  
   std::map<TString, TH1F*> h_NEvents; //!
   std::map<TString, TH1F*> h_MET; //!
   std::map<TString, TH1F*> h_MSFOS; //!

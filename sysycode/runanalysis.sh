@@ -18,13 +18,12 @@ pkill tmux
 tmux new-session -d -s calc # -n runstuff
 tmux new-window -t calc:1 -n m100_DeltaM9_C1C1
 tmux new-window -t calc:2 -n m100_DeltaM9_N2C1
-#tmux new-window -t calc:3 -n TauTauJets
+tmux new-window -t calc:3 -n TauTauJets
 tmux new-window -t calc:4 -n ttbarJets
 tmux new-window -t calc:5 -n WJets
 tmux new-window -t calc:6 -n WWJets
 tmux new-window -t calc:7 -n TauTauJetsLOW
 tmux new-window -t calc:8 -n TauTauJetsHIGH
-
 
 # #tmux new-window -t my_server:1 -n someotherjunk
 

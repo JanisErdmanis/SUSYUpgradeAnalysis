@@ -214,13 +214,16 @@ void plotoverlaping() {
 //   cout << integr(&x,&x) << endl;
 // }
 
-void plotsmearing() {
+void plotsmearingjets() {
   
-  auto tfile = tfile6;
+  auto tfile = tfile2;
 
   SetAtlasStyle();
 
   cvs = new TCanvas();
+
+  botframe = cvs->DrawFrame(0,1e3,200,1e5);
+  botframe->SetTitle("Title;Pt of leading jet;Events");
   // botframe = cvs->DrawFrame(0,1,800,1e8);
   // xlabel = "MSFOS";
   // HIST = "h_MSFOS_"+cutname;
@@ -234,7 +237,7 @@ void plotsmearing() {
   h1->SetLineColor(60);
   h1->SetLineWidth(3);
   //h4->SetFillColor(41);
-  h1->Draw("Hist");
+  h1->Draw("SameHist");
 
   auto h2 = (TH1F*)tfile->Get("h_PtJets1stStages_Smearing");
   h2->SetLineColor(50);
@@ -242,7 +245,7 @@ void plotsmearing() {
 //  h5->SetFillColor(42);
   h2->Draw("SameHist");
 
-  auto h3 = (TH1F*)tfile->Get("h_PtJets1stStages_Fakes");
+  auto h3 = (TH1F*)tfile->Get("h_PtJets1stStages_PtEtaThresholds");
   h3->SetLineColor(40);
   h3->SetLineWidth(3);
   //  h5->SetFillColor(42);
@@ -262,11 +265,69 @@ void plotsmearing() {
   leg->AddEntry(h3,"Fakes");
   leg->AddEntry(h4,"OverlapRemoval");
   leg->DrawClone("Same");
-  
+
   cvs->SetLogy();
   cvs->SaveAs("h_PtJets1stStages.png");
   
 }
+
+void plotsmearingleptons() {
+  
+  auto tfile = tfile2;
+
+  SetAtlasStyle();
+
+  cvs = new TCanvas();
+
+  botframe = cvs->DrawFrame(0,1e3,200,1e5);
+  botframe->SetTitle("Title;Pt of leading jet;Events");
+  // botframe = cvs->DrawFrame(0,1,800,1e8);
+  // xlabel = "MSFOS";
+  // HIST = "h_MSFOS_"+cutname;
+  // plothisto();
+  cvs->SetLogy();
+  // botframe->SetTitle("The title;MSFOS [GeV];Events");
+  // cvs->SaveAs(cutfolder+"/"+"h_MSFOS"+".png");
+
+  
+  auto h1 = (TH1F*)tfile->Get("h_PtEleMuo1stStages_Generator");
+  h1->SetLineColor(60);
+  h1->SetLineWidth(3);
+  //h4->SetFillColor(41);
+  h1->Draw("SameHist");
+
+  auto h2 = (TH1F*)tfile->Get("h_PtEleMuo1stStages_Smearing");
+  h2->SetLineColor(50);
+  h2->SetLineWidth(3);
+//  h5->SetFillColor(42);
+  h2->Draw("SameHist");
+
+  auto h3 = (TH1F*)tfile->Get("h_PtEleMuo1stStages_PtEtaThresholds");
+  h3->SetLineColor(40);
+  h3->SetLineWidth(3);
+  //  h5->SetFillColor(42);
+  h3->Draw("SameHist");
+
+  auto h4 = (TH1F*)tfile->Get("h_PtEleMuo1stStages_OverlapRemoval");
+  h4->SetLineColor(30);
+  h4->SetLineWidth(3);
+  //  h5->SetFillColor(42);
+  h4->Draw("SameHist");
+
+
+  auto leg = new TLegend(.8,.8,1.,1.,"Smearing Stages");
+  leg->SetFillColor(0);
+  leg->AddEntry(h1,"Generator");
+  leg->AddEntry(h2,"Smearing");
+  leg->AddEntry(h3,"Fakes");
+  leg->AddEntry(h4,"OverlapRemoval");
+  leg->DrawClone("Same");
+
+  cvs->SetLogy();
+  cvs->SaveAs("h_PtEleMuo1stStages.png");
+  
+}
+
 
 void plotmacros() {
 
@@ -277,7 +338,6 @@ void plotmacros() {
 }
 
 void plotsignificance() {
-
   
   auto h1 = (TH1F*)tfile1->Get(HIST);
   h1->Scale(sigma1/N1*L);
@@ -458,6 +518,46 @@ void h_allhistos() {
   cvs->SetLogy();
   botframe->SetTitle("The title;Mtautau2 [GeV];Events");
   cvs->SaveAs(cutfolder+"/"+"h_Mtautau2"+".png");
+
+  gROOT->Reset();
+  cvs = new TCanvas();
+  botframe = cvs->DrawFrame(0,1,800,1e8);
+  xlabel = "MT";
+  HIST = "h_MT_"+cutname;
+  plothisto();
+  cvs->SetLogy();
+  botframe->SetTitle("The title;MT [GeV];Events");
+  cvs->SaveAs(cutfolder+"/"+"h_MT"+".png");
+
+  // gROOT->Reset();
+  // cvs = new TCanvas();
+  // botframe = cvs->DrawFrame(0,1,800,1e8);
+  // xlabel = "MT2";
+  // HIST = "h_MT2_"+cutname;
+  // plothisto();
+  // cvs->SetLogy();
+  // botframe->SetTitle("The title;MT2 [GeV];Events");
+  // cvs->SaveAs(cutfolder+"/"+"h_MT2"+".png");
+
+  gROOT->Reset();
+  cvs = new TCanvas();
+  botframe = cvs->DrawFrame(0,1,6,1e8);
+  xlabel = "Electron multiplicity";
+  HIST = "h_NElec_"+cutname;
+  plothisto();
+  cvs->SetLogy();
+  botframe->SetTitle("The title;ELectron multiplicity;Events");
+  cvs->SaveAs(cutfolder+"/"+"h_NElec"+".png");
+
+  gROOT->Reset();
+  cvs = new TCanvas();
+  botframe = cvs->DrawFrame(0,1,6,1e8);
+  xlabel = "Muon multiplicity";
+  HIST = "h_NMuon_"+cutname;
+  plothisto();
+  cvs->SetLogy();
+  botframe->SetTitle("The title;Muon multiplicity;Events");
+  cvs->SaveAs(cutfolder+"/"+"h_NMuon"+".png");
 
 }
 
