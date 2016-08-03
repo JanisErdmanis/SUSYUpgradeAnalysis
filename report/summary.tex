@@ -37,7 +37,7 @@
   In the standart model Higgs mass is highly sensitive to the details of the physics at high-energy [...]. Unless we accept big number cancelactions in SM, it does not work well with naturalness principle and so we may find solution in BSM physics. One of theories which resolves this issue is supersimetry which introduces new particles, new processes at higher energies. Present knowledge of exlcluded susy parameters requires small higsino mass splittings with energies larger than $100 GeV$\footnote{From data of Large electron positron accelerator.}, but smaller than $1 TeV$ for naturalness principle to hold. This study considers possibility to catch susy signal in high luminosity LHC data from ATLAS experiment with higsino mass splittings $\Delta m = 5 GeV$ and $\mu=100 GeV$ (see figure).
 %  mass splittings for higgsino particles which we are trying to catch here with assumption that we would have high luminosity LHC data from ATLAS experiment.
 
-  In our study we are trying to find signal which comes from $pp$ colision produced chargaino particle $\tilde \chi_1^{+},\tilde \chi_1^{-}$ decay to $W$ and $Z$ bosons and further to two or three soft leptons and neitrinos (see figure).
+  In our study we are trying to find signal which comes from $pp$ colision produced chargaino particle $\tilde \chi_1^{+},\tilde \chi_1^{-}$ decay to $W$ and $Z$ bosons and further to two or three measurable soft leptons and neitrinos and neitralinos (see figure). If in the $pp$ collision also single jet is produced then for conserving transverse momentum a big missing energy would be produced for neitrinos and neitralinos which will distinguish singnal from standart model background.
   \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.25\textwidth]{splittings.png}
@@ -45,9 +45,7 @@
     \includegraphics[width=0.25\textwidth]{C1N2.png}
     \caption{Considered susy signals in our analysis.}
   \end{figure}
-
-
-  The SM background comes from $pp\rightarrow \tau \tau + j$, $pp\rightarrow t \bar t + j$, $pp \rightarrow WW + j$. Also because of the large crossection (see table) of process $pp \rightarrow W +j$, we consider also background leptons which are incorectly detected and comes from jets (fake leptons). 
+ As a background we consider processes $pp\rightarrow \tau \tau + j$, $pp\rightarrow t \bar t + j$, $pp \rightarrow WW + j$. Also because of the large crossection (see table) of process $pp \rightarrow W +j$, we consider also background leptons which are incorectly detected and comes from jets (fake leptons). 
 \begin{table}[!ht]
   \centering
   \begin{tabular}{ll}
@@ -62,57 +60,62 @@
   \end{tabular}
   \caption{Cross sections for considered processes for collisions at $14 TeV$}
 \end{table}
-%MadGraph event generator for all theese processes is used from which we try to extract signal with appropriate selection. 
+% MadGraph event generator for all theese processes is used from which we try to extract signal with appropriate selection.
+
+To study and compare the signal and backgrounds, we turn to Monte Carlo. We simulate the hard processes
+for the signal in Eq. (8) and the major backgrounds with Madgraph 6. The parton-level events are then showered and hadronized with Pythia 8. 
 
 \section{Smearing of events}
 
 Because detector simulation is costly we use a simplified detector algorithm. Firstly we smear energies, masses, momenta, $\eta$, $\phi$ of all objects (particles and jets) with corresponding performance functions. As jets also produce leptons we add fake electrons which takes into account performance of jet reconstruction algorithms. At the next step we filter out particles which can be detected in ATLAS - $|\eta_l|<2.5$, $Pt_j>50 GeV$. (What does OverlapRemovel do?). To remove electrons which could come from jets we require that energy and momentum of leptons should be at least $15\%$ with respect to energy of $20^0$ and momentum of $30^0$ cone. Also we remove low mass lepton pairs $m_{ll}<12 GeV$ because .... And lastly we apply $0.9$ probability to actually detect the particle.
 
 To test if the smearing of events works we plotted leading jet transverse momentum at different stages of algorithm (see figure ...). In the figure we see that smearing indeed makes distribution broader, considerable amount of fake particles also are added, and overlap removal helps to recover the shape of generator Pt shape. 
-\begin{SCfigure}[][!ht]
-  \includegraphics[width=0.6\textwidth]{h_PtJets1stStages.png}
-  \caption{Leading jet Pt at different stages of algorithm for process $pp \rightarrow WW +j$.}
-\end{SCfigure}
-
-\section{Histograms before selection}
-
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=0.25\textwidth]{h_NJet.png}
-  \includegraphics[width=0.25\textwidth]{h_NBJet.png}
-  \includegraphics[width=0.25\textwidth]{h_PtJets1st.png}
-  \caption{Number of Jets, Bjets and leading jet transverse momentum.}
+  \includegraphics[width=0.45\textwidth]{h_PtJets1stStages.png}
+  \includegraphics[width=0.45\textwidth]{h_PtEleMuo1stStages.png}
+  \caption{Tests of smering functions for signal sample}
 \end{figure}
 
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[width=0.25\textwidth]{h_MET.png}
-  \includegraphics[width=0.25\textwidth]{h_llmass.png}
-  \includegraphics[width=0.25\textwidth]{h_Mtautau2.png}
-  \caption{Missing energy, two leading lepton mass $m_{ll}$ and reconstructed tautau mass $m_{\tau\tau}$ with formula (...)}
-\end{figure}
+% \begin{figure}[!ht]
+%   \centering
+%   \includegraphics[width=0.25\textwidth]{h_NJet.png}
+%   \includegraphics[width=0.25\textwidth]{h_NBJet.png}
+%   \includegraphics[width=0.25\textwidth]{h_PtJets1st.png}
+%   \caption{Number of Jets, Bjets and leading jet transverse momentum.}
+% \end{figure}
 
 \section{Event selection}
 
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.3\textwidth]{h_MET.png}
+  \includegraphics[width=0.3\textwidth]{h_llmass.png}
+  \includegraphics[width=0.3\textwidth]{h_Mtautau2.png}
+  \caption{Missing energy, two leading lepton mass $m_{ll}$ and reconstructed tautau mass $m_{\tau\tau}$ with formula (...)}
+\end{figure}
+
 To compare and check our simulation and smearing algorithm we use selection from [...] for the same kind of process.  
 \begin{itemize}
-\item $MET>100 GeV$. Because ...
-\item $1stJet Pt>100GeV$. 
-\item $2~ leading ~ lepton ~ Pt > 7 GeV$.
-\item $m_{\tau \tau}>150 GeV$.
+\item $MET>100 GeV$. Because we expect large missing energy in form of neitralinos and neitronos in our signal.
+\item Single Jet with $Pt>100GeV$ and no $Bjets$ in event. We want missing energy to come from particles not in jets and bjets are produced mainly by background $pp->t \bar t + j$.
+\item $2~ leading ~ lepton ~ Pt > 7 GeV$. We are eliminating here not considered background
+\item $m_{\tau \tau}>150 GeV$. Should eliminate $pp\rightarrow \tau \tau$ background as it has resonance at $100 GeV$. 
 \item $M(1st l + 2nd l)<12 GeV$.
 \end{itemize}
 where we also afterwards make seperation for two and three lepton processes. 
 
-\begin{SCfigure}[][!ht]
-  \includegraphics[width=0.6\textwidth]{h_llmass_cuts.png}
-  \caption{Two leading lepton masses $m_{ll}$.}
-\end{SCfigure}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.45\textwidth]{h_llmass_cuts.png}
+  \includegraphics[width=0.45\textwidth]{h_PtMuons1st_cuts.png}
+  \caption{The signal after sellection}
+\end{figure}
 
-\begin{SCfigure}[][!ht]
-  \includegraphics[width=0.6\textwidth]{h_PtMuons1st_cuts.png}
-  \caption{Leading lepton Pt.}
-\end{SCfigure}
+
+\section{Conclussions}
+
 
      
 %     \begin{SCfigure}[][p]

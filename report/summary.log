@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.4.22)  3 AUG 2016 00:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.4.22)  3 AUG 2016 14:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -440,95 +440,84 @@ C1.png (PNG copy)> <./C1N2.png>] <h_PtJets1stStages.png, id=26, 698.61pt x 473.
 File: h_PtJets1stStages.png Graphic file (type png)
 
 <use h_PtJets1stStages.png>
-Package pdftex.def Info: h_PtJets1stStages.png used on input line 71.
-(pdftex.def)             Requested size: 306.00311pt x 207.51965pt.
- <h_NJet.png, id=27, 698.61pt x 473.77pt>
-File: h_NJet.png Graphic file (type png)
+Package pdftex.def Info: h_PtJets1stStages.png used on input line 75.
+(pdftex.def)             Requested size: 229.49844pt x 155.63612pt.
 
-<use h_NJet.png>
-Package pdftex.def Info: h_NJet.png used on input line 79.
-(pdftex.def)             Requested size: 127.5pt x 86.4605pt.
- <h_NBJet.png, id=28, 698.61pt x 473.77pt>
-File: h_NBJet.png Graphic file (type png)
- <use h_NBJet.png>
-Package pdftex.def Info: h_NBJet.png used on input line 80.
-(pdftex.def)             Requested size: 127.5pt x 86.4605pt.
+<h_PtEleMuo1stStages.png, id=27, 698.61pt x 473.77pt>
+File: h_PtEleMuo1stStages.png Graphic file (type png)
 
-<h_PtJets1st.png, id=29, 698.61pt x 473.77pt>
-File: h_PtJets1st.png Graphic file (type png)
- <use h_PtJets1st.png>
-Package pdftex.def Info: h_PtJets1st.png used on input line 81.
-(pdftex.def)             Requested size: 127.5pt x 86.4605pt.
-
-<h_MET.png, id=30, 698.61pt x 473.77pt>
+<use h_PtEleMuo1stStages.png>
+Package pdftex.def Info: h_PtEleMuo1stStages.png used on input line 76.
+(pdftex.def)             Requested size: 229.49844pt x 155.63612pt.
+ <h_MET.png, id=28, 698.61pt x 473.77pt>
 File: h_MET.png Graphic file (type png)
- <use h_MET.png>
-Package pdftex.def Info: h_MET.png used on input line 87.
-(pdftex.def)             Requested size: 127.5pt x 86.4605pt.
 
-<h_llmass.png, id=31, 698.61pt x 473.77pt>
+<use h_MET.png>
+Package pdftex.def Info: h_MET.png used on input line 93.
+(pdftex.def)             Requested size: 153.00156pt x 103.75983pt.
+ <h_llmass.png, id=29, 698.61pt x 473.77pt>
 File: h_llmass.png Graphic file (type png)
  <use h_llmass.png>
-Package pdftex.def Info: h_llmass.png used on input line 88.
-(pdftex.def)             Requested size: 127.5pt x 86.4605pt.
+Package pdftex.def Info: h_llmass.png used on input line 94.
+(pdftex.def)             Requested size: 153.00156pt x 103.75983pt.
 
-<h_Mtautau2.png, id=32, 698.61pt x 473.77pt>
+<h_Mtautau2.png, id=30, 698.61pt x 473.77pt>
 File: h_Mtautau2.png Graphic file (type png)
  <use h_Mtautau2.png>
-Package pdftex.def Info: h_Mtautau2.png used on input line 89.
-(pdftex.def)             Requested size: 127.5pt x 86.4605pt.
- [2 <./h_PtJets1stStages.png> <./h_NJet.png> <./h_NBJet.png> <./h_PtJets1st.png
-> <./h_MET.png> <./h_llmass.png> <./h_Mtautau2.png>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 97.
+Package pdftex.def Info: h_Mtautau2.png used on input line 95.
+(pdftex.def)             Requested size: 153.00156pt x 103.75983pt.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 101.
+
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 97.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 101.
 
-<h_llmass_cuts.png, id=37, 698.61pt x 473.77pt>
+<h_llmass_cuts.png, id=31, 698.61pt x 473.77pt>
 File: h_llmass_cuts.png Graphic file (type png)
  <use h_llmass_cuts.png>
-Package pdftex.def Info: h_llmass_cuts.png used on input line 106.
-(pdftex.def)             Requested size: 306.00311pt x 207.51965pt.
+Package pdftex.def Info: h_llmass_cuts.png used on input line 111.
+(pdftex.def)             Requested size: 229.49844pt x 155.63612pt.
 
-<h_PtMuons1st_cuts.png, id=38, 698.61pt x 473.77pt>
+<h_PtMuons1st_cuts.png, id=32, 698.61pt x 473.77pt>
 File: h_PtMuons1st_cuts.png Graphic file (type png)
 
 <use h_PtMuons1st_cuts.png>
-Package pdftex.def Info: h_PtMuons1st_cuts.png used on input line 111.
-(pdftex.def)             Requested size: 306.00311pt x 207.51965pt.
+Package pdftex.def Info: h_PtMuons1st_cuts.png used on input line 112.
+(pdftex.def)             Requested size: 229.49844pt x 155.63612pt.
 
 No file summary.bbl.
-[3 <./h_llmass_cuts.png> <./h_PtMuons1st_cuts.png>] (./summary.aux) ) 
+[2 <./h_PtJets1stStages.png> <./h_PtEleMuo1stStages.png> <./h_MET.png> <./h_llm
+ass.png> <./h_Mtautau2.png>] [3 <./h_llmass_cuts.png> <./h_PtMuons1st_cuts.png>
+] (./summary.aux) ) 
 Here is how much of TeX's memory you used:
- 6260 strings out of 493029
- 92330 string characters out of 6136234
- 177155 words of memory out of 5000000
- 9709 multiletter control sequences out of 15000+600000
+ 6244 strings out of 493029
+ 92169 string characters out of 6136234
+ 177042 words of memory out of 5000000
+ 9695 multiletter control sequences out of 15000+600000
  8762 words of font info for 32 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 42i,10n,48p,836b,444s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
-7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmsy9.pfb>
-Output written on summary.pdf (3 pages, 387551 bytes).
+ 42i,10n,40p,836b,321s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx
+9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
+6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb>
+Output written on summary.pdf (3 pages, 361646 bytes).
 PDF statistics:
- 89 PDF objects out of 1000 (max. 8388607)
+ 87 PDF objects out of 1000 (max. 8388607)
  54 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 61 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 

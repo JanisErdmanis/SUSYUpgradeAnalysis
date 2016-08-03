@@ -302,22 +302,22 @@ EL::StatusCode UpgradeAnalysis :: execute ()
 
   #ifndef Smearing
   
-  GenPho.clear();
+//  GenPho.clear();
   GenEleMuo.clear();
-  GenHadTau.clear();
+//  GenHadTau.clear();
   GenJet.clear();
   GenBJet.clear();
   
-  getTruthPhotons(); 
+//  getTruthPhotons(); 
   getTruthElectrons();
   getTruthMuons();
-  getTruthHadronicTaus();
+//  getTruthHadronicTaus();
   getTruthJets();
   getTruthMET();
 
-  SmearedPho.clear();
+//  SmearedPho.clear();
   SmearedEleMuo.clear();
-  SmearedHadTau.clear();
+//  SmearedHadTau.clear();
   SmearedJet.clear();
   
   for( unsigned int i=0; i<GenJet.size(); i++) {
@@ -353,16 +353,16 @@ EL::StatusCode UpgradeAnalysis :: execute ()
 
   #else
 
-  GenPho.clear();
+//  GenPho.clear();
   GenEleMuo.clear();
-  GenHadTau.clear();
+//  GenHadTau.clear();
   GenJet.clear();
   GenBJet.clear();
   
-  getTruthPhotons(); 
+//  getTruthPhotons(); 
   getTruthElectrons();
   getTruthMuons();
-  getTruthHadronicTaus();
+//  getTruthHadronicTaus();
   getTruthJets();
   getTruthMET();
 
@@ -377,27 +377,23 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   if (GenEleMuo.size()>=1)
     h_PtEleMuo1stStages["Generator"]->Fill( GenEleMuo[0].Pt()*GeV , 1.);
   
-  SmearedPho.clear();
+
+//  SmearedPho.clear();
   SmearedEleMuo.clear();
-  SmearedHadTau.clear();
+//  SmearedHadTau.clear();
   SmearedJet.clear();
 
-  SmearPhotons();
-  SmearElectrons();
+//  SmearPhotons();
+//  SmearElectrons();
   SmearMuons();
-  SmearHadTaus();
+//  SmearHadTaus();
   SmearJets(); 
   SmearMET();
 
-  if (SmearedJet.size()>=1)
-    h_PtJets1stStages["Smearing"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
-
-  if (SmearedEleMuo.size()>=1)
-    h_PtEleMuo1stStages["Smearing"]->Fill( SmearedEleMuo[0].Pt()*GeV , 1.);
-
-  ApplyPhotonFakes();
-  ApplyElectronFakes();
-  ApplyTauFakes();
+  
+//  ApplyPhotonFakes();
+//  ApplyElectronFakes();
+//  ApplyTauFakes();
   ApplyBtagging();
 
   sort(SmearedPho.begin(), SmearedPho.end(), compare_pt());   
@@ -406,10 +402,17 @@ EL::StatusCode UpgradeAnalysis :: execute ()
   sort(SmearedJet.begin(), SmearedJet.end(), compare_pt());
 
   if (SmearedJet.size()>=1)
-    h_PtJets1stStages["Fakes"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
+    h_PtJets1stStages["Smearing"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
 
   if (SmearedEleMuo.size()>=1)
-    h_PtEleMuo1stStages["Fakes"]->Fill( SmearedEleMuo[0].Pt()*GeV , 1.);
+    h_PtEleMuo1stStages["Smearing"]->Fill( SmearedEleMuo[0].Pt()*GeV , 1.);
+
+  
+  // if (SmearedJet.size()>=1)
+  //   h_PtJets1stStages["Fakes"]->Fill( SmearedJet[0].Pt()*GeV , 1.);
+
+  // if (SmearedEleMuo.size()>=1)
+  //   h_PtEleMuo1stStages["Fakes"]->Fill( SmearedEleMuo[0].Pt()*GeV , 1.);
 
   ApplyPtEtaThresholds(); // Selects events
 
@@ -855,7 +858,7 @@ void UpgradeAnalysis::SmearElectrons(){
 void UpgradeAnalysis::SmearMuons(){
 
   for( unsigned int i=0; i<GenEleMuo.size(); i++ ){
-    if( fabs(GenEleMuo[i].pdgid)!=13 ) continue;
+    //if( fabs(GenEleMuo[i].pdgid)!=13 ) continue;
     //cout << "muon " << GenEleMuo[i].Pt()*GeV << "\t" << GenEleMuo[i].Eta() << endl;
     // smear q/pT to allow for muon charge flip
     double charge =-1;
@@ -1061,8 +1064,8 @@ void UpgradeAnalysis::ApplyPtEtaThresholds(){
   // pdgid - ???
   // Segfault problem
   for( unsigned int i=0; i<SmearedEleMuo.size(); i++ ){
-    if( fabs(SmearedEleMuo[i].pdgid) ==11 && (SmearedEleMuo[i].Pt()*GeV < 5. || fabs(SmearedEleMuo[i].Eta())>2.47) ) SmearedEleMuo[i].Good=false;
-    if( fabs(SmearedEleMuo[i].pdgid) ==13 && (SmearedEleMuo[i].Pt()*GeV < 5. || fabs(SmearedEleMuo[i].Eta())>2.5) ) SmearedEleMuo[i].Good=false;
+    if( fabs(SmearedEleMuo[i].pdgid) ==11 && (SmearedEleMuo[i].Pt()*GeV < 5. || fabs(SmearedEleMuo[i].Eta())>2.8) ) SmearedEleMuo[i].Good=false;
+    if( fabs(SmearedEleMuo[i].pdgid) ==13 && (SmearedEleMuo[i].Pt()*GeV < 5. || fabs(SmearedEleMuo[i].Eta())>2.8) ) SmearedEleMuo[i].Good=false;
   }
   // hadronic taus pT>20 and eta < 2.47
   // for( unsigned int i=0; i<SmearedHadTau.size(); i++ ){
@@ -1162,11 +1165,12 @@ void UpgradeAnalysis::ApplyIsolation(){
     if( SmearedEleMuo[i].ptcone30/SmearedEleMuo[i].Pt() > 0.15 ) SmearedEleMuo[i].Good=false;
   }
   RemoveBad(SmearedEleMuo);
-  for( unsigned int i = 0; i<SmearedPho.size(); i++){
-    if( SmearedPho[i].etcone20/SmearedPho[i].Pt() > 0.15 ) SmearedPho[i].Good=false;
-    if( SmearedPho[i].ptcone30/SmearedPho[i].Pt() > 0.15 ) SmearedPho[i].Good=false;
-  }
-  RemoveBad(SmearedPho);
+  // for( unsigned int i = 0; i<SmearedPho.size(); i++){
+  //   if( SmearedPho[i].etcone20/SmearedPho[i].Pt() > 0.15 ) SmearedPho[i].Good=false;
+  //   if( SmearedPho[i].ptcone30/SmearedPho[i].Pt() > 0.15 ) SmearedPho[i].Good=false;
+  // }
+  // RemoveBad(SmearedPho);
+
   return;
 }
 

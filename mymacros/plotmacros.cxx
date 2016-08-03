@@ -32,8 +32,9 @@ auto N6 = ((TH1F*)tfile6->Get("h_NEvents_NoCuts"))->GetEntries();
 auto N7 = ((TH1F*)tfile7->Get("h_NEvents_NoCuts"))->GetEntries();
 auto N8 = ((TH1F*)tfile8->Get("h_NEvents_NoCuts"))->GetEntries();
 
+/// Adding comments and fix 
 auto sigma1 = 162; //100; // pb Not known yet
-auto sigma2 = 1014 * 0.094; //pb * 0.094
+auto sigma2 = 8.9; //#1014 * 0.094; //pb * 0.094
 auto sigma3 = 8500 * 0.154; //pb * 0.154
 auto sigma4 = 5; // pb
 auto sigma5 = 2.8; //pb
@@ -216,13 +217,13 @@ void plotoverlaping() {
 
 void plotsmearingjets() {
   
-  auto tfile = tfile2;
+  auto tfile = tfile5;
 
   SetAtlasStyle();
 
   cvs = new TCanvas();
 
-  botframe = cvs->DrawFrame(0,1e3,200,1e5);
+  botframe = cvs->DrawFrame(0,1e3,150,1e5);
   botframe->SetTitle("Title;Pt of leading jet;Events");
   // botframe = cvs->DrawFrame(0,1,800,1e8);
   // xlabel = "MSFOS";
@@ -273,14 +274,14 @@ void plotsmearingjets() {
 
 void plotsmearingleptons() {
   
-  auto tfile = tfile2;
+  auto tfile = tfile5;
 
   SetAtlasStyle();
 
   cvs = new TCanvas();
 
-  botframe = cvs->DrawFrame(0,1e3,200,1e5);
-  botframe->SetTitle("Title;Pt of leading jet;Events");
+  botframe = cvs->DrawFrame(0,1e3,20,1e5);
+  botframe->SetTitle("Title;Pt of leding lepton;Events");
   // botframe = cvs->DrawFrame(0,1,800,1e8);
   // xlabel = "MSFOS";
   // HIST = "h_MSFOS_"+cutname;
