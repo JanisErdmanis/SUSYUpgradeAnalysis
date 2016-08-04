@@ -1,0 +1,190 @@
+#ifndef SUSYUpgradeExample_UpgradeAnalysis_H
+#define SUSYUpgradeExample_UpgradeAnalysis_H
+
+#include <EventLoop/Algorithm.h>
+
+#include <TLorentzVector.h>
+#include <TH1F.h>
+#include <TH2F.h>
+//#include <THStack.h>
+#include <cmath>
+#include <iostream>
+#include "vector"
+#include <map>
+#include <TString.h>
+#include "TTree.h"
+#include "TRandom3.h"
+#include "UpgradePerformanceFunctions/UpgradePerformanceFunctions.h"
+
+
+
+using namespace std;
+
+class Particle : public TLorentzVector {
+ public:
+  bool Good;
+  double pdgid;
+  int nprong;
+  double etcone20;
+  double ptcone30;
+};
+
+double M_T(TLorentzVector vec1, TLorentzVector vec2);
+float getMT2(Particle p1, Particle p2, TLorentzVector met, double invisiblemass_1=0., double invisiblemass_2=0.);
+
+void RemoveBad(vector<Particle> &vec1);
+struct compare_pt {
+  bool operator()(const Particle &left, const Particle &right) {
+    return left.Pt() > right.Pt();
+  }
+};
+
+
+class UpgradeAnalysis : public EL::Algorithm
+{
+  // put your configuration variables here as public variables.
+  // that way they can be set directly from CINT and python.
+public:
+  // float cutValue;
+  UpgradePerformanceFunctions::UpgradeLayout layout = UpgradePerformanceFunctions::gold;
+  float averageMuValue = 0.;
+
+
+
+  // variables that don't get filled at submission time should be
+  // protected from being send from the submission node to the worker
+  // node (done by the //!)
+public:
+  // Tree *myTree; //!
+  // TH1 *myHist; //!
+
+  const double GeV = 0.001;
+  int m_eventCounter; //!
+
+  std::map<TString, TH1F*> h_PtJets1stStages;
+  std::map<TString, TH1F*> h_PtEleMuo1stStages;
+  std::map<TString, TH1F*> h_NEleMuoStages;
+  
+  std::map<TString, TH1F*> h_NEvents; //!
+  std::map<TString, TH1F*> h_MET; //!
+  std::map<TString, TH1F*> h_MSFOS; //!
+  std::map<TString, TH1F*> h_Meff; //!
+  std::map<TString, TH1F*> h_MT; //!
+  std::map<TString, TH1F*> h_MT2; //!
+  std::map<TString, TH1F*> h_MT2Jets; //!
+  //
+  std::map<TString, TH1F*> h_NPho; //!
+  std::map<TString, TH1F*> h_NElec; //!
+  std::map<TString, TH1F*> h_NMuon; //!
+  std::map<TString, TH1F*> h_NTau; //!
+  std::map<TString, TH1F*> h_NJet; //!
+  std::map<TString, TH1F*> h_NBJet; //!
+  std::map<TString, TH1F*> h_PtPhos; //!
+  std::map<TString, TH1F*> h_PtElecs; //!
+  std::map<TString, TH1F*> h_PtMuons; //!
+  std::map<TString, TH1F*> h_PtMuons1st; //!
+  std::map<TString, TH1F*> h_angleMuons1st; //!
+  std::map<TString, TH1F*> h_PtMuons2nd; //!
+  std::map<TString, TH1F*> h_PtMuons3rd; //!
+  std::map<TString, TH1F*> h_PtTaus; //!
+  std::map<TString, TH1F*> h_PtJets; //!
+  std::map<TString, TH1F*> h_PtJets1st; //!std::map<TString, TH1F*> h_PtJets1st; //!
+  std::map<TString, TH1F*> h_angleJets1st;
+  std::map<TString, TH1F*> h_PtJets2nd; //!
+  //
+  std::map<TString, TH1F*> h_llmass; //!
+  std::map<TString, TH1F*> h_Phi1stJetMet;
+  std::map<TString, TH1F*> h_mtautau1;
+  std::map<TString, TH1F*> h_mtautau2;
+  
+  std::map<TString, TH2F*> myhisto; //!
+  
+  //h_NEleMuoStages
+  // TH2F * myhisto;
+  
+  std::vector<TString> m_cuts;
+  std::vector<TString> m_Stages;
+  //
+  TRandom3 m_random3; //!
+  UpgradePerformanceFunctions *m_upgrade; //!
+  // objects
+  vector< Particle > GenPho;  //!
+  vector< Particle > GenEleMuo;  //!
+  vector< Particle > GenHadTau; //!
+  vector< Particle > GenJet; //!
+  vector< Particle > GenBJet; //!
+  TLorentzVector      m_GenMETTLV; //!
+  double m_GenMETSumet; //!
+  vector< Particle > SmearedPho;  //!
+  vector< Particle > SmearedEleMuo;  //!
+  vector< Particle > SmearedEle;
+  vector< Particle > SmearedMuo;
+  vector< Particle > SmearedHadTau; //!
+  vector< Particle > SmearedJet; //!
+  vector< Particle > SmearedBJet; //!
+  vector< Particle > SmearedNotBJet; //!
+  TLorentzVector      m_SmearedMETTLV; //!
+  // event variables
+  double              m_trigEff; //!
+  bool                m_gotSFOS; //!
+  double              m_mll; //!
+  double              m_met; //!
+  double              m_mT; //!
+  double              m_ht; //!
+  double              m_lt; //!
+  double              m_meff; //!
+  double              m_mT2; //!
+  double              m_mT2Jets; //!
+  // My need
+  double m_mtautau1;
+  double m_mtautau2;
+  // 
+//  virtual EL::StatusCode  getTruthPhotons();
+  virtual EL::StatusCode  getTruthElectrons();
+  virtual EL::StatusCode  getTruthMuons();
+//  virtual EL::StatusCode  getTruthHadronicTaus();
+  virtual EL::StatusCode  getTruthJets();
+  virtual EL::StatusCode  getTruthMET();
+  //
+//  void SmearPhotons();
+//  void SmearElectrons();
+  void SmearMuons();
+//  void SmearHadTaus();
+  void SmearJets();
+  void SmearMET();
+  //
+//  void ApplyPhotonFakes();
+//  void ApplyElectronFakes();  
+//  void ApplyTauFakes();
+  void ApplyBtagging();
+  //
+  void ApplyPtEtaThresholds();
+  void OverlapRemoval();
+  void ApplyIsolation();
+  void RemoveLowMassPairs();
+  //
+  void ApplyTriggerEfficiency();
+  //
+  void calculateEventVariables();
+  //
+  void FillHistos(TString cutname);
+
+  // this is a standard constructor
+  UpgradeAnalysis ();
+
+  // these are the functions inherited from Algorithm
+  virtual EL::StatusCode setupJob (EL::Job& job);
+  virtual EL::StatusCode fileExecute ();
+  virtual EL::StatusCode histInitialize ();
+  virtual EL::StatusCode changeInput (bool firstFile);
+  virtual EL::StatusCode initialize ();
+  virtual EL::StatusCode execute ();
+  virtual EL::StatusCode postExecute ();
+  virtual EL::StatusCode finalize ();
+  virtual EL::StatusCode histFinalize ();
+
+  // this is needed to distribute the algorithm to the workers
+  ClassDef(UpgradeAnalysis, 1);
+};
+
+#endif

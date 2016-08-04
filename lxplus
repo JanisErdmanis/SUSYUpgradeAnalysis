@@ -1,0 +1,124 @@
+#!/bin/bash
+#include "MCTruthClassifier/MCTruthClassifier.h"
+# asetup AthAnalysisBase,2.3.29
+source ~/secrets
+
+BASE_DIR="~/private/"
+SOURCE_DIR="~/private/sources/"
+INOUT_DIR="~/private/susyexamples/"
+OUTDIR="~/private/outdir/"
+# MYPRIVATE="~/Documents/private/"
+
+#rsync -a . jerdmani@lxplus.cern.ch:$BASE_DIR 
+
+if [ $1 = "push" ]; then
+    echo "Pushing the changes"
+    sshpass -p $PASS rsync -a --info=progress2 ~/Dropbox/CERN/private/ jerdmani@lxplus.cern.ch:$BASE_DIR
+    #sshpass -p $PASS rsync -a $LOCAL_PRIVATE jerdmani@lxplus.cern.ch:$BASE_DIR
+elif [ $1 = "pull" ]; then
+    echo "Getting from upstream"
+    #sshpass -p $PASS rsync -a jerdmani@lxplus.cern.ch:$BASE_DIR 
+    sshpass -p $PASS rsync -a --info=progress2 jerdmani@lxplus.cern.ch:$OUTDIR/ ~/Dropbox/CERN/private/outdir/
+    #~/Documents/private/susyexamples/
+    #sshpass -p $PASS rsync -a jerdmani@lxplus.cern.ch:$BASE_DIR $LOCAL_PRIVATE
+elif [ $1 = "compile" ]; then
+    echo "Compiling"
+    sshpass -p $PASS ssh jerdmani@lxplus.cern.ch <<EOI
+ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase;
+source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh;
+localSetupROOT 
+cd $SOURCE_DIR
+rcSetup
+rc compile
+EOI
+#rcSetup Base,2.3.45;
+#rcSetup Base,2.4.15;
+elif [ $1 = "compilebig" ]; then
+    echo "Compiling"
+    sshpass -p $PASS ssh jerdmani@lxplus.cern.ch <<EOI
+ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase;
+source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh;
+localSetupROOT;
+cd $SOURCE_DIR;
+rcSetup Base,2.3.52;
+rc clean;
+rc find_packages;
+rc compile
+EOI
+# ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase;
+#source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh;
+elif [ $1 = "root" ]; then
+    echo "Viewing a root file stored in susyexamples with a name ..."
+    sshpass -p $PASS ssh -X -t jerdmani@lxplus.cern.ch <<EOI
+ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase;
+source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh;
+localSetupROOT;
+cd $OUTDIR;
+root $2
+EOI
+elif [ $1 = "runAna" ]; then     
+    echo "Runing a analysis code stored in susyexamples with a name ..."
+    sshpass -p $PASS ssh jerdmani@lxplus.cern.ch <<EOI
+ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase;
+source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh;
+cd $SOURCE_DIR
+rcSetup 
+runAna $2
+EOI
+elif [ $1 = "testrun" ]; then     
+    echo "Testing if it runs"
+    sshpass -p $PASS rsync -a --info=progress2 ~/Dropbox/CERN/private/ jerdmani@lxplus.cern.ch:$BASE_DIR;
+    sshpass -p $PASS ssh jerdmani@lxplus.cern.ch <<EOI
+    ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase;
+    source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh;
+    localSetupROOT 
+    cd $SOURCE_DIR
+    rcSetup
+    rc compile
+    rm -rf  $OUTDIR/*
+    runAna ttbarJets
+EOI
+elif [ $1 = "runAnaB" ]; then     
+    echo "Runing a analysis in background"
+    sshpass -p $PASS ssh jerdmani@lxplus.cern.ch <<EOI
+ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase;
+source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh;
+cd $SOURCE_DIR;
+rcSetup ;
+rm -rf ../susyexamples/$2.log;
+nohup runAna $2 > ../susyexamples/$2.log 2>&1 &
+EOI
+elif [ $1 = "runAnaTmux" ]; then # previos session killing could be usefull 
+    echo "Running analysis code under remote tmux session"
+    sshpass -p $PASS ssh -t jerdmani@lxplus.cern.ch <<EOI
+hostname;
+ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase;
+source \${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh;
+localSetupROOT;
+cd $SOURCE_DIR;
+rcSetup;
+tmux new-session -d -s runAna;
+tmux send-keys -t runAna:0  "runAna $2";
+EOI
+elif [ $1 = "runAnaAll" ]; then     
+    echo "Runing a analysis code on all samples"
+    sshpass -p $PASS ssh -t jerdmani@lxplus.cern.ch "cd ~/private/sources/ && ../runanalysis.sh"
+elif [ $1 = "cleansimulation" ]; then     
+    echo "Removing all folders from ... leaving simulation data unchanged"
+#    rm -rf ~/Documents/private/susyexamples/outdir_*
+    sshpass -p $PASS ssh jerdmani@lxplus.cern.ch <<EOI
+rm -rf  $OUTDIR/*
+EOI
+elif [ $1 = "ssh" ]; then     
+    echo "Starting ssh"
+    sshpass -p $PASS ssh -Y jerdmani@lxplus.cern.ch
+elif [ $1 = "sshlib" ]; then     
+    echo "ssh to library"
+    sshpass -p $PASS ssh -Y jerdmani@pcrcslib00.cern.ch
+elif [ $1 = "sshh" ]; then     
+    echo "Starting ssh"
+    sshpass -p $PASS ssh jerdmani@lxplus$2.cern.ch
+elif [ $1 = "pullhistos" ]; then
+    echo "Pulling histos"
+    sshpass -p $PASS rsync -a --info=progress2 jerdmani@lxplus.cern.ch:$INOUT_DIR/NoCuts ~/Dropbox/CERN/private/susyexamples/
+fi
