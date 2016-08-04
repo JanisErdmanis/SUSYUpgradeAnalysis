@@ -1,9 +1,9 @@
 #!/bin/bash
 
-ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase
 echo "Runing lxplus initscript"
+
+ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase
 source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh
-localSetupROOT
 rcSetup
 
 #DAOD_TRUTH1.m100_DeltaM9_C1C1.root
@@ -22,6 +22,8 @@ tmux new-window -t calc:3 -n TauTauJets
 tmux new-window -t calc:4 -n ttbarJets
 tmux new-window -t calc:5 -n WJets
 tmux new-window -t calc:6 -n WWJets
+tmux new-window -t calc:7 -n TauTauJetsLOW
+tmux new-window -t calc:8 -n TauTauJetsHIGH
 
 # #tmux new-window -t my_server:1 -n someotherjunk
 
@@ -34,10 +36,12 @@ tmux new-window -t calc:6 -n WWJets
 
 tmux send-keys -t calc:1 "runAna m100_DeltaM9_C1C1.v2.1" C-m
 tmux send-keys -t calc:2 "runAna m100_DeltaM9_N2C1.v2.1" C-m
-tmux send-keys -t calc:3 "runAna TauTauJets.v2.0" C-m
+#tmux send-keys -t calc:3 "runAna TauTauJets.v2.0" C-m
 tmux send-keys -t calc:4 "runAna ttbarJets.v1.0" C-m
 tmux send-keys -t calc:5 "runAna WJets.v1.0" C-m
 tmux send-keys -t calc:6 "runAna WWJets.v1.0" C-m
+tmux send-keys -t calc:7 "runAna TauTauLowMllJetsFilter.v3.0" C-m
+tmux send-keys -t calc:8 "runAna TauTauHighMllJetsFilter.v3.0" C-m
 
 #tmux select-window -t my_server:runstuff
 #tmux
