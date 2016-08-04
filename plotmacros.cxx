@@ -16,7 +16,7 @@ TString samples[] = {"WJets.v1.0","ttbarJets.v1.0","TauTauJets.v2.0","m100_Delta
 
 auto tfile1 = TFile::Open("outdir/outdir_"+samples[0]+"/hist-sample.root");
 auto tfile2 = TFile::Open("outdir/outdir_"+samples[1]+"/hist-sample.root");
-auto tfile3 = TFile::Open("outdir/outdir_"+samples[2]+"/hist-sample.root");
+//auto tfile3 = TFile::Open("outdir/outdir_"+samples[2]+"/hist-sample.root");
 auto tfile4 = TFile::Open("outdir/outdir_"+samples[3]+"/hist-sample.root");
 auto tfile5 = TFile::Open("outdir/outdir_"+samples[4]+"/hist-sample.root");
 auto tfile6 = TFile::Open("outdir/outdir_"+samples[5]+"/hist-sample.root");
@@ -25,7 +25,7 @@ auto tfile8 = TFile::Open("outdir/outdir_"+samples[7]+"/hist-sample.root");
 
 auto N1 = ((TH1F*)tfile1->Get("h_NEvents_NoCuts"))->GetEntries();
 auto N2 = ((TH1F*)tfile2->Get("h_NEvents_NoCuts"))->GetEntries();
-auto N3 = ((TH1F*)tfile3->Get("h_NEvents_NoCuts"))->GetEntries();
+//auto N3 = ((TH1F*)tfile3->Get("h_NEvents_NoCuts"))->GetEntries();
 auto N4 = ((TH1F*)tfile4->Get("h_NEvents_NoCuts"))->GetEntries();
 auto N5 = ((TH1F*)tfile5->Get("h_NEvents_NoCuts"))->GetEntries();
 auto N6 = ((TH1F*)tfile6->Get("h_NEvents_NoCuts"))->GetEntries();
@@ -37,7 +37,7 @@ auto N8 = ((TH1F*)tfile8->Get("h_NEvents_NoCuts"))->GetEntries();
 auto sigma1 = 162; // WJets
 auto sigma2 = 8.9; // ttbarJets
 //auto sigma3 = 8500 * 0.154; // TauTauJets
-auto sigma3 = 0;
+//auto sigma3 = 0;
 auto sigma4 = 5; // N2C1
 auto sigma5 = 2.8; // C1C1
 auto sigma6 = 1.34; // WWJets
@@ -48,7 +48,7 @@ auto L = 3000*1000; // pb^-1  //000; 3000 fb
 
 auto scale1 = sigma1/N1*L;
 auto scale2 = sigma2/N2*L;
-auto scale3 = sigma3/N3*L;
+//auto scale3 = sigma3/N3*L;
 auto scale4 = sigma4/N4*L;
 auto scale5 = sigma5/N5*L;
 auto scale6 = sigma6/N6*L;
@@ -69,9 +69,9 @@ void plothisto() {
   h2->SetFillColor(46);
 //  h2->Draw("Same");
 
-  auto h3 = (TH1F*)tfile3->Get(HIST);
-  h3->Scale(sigma3/N3*L);
-  h3->SetFillColor(40);
+// //  auto h3 = (TH1F*)tfile3->Get(HIST);
+//   h3->Scale(sigma3/N3*L);
+//   h3->SetFillColor(40);
 
   auto h6 = (TH1F*)tfile6->Get(HIST);
   h6->Scale(sigma6/N6*L);
@@ -156,11 +156,11 @@ void plotoverlaping() {
   h2->SetLineWidth(3);
   h2->Draw("Same");
 
-  auto h3 = (TH1F*)tfile3->Get(HIST);
-//  h3->Scale(sigma3/N3*L);
-  h3->SetLineColor(40);
-  h3->SetLineWidth(3);
-  h3->Draw("Same");
+//   auto h3 = (TH1F*)tfile3->Get(HIST);
+// //  h3->Scale(sigma3/N3*L);
+//   h3->SetLineColor(40);
+//   h3->SetLineWidth(3);
+//   h3->Draw("Same");
   
   auto h6 = (TH1F*)tfile6->Get(HIST);
 //  h6->Scale(sigma6/N6*L);
@@ -193,7 +193,7 @@ void plotoverlaping() {
   leg.SetFillColor(0);
   leg.AddEntry(h1,samples[0]);
   leg.AddEntry(h2,samples[1]);
-  leg.AddEntry(h3,samples[2]);
+//  leg.AddEntry(h3,samples[2]);
   leg.AddEntry(h4,samples[3]);
   leg.AddEntry(h5,samples[4]);
   leg.AddEntry(h6,samples[5]);
@@ -248,7 +248,7 @@ void plotsmearingjets() {
   auto h3 = (TH1F*)tfile->Get("h_PtJets1stStages_PtEtaThresholds");
   h3->SetLineColor(40);
   h3->SetLineWidth(3);
-  //  h5->SetFillColor(42);
+  //h5->SetFillColor(42);
   h3->Draw("SameHist");
 
   auto h4 = (TH1F*)tfile->Get("h_PtJets1stStages_OverlapRemoval");
@@ -331,9 +331,9 @@ void plotsmearingleptons() {
 
 void plotmacros() {
 
-  auto tfile = TFile::Open("outdir/outdir_ttbarJets/hist-sample.root");
-  auto h = (TH1F*)tfile->Get("h_NEvents_NoCuts");
-  auto entries = h->GetEntries();
+  // auto tfile = TFile::Open("outdir/outdir_ttbarJets/hist-sample.root");
+  // auto h = (TH1F*)tfile->Get("h_NEvents_NoCuts");
+  // auto entries = h->GetEntries();
 }
 
 void plotsignificance() {
@@ -344,8 +344,8 @@ void plotsignificance() {
   auto h2 = (TH1F*)tfile2->Get(HIST);
   h2->Scale(sigma2/N2*L);
 
-  auto h3 = (TH1F*)tfile3->Get(HIST);
-  h3->Scale(sigma3/N3*L);
+  // auto h3 = (TH1F*)tfile3->Get(HIST);
+  // h3->Scale(sigma3/N3*L);
 
   auto h6 = (TH1F*)tfile6->Get(HIST);
   h6->Scale(sigma6/N6*L);
@@ -363,20 +363,20 @@ void plotsignificance() {
 
   gr = new TGraph();
 
-  int n = 100;
-  for(int i=0;i<n;i++) {
-    x = 0 + maximum*i/n;
-    double bkg = h2->Integral(h2->FindBin(x),-1) + h3->Integral(h3->FindBin(x),-1) + h6->Integral(h6->FindBin(x),100);
-    double sign = h4->Integral(h4->FindBin(x),-1) + h5->Integral(h5->FindBin(x),-1);
+  // int n = 100;
+  // for(int i=0;i<n;i++) {
+  //   x = 0 + maximum*i/n;
+  //   double bkg = h2->Integral(h2->FindBin(x),-1) + h3->Integral(h3->FindBin(x),-1) + h6->Integral(h6->FindBin(x),100);
+  //   double sign = h4->Integral(h4->FindBin(x),-1) + h5->Integral(h5->FindBin(x),-1);
 
-    //double significance = RooStats::NumberCountingUtils::BinomialExpP(sign+bkg,bkg,0.3);
+  //   //double significance = RooStats::NumberCountingUtils::BinomialExpP(sign+bkg,bkg,0.3);
 
-    double significance = 0;
-    //cout << bkg << " " << sign << " " << significance << endl;
+  //   double significance = 0;
+  //   //cout << bkg << " " << sign << " " << significance << endl;
 
-    gr->SetPoint(i,x,significance);
+  //   gr->SetPoint(i,x,significance);
     
-  }
+  // }
   
   gr->Draw("AC*");
   gr->SetTitle("Significance for MET; MET cut; significance");
@@ -424,6 +424,26 @@ void h_allhistos() {
   cvs->SetLogy();
   botframe->SetTitle("The title;1st lepton Pt [GeV];Events");
   cvs->SaveAs(cutfolder+"/"+"h_PtMuons1st"+".png");
+
+  gROOT->Reset();
+  cvs = new TCanvas();
+  botframe = cvs->DrawFrame(0,1,25,1e8);
+  xlabel = "2nd Muon Pt";
+  HIST = "h_PtMuons2nd_"+cutname;
+  plothisto();
+  cvs->SetLogy();
+  botframe->SetTitle("The title;2nd lepton Pt [GeV];Events");
+  cvs->SaveAs(cutfolder+"/"+"h_PtMuons2nd"+".png");
+
+  gROOT->Reset();
+  cvs = new TCanvas();
+  botframe = cvs->DrawFrame(0,1,25,1e8);
+  xlabel = "3rd Muon Pt";
+  HIST = "h_PtMuons3rd_"+cutname;
+  plothisto();
+  cvs->SetLogy();
+  botframe->SetTitle("The title;3rd lepton Pt [GeV];Events");
+  cvs->SaveAs(cutfolder+"/"+"h_PtMuons3rd"+".png");
 
   gROOT->Reset();
   cvs = new TCanvas();
@@ -549,23 +569,34 @@ void h_allhistos() {
   cvs->SaveAs(cutfolder+"/"+"h_NMuon"+".png");
 
 
-  // gROOT->Reset();
-  // cvs = new TCanvas();
-  // botframe = cvs->DrawFrame(0,1,200,1e8);
-  // xlabel = "Muon multiplicity";
-  // HIST = "h_MT2_"+cutname;
-  // plothisto();
-  // cvs->SetLogy();
-  // botframe->SetTitle("The title;Muon multiplicity;Events");
-  // cvs->SaveAs(cutfolder+"/"+"h_NMuon"+".png");
-  
+  gROOT->Reset();
+  cvs = new TCanvas();
+  botframe = cvs->DrawFrame(0,1,200,1e8);
+  xlabel = "MT2";
+  HIST = "h_MT2_"+cutname;
+  plothisto();
+  cvs->SetLogy();
+  botframe->SetTitle("The title;MT2 [GeV];Events");
+  cvs->SaveAs(cutfolder+"/"+"h_MT2"+".png");
+
+  gROOT->Reset();
+  cvs = new TCanvas();
+  botframe = cvs->DrawFrame(0,1,200,1e8);
+  xlabel = "MT2Jets";
+  HIST = "h_MT2Jets_"+cutname;
+  plothisto();
+  cvs->SetLogy();
+  botframe->SetTitle("The title;MT2Jets [GeV];Events");
+  cvs->SaveAs(cutfolder+"/"+"h_MT2Jets"+".png");
+
+
 }
 
 void h_plotwithallcuts() {
 
   cout << "WJets=" << N1 << endl;
   cout << "ttbarJets=" << N2 << endl;
-  cout << "TauTauJets=" << N3 << endl;
+//  cout << "TauTauJets=" << N3 << endl;
   cout << "m100_DeltaM9_N2C1=" << N4 << endl;
   cout << "m100_DeltaM9_C1C1=" << N5 << endl;
   cout << "WWJets=" << N6 << endl;
