@@ -132,12 +132,16 @@ void plothisto() {
   leg->AddEntry(h4,"N2C1","l");
   leg->AddEntry(h5,"C1C1","l");
   leg->AddEntry(h7,"TauTauJetsLow","f");
-  leg->AddEntry(h7,"TauTauJetsHigh","f");
+  leg->AddEntry(h8,"TauTauJetsHigh","f");
   leg->DrawClone("Same");
 
   cout << "---------------------------" << endl;
-  cout << "bkg=" << h7->Integral() + h8->Integral() + h2->Integral() + h1->Integral() + h6->Integral() << endl;
-  cout << "signal=" << h4->Integral() + h5->Integral() << endl;
+  cout << "Wjets=" << h1->Integral() << endl;
+  cout << "ttbarJets=" << h2->Integral() << endl;
+  cout << "WWJets=" << h6->Integral() << endl;
+  cout << "TauTauJets=" << h7->Integral() + h8->Integral() << endl;
+  cout << "N2C1=" << h4->Integral() << endl;
+  cout << "C1C1=" << h5->Integral() << endl;
   cout << "---------------------------" << endl;
   
 }
@@ -568,7 +572,6 @@ void h_allhistos() {
   botframe->SetTitle("The title;Muon multiplicity;Events");
   cvs->SaveAs(cutfolder+"/"+"h_NMuon"+".png");
 
-
   gROOT->Reset();
   cvs = new TCanvas();
   botframe = cvs->DrawFrame(0,1,200,1e8);
@@ -589,7 +592,6 @@ void h_allhistos() {
   botframe->SetTitle("The title;MT2Jets [GeV];Events");
   cvs->SaveAs(cutfolder+"/"+"h_MT2Jets"+".png");
 
-
 }
 
 void h_plotwithallcuts() {
@@ -607,11 +609,15 @@ void h_plotwithallcuts() {
   cutfolder = "plots/NoCuts";
   h_allhistos();
 
-  cutname = "MET>100 GeV";
+  cutname = "MET>200 GeV";
   cutfolder += "/" + cutname;
   h_allhistos();
 
   cutname = "1stJet Pt>100 GeV";
+  cutfolder += "/" + cutname;
+  h_allhistos();
+
+  cutname = "DPhi>0.4";
   cutfolder += "/" + cutname;
   h_allhistos();
 
@@ -623,18 +629,26 @@ void h_plotwithallcuts() {
   cutfolder += "/" + cutname;
   h_allhistos();
 
-  cutname = "M(1st l + 2nd l)<12 GeV";
+  cutname = "12<M(1st l + 2nd l)<50 GeV";
   cutfolder += "/" + cutname;
   h_allhistos();
 
-  auto temp = cutfolder;
-  cutname = "2 leptons";
-  cutfolder = temp + "/" + cutname;
+  cutname = "Pt 1st and 2nd lepton < 15 GeV";
+  cutfolder += "/" + cutname;
   h_allhistos();
 
-  cutname = "3 leptons";
-  cutfolder = temp + "/" + cutname;
+  cutname = "MSFOS < 60 GeV";
+  cutfolder += "/" + cutname;
   h_allhistos();
+
+  // auto temp = cutfolder;
+  // cutname = "2 leptons";
+  // cutfolder = temp + "/" + cutname;
+  // h_allhistos();
+
+  // cutname = "3 leptons";
+  // cutfolder = temp + "/" + cutname;
+  // h_allhistos();
 
   // // cutname = "1stJet Pt>200 GeV";
   // // cutfolder = "NoCuts/" + cutname; // "1stJet Pt>200 GeV"; //CutName1;

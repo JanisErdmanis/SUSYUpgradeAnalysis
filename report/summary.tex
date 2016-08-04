@@ -90,34 +90,68 @@ To test if the smearing of events works we plotted leading jet transverse moment
 
 \begin{figure}[!ht]
   \centering
+  \includegraphics[width=0.3\textwidth]{h_PtJets1st.png}
   \includegraphics[width=0.3\textwidth]{h_MET.png}
-  \includegraphics[width=0.3\textwidth]{h_llmass.png}
-  \includegraphics[width=0.3\textwidth]{h_Mtautau2.png}
+  \includegraphics[width=0.3\textwidth]{h_MT.png}
   \caption{Missing energy, two leading lepton mass $m_{ll}$ and reconstructed tautau mass $m_{\tau\tau}$ with formula (...)}
 \end{figure}
 
 To compare and check our simulation and smearing algorithm we use selection from [...] for the same kind of process.  
 \begin{itemize}
-\item $MET>100 GeV$. Because we expect large missing energy in form of neitralinos and neitronos in our signal.
+\item $MET>200 GeV$. Because we expect large missing energy in form of neitralinos and neitronos in our signal.
 \item Single Jet with $Pt>100GeV$ and no $Bjets$ in event. We want missing energy to come from particles not in jets and bjets are produced mainly by background $pp->t \bar t + j$.
-\item $2~ leading ~ lepton ~ Pt > 7 GeV$. We are eliminating here not considered background
-\item $m_{\tau \tau}>150 GeV$. Should eliminate $pp\rightarrow \tau \tau$ background as it has resonance at $100 GeV$. 
-\item $M(1st l + 2nd l)<12 GeV$.
+\item $\Delta \Phi(MET,1st ~jet)>0.4$
+\item $2~ leading ~ lepton ~ Pt > 5 GeV$. We are eliminating here not considered background
 \end{itemize}
 where we also afterwards make seperation for two and three lepton processes. 
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=0.45\textwidth]{h_llmass_cuts.png}
-  \includegraphics[width=0.45\textwidth]{h_PtMuons1st_cuts.png}
+  \includegraphics[width=0.3\textwidth]{h_PtMuons1st_2lead.png}
+  \includegraphics[width=0.3\textwidth]{h_PtMuons2nd_2lead.png}
+  \includegraphics[width=0.3\textwidth]{h_llmass_2lead.png}
   \caption{The signal after sellection}
 \end{figure}
 
 
+\begin{table}
+  % \centering
+  % \begin{tabular}{ll}
+  %   BKG & Events \\
+  %   \hline
+  %   $\tau \tau$ & 0 \\
+  %   $t \bar t$ & 0 \\
+  %   $WW$ & 0 \\
+  %   $W+jets$ & 0 \\
+  %   $\chi_1^{\pm} \chi_1^{\pm}$ & 0 \\
+  %   $\chi_1^{\pm} \chi_2^0$ & 0 
+  % \end{tabular}
+  % \begin{tabular}{lll}
+  %   Signal & Signal/Backgraund & Significance \\
+  %   \hline
+  %   $\chi_1^{\pm} \chi_1^{\pm}$ & 0 & 0\\
+  %   $\chi_1^{\pm} \chi_2^0$ & 0 & 0 \\
+  % \end{tabular}
+  \setlength{\tabcolsep}{12pt}
+  \centering
+  \begin{tabular}{l|rrrrrr}
+    & $\tau \tau$ & $t \bar t$ & $WW$ & $W$ & $\chi_1^{\pm} \chi_1^{\pm}$ &  $\chi_1^{\pm} \chi_2^0$ \\
+    \hline
+    Events(L=3000fb) & 0 & 1425 & 119 & 0 & 370 & 1391 \\
+    Signal/BKG & - & - & - & - & 0.23 & 0.90 \\
+    Significance & - & - & - & - & 0 & 0 
+  \end{tabular}
+  \caption{Number of events after selection for $L=3000fb$ and corresponding significance for cutofs described for 1st muon transverse momenta. }
+\end{table}
+
 \section{Conclussions}
 
+\begin{itemize}
+\item ttbar background is sticky further study of how it can be removed is needed
+\item with selection used in the repport we have obtained signal at the same order as abcakground
+\item the significance is ... enough/not enough for discovery at high luminosity LHC
+\end{itemize}
 
-     
 %     \begin{SCfigure}[][p]
 %       	 \includegraphics[width=0.6\textwidth]{./Plots/Dispersion_packet_plot}  \caption{The spread of wave packet as function of speed at which energy in quantum dot is raised.}
 %     	\label{fig:spread}
@@ -143,16 +177,28 @@ where we also afterwards make seperation for two and three lepton processes.
 %  	\label{fig:convergence}
 %  \end{figure}
   
-  
   % ---Bibliography --- 
-  \clearpage
-  \bibliography{bibliography}{}
-%  \bibliographystyle{plain}
-  
-  
+  % \clearpage
+\nocite{*}
+\bibliography{bibliography}{}
+%\bibliographystyle{plain}
   \end{document}
 
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: t
 %%% End:
+
+
+
+
+
+
+
+
+
+
+
+
+
+

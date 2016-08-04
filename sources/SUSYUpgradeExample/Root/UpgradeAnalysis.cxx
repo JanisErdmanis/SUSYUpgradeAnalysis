@@ -69,14 +69,14 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
 
 //  #if ANA==1
   m_cuts.push_back("NoCuts");
-
-  m_cuts.push_back("MET>100 GeV");
+  m_cuts.push_back("MET>200 GeV");
   m_cuts.push_back("1stJet Pt>100 GeV");
+  m_cuts.push_back("DPhi>0.4");
   m_cuts.push_back("2 leading leptons Pt > 5 GeV");
   m_cuts.push_back("mTauTau>150 GeV");
-  m_cuts.push_back("M(1st l + 2nd l)<12 GeV");
-  m_cuts.push_back("2 leptons");
-  m_cuts.push_back("3 leptons");
+  m_cuts.push_back("12<M(1st l + 2nd l)<50 GeV");
+  m_cuts.push_back("Pt 1st and 2nd lepton < 15 GeV");
+  m_cuts.push_back("MSFOS < 60 GeV");
 
   for( unsigned int i = 0; i < m_cuts.size(); i++) {
 
@@ -440,36 +440,33 @@ EL::StatusCode UpgradeAnalysis :: execute ()
 
   calculateEventVariables();
 
-
   FillHistos("NoCuts");
-  if ( m_SmearedMETTLV.Et()*GeV > 100. ) {
-    FillHistos("MET>100 GeV");
+  if ( m_SmearedMETTLV.Et()*GeV > 200. ) {
+    FillHistos("MET>200 GeV");
     if (SmearedNotBJet.size()==1 && SmearedBJet.size()==0) {
       if ( SmearedNotBJet[0].Pt()*GeV > 100. ) {
         FillHistos("1stJet Pt>100 GeV");
-        int nmuob = 0;
-        for (int j=0;j<SmearedEleMuo.size();j++) {
-          if ( SmearedEleMuo[j].Pt()*GeV>5. && SmearedEleMuo[j].Eta()<2.8 )
-            nmuob += 1;
-        }
-        if ( nmuob>=2 ) {
-          FillHistos("2 leading leptons Pt > 5 GeV");
-        }
-        if (m_mtautau2*GeV>150.) {
-          FillHistos("mTauTau>150 GeV");
-          if( (SmearedEleMuo[0] + SmearedEleMuo[1]).M()*GeV < 12.) {
-            FillHistos("M(1st l + 2nd l)<12 GeV");
-
-            if (SmearedEleMuo.size()==2)
-              FillHistos("2 leptons");
-
-            if (SmearedEleMuo.size()==3)
-              FillHistos("3 leptons");
+        if ( SmearedNotBJet[0].DeltaPhi(m_SmearedMETTLV)>0.4 ) {
+          FillHistos("DPhi>0.4");
+          if ( SmearedEleMuo.size()>=2 ) {
+            FillHistos("2 leading leptons Pt > 5 GeV");
+            if (m_mtautau1*GeV>150.) {
+              FillHistos("mTauTau>150 GeV");
+              if( ((SmearedEleMuo[0] + SmearedEleMuo[1]).M()*GeV > 12.) && ((SmearedEleMuo[0] + SmearedEleMuo[1]).M()*GeV < 50.)) {
+                FillHistos("12<M(1st l + 2nd l)<50 GeV");
+                if( (SmearedEleMuo[0].Pt()*GeV<12.) && (SmearedEleMuo[1].Pt()*GeV<12.)) {
+                  FillHistos("Pt 1st and 2nd lepton < 15 GeV");
+                  if( m_mll*GeV<60.) {
+                    FillHistos("MSFOS < 60 GeV");
+                  }
+                }
+              }
+            }
           }
         }
       }
     }      
-  }
+  }  
   
   return EL::StatusCode::SUCCESS;
 }
