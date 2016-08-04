@@ -32,15 +32,17 @@ auto N6 = ((TH1F*)tfile6->Get("h_NEvents_NoCuts"))->GetEntries();
 auto N7 = ((TH1F*)tfile7->Get("h_NEvents_NoCuts"))->GetEntries();
 auto N8 = ((TH1F*)tfile8->Get("h_NEvents_NoCuts"))->GetEntries();
 
-/// Adding comments and fix 
-auto sigma1 = 162; //100; // pb Not known yet
-auto sigma2 = 8.9; //#1014 * 0.094; //pb * 0.094
-auto sigma3 = 8500 * 0.154; //pb * 0.154
-auto sigma4 = 5; // pb
-auto sigma5 = 2.8; //pb
-auto sigma6 = 1.34; //pb Not known yet
-auto sigma7 = 0.40; //pb
-auto sigma8 = 0.93; //pb
+/// Adding comments and fix
+// Cross sections in pb
+auto sigma1 = 162; // WJets
+auto sigma2 = 8.9; // ttbarJets
+//auto sigma3 = 8500 * 0.154; // TauTauJets
+auto sigma3 = 0;
+auto sigma4 = 5; // N2C1
+auto sigma5 = 2.8; // C1C1
+auto sigma6 = 1.34; // WWJets
+auto sigma7 = 0.40; // TauTauLow
+auto sigma8 = 0.93; // TauTauHigh
 
 auto L = 3000*1000; // pb^-1  //000; 3000 fb
 
@@ -526,16 +528,6 @@ void h_allhistos() {
   botframe->SetTitle("The title;MT [GeV];Events");
   cvs->SaveAs(cutfolder+"/"+"h_MT"+".png");
 
-  // gROOT->Reset();
-  // cvs = new TCanvas();
-  // botframe = cvs->DrawFrame(0,1,800,1e8);
-  // xlabel = "MT2";
-  // HIST = "h_MT2_"+cutname;
-  // plothisto();
-  // cvs->SetLogy();
-  // botframe->SetTitle("The title;MT2 [GeV];Events");
-  // cvs->SaveAs(cutfolder+"/"+"h_MT2"+".png");
-
   gROOT->Reset();
   cvs = new TCanvas();
   botframe = cvs->DrawFrame(0,1,6,1e8);
@@ -556,6 +548,17 @@ void h_allhistos() {
   botframe->SetTitle("The title;Muon multiplicity;Events");
   cvs->SaveAs(cutfolder+"/"+"h_NMuon"+".png");
 
+
+  // gROOT->Reset();
+  // cvs = new TCanvas();
+  // botframe = cvs->DrawFrame(0,1,200,1e8);
+  // xlabel = "Muon multiplicity";
+  // HIST = "h_MT2_"+cutname;
+  // plothisto();
+  // cvs->SetLogy();
+  // botframe->SetTitle("The title;Muon multiplicity;Events");
+  // cvs->SaveAs(cutfolder+"/"+"h_NMuon"+".png");
+  
 }
 
 void h_plotwithallcuts() {
@@ -581,7 +584,7 @@ void h_plotwithallcuts() {
   cutfolder += "/" + cutname;
   h_allhistos();
 
-  cutname = "2 leading leptons Pt > 7 GeV";
+  cutname = "2 leading leptons Pt > 5 GeV";
   cutfolder += "/" + cutname;
   h_allhistos();
 

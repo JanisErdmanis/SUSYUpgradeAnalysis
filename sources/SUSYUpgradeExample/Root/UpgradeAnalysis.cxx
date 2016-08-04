@@ -72,7 +72,7 @@ EL::StatusCode UpgradeAnalysis :: histInitialize ()
 
   m_cuts.push_back("MET>100 GeV");
   m_cuts.push_back("1stJet Pt>100 GeV");
-  m_cuts.push_back("2 leading leptons Pt > 7 GeV");
+  m_cuts.push_back("2 leading leptons Pt > 5 GeV");
   m_cuts.push_back("mTauTau>150 GeV");
   m_cuts.push_back("M(1st l + 2nd l)<12 GeV");
   m_cuts.push_back("2 leptons");
@@ -449,11 +449,11 @@ EL::StatusCode UpgradeAnalysis :: execute ()
         FillHistos("1stJet Pt>100 GeV");
         int nmuob = 0;
         for (int j=0;j<SmearedEleMuo.size();j++) {
-          if ( SmearedEleMuo[j].Pt()*GeV>7. && SmearedEleMuo[j].Eta()<2.5 )
+          if ( SmearedEleMuo[j].Pt()*GeV>5. && SmearedEleMuo[j].Eta()<2.8 )
             nmuob += 1;
         }
         if ( nmuob>=2 ) {
-          FillHistos("2 leading leptons Pt > 7 GeV");
+          FillHistos("2 leading leptons Pt > 5 GeV");
         }
         if (m_mtautau2*GeV>150.) {
           FillHistos("mTauTau>150 GeV");

@@ -5,6 +5,5 @@
 *cscope.files
 *cscope.out
 *.tar
-*/outdir_*
 *.#*
 .svn/
