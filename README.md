@@ -9,3 +9,5 @@ git push origin master
 git checkout -b [name_of_your_new_branch]
 git push origin [name_of_your_new_branch]
 git branch
+
+git tag -a -m "Tagging release 1.0" v1.0
