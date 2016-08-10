@@ -136,12 +136,23 @@ void plothisto() {
   leg->DrawClone("Same");
 
   cout << "---------------------------" << endl;
-  cout << "Wjets=" << h1->Integral() << endl;
-  cout << "ttbarJets=" << h2->Integral() << endl;
-  cout << "WWJets=" << h6->Integral() << endl;
-  cout << "TauTauJets=" << h7->Integral() + h8->Integral() << endl;
-  cout << "N2C1=" << h4->Integral() << endl;
-  cout << "C1C1=" << h5->Integral() << endl;
+  Double_t error;
+  double integral;
+  double x = 20;
+  integral = h1->IntegralAndError(h1->FindBin(0),h1->FindBin(x),error);
+  cout << "Wjets=" << integral << "\t" << error << endl;
+  integral = h2->IntegralAndError(h2->FindBin(0),h2->FindBin(x),error);
+  cout << "ttbarJets=" << integral << "\t" << error << endl;
+  integral = h6->IntegralAndError(h6->FindBin(0),h6->FindBin(x),error);
+  cout << "WWJets=" << integral << "\t" << error << endl;
+  integral = h7->IntegralAndError(h7->FindBin(0),h7->FindBin(x),error);
+  cout << "TauTauJetsLow=" << integral << "\t" << error << endl;
+  integral = h8->IntegralAndError(h8->FindBin(0),h8->FindBin(x),error);
+  cout << "TauTauJetsHigh=" << integral << "\t" << error << endl;
+  integral = h4->IntegralAndError(h4->FindBin(0),h4->FindBin(x),error);
+  cout << "N2C1=" << integral << "\t" << error << endl;
+  integral = h5->IntegralAndError(h5->FindBin(0),h5->FindBin(x),error);
+  cout << "C1C1=" << integral << "\t" << error << endl;
   cout << "---------------------------" << endl;
   
 }

@@ -1,60 +1,44 @@
-\begin{thebibliography}{6}
-\providecommand{\natexlab}[1]{#1}
-\providecommand{\url}[1]{\texttt{#1}}
-\expandafter\ifx\csname urlstyle\endcsname\relax
-  \providecommand{\doi}[1]{doi: #1}\else
-  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+\begin{thebibliography}{1}
 
-\bibitem[Barbieri and Giudice(1988)]{Barbieri}
+\bibitem{Barbieri}
 R.~Barbieri and G.F. Giudice.
 \newblock Upper bounds on supersymmetric particle masses.
-\newblock \emph{Nuclear Physics B}, 306\penalty0 (1):\penalty0 63 -- 76, 1988.
-\newblock ISSN 0550-3213.
-\newblock \doi{http://dx.doi.org/10.1016/0550-3213(88)90171-X}.
-\newblock URL
-  \url{http://www.sciencedirect.com/science/article/pii/055032138890171X}.
+\newblock {\em Nuclear Physics B}, 306(1):63 -- 76, 1988.
 
-\bibitem[Collaboration(2016)]{PhysRevD.93.052002}
+\bibitem{Carlos}
+B.~de~Carlos and J.A. Casas.
+\newblock One-loop analysis of the electroweak breaking in supersymmetric
+  models and the fine-tuning problem.
+\newblock {\em Physics Letters B}, 309(3):320 -- 328, 1993.
+
+\bibitem{PhysRevD.93.052002}
 ATLAS Collaboration.
 \newblock Search for the electroweak production of supersymmetric particles in
   $\sqrt{s}=8\text{ }\text{ }\mathrm{TeV}$ $pp$ collisions with the atlas
   detector.
-\newblock \emph{Phys. Rev. D}, 93:\penalty0 052002, Mar 2016.
-\newblock \doi{10.1103/PhysRevD.93.052002}.
-\newblock URL \url{http://link.aps.org/doi/10.1103/PhysRevD.93.052002}.
+\newblock {\em Phys. Rev. D}, 93:052002, Mar 2016.
 
-\bibitem[Collaboration(2008)]{ATLASCOL-2008}
+\bibitem{HLLHC}
+{Performance assumptions based on full simulation for an upgraded ATLAS
+  detector at a High-Luminosity LHC}.
+\newblock Technical Report ATL-PHYS-PUB-2013-009, CERN, Geneva, Sep 2013.
+
+\bibitem{ATLASCOL-2008}
 The~ATLAS Collaboration.
 \newblock The atlas experiment at the cern large hadron collider.
-\newblock \emph{Journal of Instrumentation}, 3\penalty0 (08):\penalty0 S08003,
-  2008.
-\newblock URL \url{http://stacks.iop.org/1748-0221/3/i=08/a=S08003}.
+\newblock {\em Journal of Instrumentation}, 3(08):S08003, 2008.
 
-\bibitem[Collaboration(2015)]{ATL-PHYS-PUB-2015}
+\bibitem{PhysRevD.89.075007}
+Zhenyu Han, Graham~D. Kribs, Adam Martin, and Arjun Menon.
+\newblock Hunting quasidegenerate higgsinos.
+\newblock {\em Phys. Rev. D}, 89:075007, Apr 2014.
+
+\bibitem{ATL-PHYS-PUB-2015}
 The~ATLAS Collaboration.
 \newblock {Prospect for a search for direct pair production of a chargino and a
   neutralino decaying via a W boson and the lightest Higgs boson in final
   states with one lepton, two b-jets and missing transverse momentum at the
   high luminosity LHC with the ATLAS Detector.}
 \newblock Technical Report ATL-PHYS-PUB-2015-032, CERN, Geneva, Jul 2015.
-\newblock URL \url{https://cds.cern.ch/record/2038565}.
-
-\bibitem[de~Carlos and Casas(1993)]{Carlos}
-B.~de~Carlos and J.A. Casas.
-\newblock One-loop analysis of the electroweak breaking in supersymmetric
-  models and the fine-tuning problem.
-\newblock \emph{Physics Letters B}, 309\penalty0 (3):\penalty0 320 -- 328,
-  1993.
-\newblock ISSN 0370-2693.
-\newblock \doi{http://dx.doi.org/10.1016/0370-2693(93)90940-J}.
-\newblock URL
-  \url{http://www.sciencedirect.com/science/article/pii/037026939390940J}.
-
-\bibitem[Han et~al.(2014)Han, Kribs, Martin, and Menon]{PhysRevD.89.075007}
-Zhenyu Han, Graham~D. Kribs, Adam Martin, and Arjun Menon.
-\newblock Hunting quasidegenerate higgsinos.
-\newblock \emph{Phys. Rev. D}, 89:\penalty0 075007, Apr 2014.
-\newblock \doi{10.1103/PhysRevD.89.075007}.
-\newblock URL \url{http://link.aps.org/doi/10.1103/PhysRevD.89.075007}.
 
 \end{thebibliography}
