@@ -35,9 +35,9 @@
 
   \section{Introduction}
 
-  In the Standard Model (SM) Higgs mass is highly sensitive to the details of the physics at high-energy \cite{Barbieri}. Unless we accept big number cancellations, SM does not work well with naturalness principle which leads us to beyond SM (BSM) physics. This issue is resolved in supersimetry (SUSY) introducing new particles, new processes at higher energies \cite{Carlos}. With a present data from large hardron collider (LHC) \cite{PhysRevD.93.052002} we know that all superpartners should be heavy except higgsino, where lower bound is established from LEP\footnote{Large electron positron accelerator.} to be larger than $100~\rm{GeV}$, but smaller than $1 ~\rm{TeV}$ for naturalness principle to hold. Here we consider possibility to push lower bound of higgsino mass with data from high luminosity LHC at ATLAS experiment \cite{HLLHC,ATLASCOL-2008}, therefore we initialy consider higgsino mass to be $\mu=100~\rm{GeV}$ and its mass splittings $\Delta m = 5~\rm{GeV}$ (see \cref{fig:basic}).
+  In the Standard Model (SM) Higgs mass is highly sensitive to the details of the physics at high-energy \cite{Barbieri}. Unless we accept big number cancellations, SM does not work well with naturalness principle which leads us to beyond SM (BSM) physics. This issue is resolved in supersimmetry (SUSY) introducing new particles, new processes at higher energies \cite{Carlos}. With a present data from large hardron collider (LHC) \cite{PhysRevD.93.052002} we know that all SUSY particles should be heavy except higgsino, where lower bound is established from LEP\footnote{Large electron positron accelerator.} $100~\rm{GeV}$. On the other hand for naturalness principle to hold higgsino mass has upper bound of about $1 ~\rm{TeV}$. Here we consider possibility to push lower bound of higgsino mass with high luminosity LHC data from ATLAS experiment \cite{HLLHC,ATLASCOL-2008}, therefore we initialy consider higgsino mass to be $m_{h}=100~\rm{GeV}$ and its mass splittings $\Delta m_h = 5~\rm{GeV}$ (see \cref{fig:basic}).
 
-Similarly as in previos studies \cite{PhysRevD.89.075007,ATL-PHYS-PUB-2015,PhysRevD.93.052002} here we are considering chargino, neutralino $\tilde \chi_1^{+},~\tilde \chi_1^{-}$ production which decay to neutralinos, neutrinos and soft leptons (see \cref{fig:basic}). These leptons are buried in SM background which comes from $pp\to \tau \tau + j$, $pp\to t \bar t + j$, $pp \to WW + j$ and have comparable cross-section as a signal (see \cref{tab:cross}). Also in our analysis we include process $pp \to W +j$ which although produces one lepton but because of large cross-section has a chance for incorectly detecting second lepton coming from jet (fake leptons). 
+Similarly as in previos studies \cite{PhysRevD.89.075007} here we are considering chargino, neutralino $\tilde \chi_1^{+},~\tilde \chi_1^{-}$ production which decays to neutralinos, neutrinos and soft leptons (see \cref{fig:basic}). These leptons are buried in SM background comming mainly from $pp\to \tau \tau + j$, $pp\to t \bar t + j$, $pp \to WW + j$ as thy have comparable cross-section as a signal (see \cref{tab:cross}). Also in our analysis we include process $pp \to W +j$ which although produces one soft lepton it has a large cross-section and therefore considerable chance for incorectly detecting second lepton coming from jet (fake leptons). 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.25\textwidth]{splittings.png}
@@ -59,7 +59,7 @@ Similarly as in previos studies \cite{PhysRevD.89.075007,ATL-PHYS-PUB-2015,PhysR
     $pp \rightarrow \tilde \chi_1^{+}\tilde \chi_1^{-} + j \rightarrow WW + j$ & $2.8~\rm{pb}$\\
     $pp \rightarrow \tilde \chi_1^{+}\tilde \chi_2^{0} + j \rightarrow WZ + j$ & $5~\rm{pb}$\\
   \end{tabular}
-  \caption{Cross-sections at $14~\rm{TeV}$ for soft lepton processes}
+  \caption{Cross sections at 14 TeV for the signal and background processes considered.}
   \label{tab:cross}
 \end{table}
 % MadGraph event generator for all theese processes is used from which we try to extract signal with appropriate selection.
@@ -68,9 +68,11 @@ To study and compare the signal and backgrounds, we turn to Monte Carlo. We simu
 
 \section{Simplified detector simulation}
 
-Event reconstruction is limited by a detector imperfections, geometry, resolution and other properties. Because a real detector simulation is costly here we are going to use simplified model.
+Each simulated event consits of number of objects - particles, particle showers comming from quark hardronization (jets) and missing energy $E^{\rm{miss}}_T$ which we know from transverse momenta conservation. For each of theese objects simulation gives us Lorentz four-vector and so we can calculate - energy, mass, momenta, transverse angle $\phi$\footnote{Because of symmetry, we are only concerned with angle differences between objects.}, pseidorapidity $\eta$.\footnote{Commonly used spatial coordinate describing angle of particle releative to beam axis. It is releated to angle between momentum and beam axis with formula $\theta=2 \arctan (e^{-\eta})$.} as well as object labels - electron, positron, muon, lepton, jet, $b$-jet, photon. Unfortunatelly event reconstruction is limited by a detector imperfections, geometry, resolution and other properties. Because a real detector simulation is costly here we are going to use simplified model.
 
-Firstly we smear energies, masses, momenta, $\eta$, $\phi$, jet labels\footnote{Because of efficiency with which we can distinguish jets from $b$-jets.} of all objects (particles and jets) with corresponding performance functions for $200$ average interactions per bunch crossing as expected in HL LHC. Then from these smeared event particles we are able to detect only ones which hit detector $|\eta|<2.8$, for leptons with transverse momenta $p_{\rm{T}} > 5~\rm{GeV} $ and for jets $p_{\rm T}>50~\rm{GeV}$. At overlap removal stage if lepton and jet are separated with less than $\Delta R = \sqrt{\Delta \phi^2 + \Delta \eta^2}<0.2$ and if transverse momenta of lepton is at least $50~ \%$ of transverse momenta of jet then we discard jet. For remaining objects if distance between jet and lepton is $\Delta R < 0.4$ we discard lepton assuming it belongs to the jet. We also assume that lepton belongs to jet if it has small energy and momenta compared to all particles around the cone. And eventually we remove low mass $<12 ~\rm{GeV}$ leptons with opposite charge, because they are affected with resonance processes not considered here.  
+Firstly we smear object energies, masses, momenta, $\eta$, $\phi$, jet labels\footnote{Because of efficiency with which we can distinguish jets from $b$-jets.} of all objects (particles and jets) with corresponding performance functions for $200$ average interactions per bunch crossing as expected in HL LHC. Then from these smeared event particles we are able to detect only ones which hit detector $|\eta|<2.8$ and are energetic enough to trigger detector - for leptons  $p_{\rm{T}} > 5~\rm{GeV} $ and for jets $p_{\rm T}>50~\rm{GeV}$.
+
+Because we are not interested in particles which comes from quark hardronization (jets) then we have to exclude particles which comes from jets. At overlap removal stage if lepton and jet are separated with less than $\Delta R = \sqrt{\Delta \phi^2 + \Delta \eta^2}<0.2$ and if transverse momenta of lepton is at least $50~ \%$ of transverse momenta of jet then we discard jet. For remaining objects if distance between jet and lepton is $\Delta R < 0.4$ we discard lepton assuming it belongs to the jet. We also assume that lepton belongs to jet if it has small energy and momenta compared to all particles around the cone. And eventually because we are not considering resonance processes at low energies we are removing low mass lepton pairs which have energy less than $12 ~\rm{GeV}$.
 
 For checking this simplified detector simulation we plot transverse momentum of leading jet and leading lepton at different stages of algorithm (see figure \cref{fig:check}). For jets we see that smearing of variables indeed makes distribution broader (red line) where cut at $30~\rm{GeV}$ corresponds to undefined behavior of smearing function. Then some jets are removed at overlap removal stage while majority are discarded with $p_{\rm T}$ threshold (green line). Similarly for leading lepton we see considerable smearing (red line) and discarded leptons with $p_{\rm T}$ threshold and a little amount discarded at overlap removal stage (green line). 
 \begin{figure}[!ht]
@@ -90,6 +92,8 @@ For checking this simplified detector simulation we plot transverse momentum of 
 % \end{figure}
 
 \section{Event selection}
+
+%%% Writting more why I apply each requirement
 
 Without any selection we have low signal and background relative ratio as in \cref{fig:nocuts} which also helps us to check the simulation. For example we see resonance for transverse mass at $90~\rm{GeV}$ for $pp \to W +j$ as expected. To increase signal ratio over background we are going to apply selection.
 \clearpage
@@ -136,7 +140,11 @@ After this selection we see that indeed signal ratio is improved, but still a lo
   \label{tab:select}
 \end{table}
 
-\section{Conclussions}
+\section{Conclusions}
+
+%%% Extend conclusions
+%%% Mentioning what are the results of this study, and perspectives (have a look at the other upgrade study).
+
 
 \begin{itemize}
 \item With selection used in this report we are able to better distinguish signal from background processes.  
