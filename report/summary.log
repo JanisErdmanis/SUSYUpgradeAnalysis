@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.4.22)  14 AUG 2016 11:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.4.22)  16 AUG 2016 16:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -470,33 +470,33 @@ File: h_MT.png Graphic file (type png)
 Package pdftex.def Info: h_MT.png used on input line 104.
 (pdftex.def)             Requested size: 153.00156pt x 103.75983pt.
  [2 <./h_PtJets1stStages.png> <./h_PtEleMuo1stStages.png>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 111.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 113.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 111.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 113.
 
 <h_PtMuons1st_2lead.png, id=37, 698.61pt x 473.77pt>
 File: h_PtMuons1st_2lead.png Graphic file (type png)
 
 <use h_PtMuons1st_2lead.png>
-Package pdftex.def Info: h_PtMuons1st_2lead.png used on input line 119.
+Package pdftex.def Info: h_PtMuons1st_2lead.png used on input line 127.
 (pdftex.def)             Requested size: 153.00156pt x 103.75983pt.
 
 <h_PtMuons2nd_2lead.png, id=38, 698.61pt x 473.77pt>
 File: h_PtMuons2nd_2lead.png Graphic file (type png)
 
 <use h_PtMuons2nd_2lead.png>
-Package pdftex.def Info: h_PtMuons2nd_2lead.png used on input line 120.
+Package pdftex.def Info: h_PtMuons2nd_2lead.png used on input line 128.
 (pdftex.def)             Requested size: 153.00156pt x 103.75983pt.
  <h_llmass_2lead.png, id=39, 698.61pt x 473.77pt>
 File: h_llmass_2lead.png Graphic file (type png)
 
 <use h_llmass_2lead.png>
-Package pdftex.def Info: h_llmass_2lead.png used on input line 121.
+Package pdftex.def Info: h_llmass_2lead.png used on input line 129.
 (pdftex.def)             Requested size: 153.00156pt x 103.75983pt.
  [3 <./h_PtJets1st.png> <./h_MET.png> <./h_MT.png> <./h_PtMuons1st_2lead.png> <
 ./h_PtMuons2nd_2lead.png> <./h_llmass_2lead.png>]
@@ -504,11 +504,11 @@ Package pdftex.def Info: h_llmass_2lead.png used on input line 121.
 Here is how much of TeX's memory you used:
  7774 strings out of 493029
  125603 string characters out of 6136234
- 227752 words of memory out of 5000000
+ 229752 words of memory out of 5000000
  11218 multiletter control sequences out of 15000+600000
  8762 words of font info for 32 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 42i,10n,40p,1068b,335s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,10n,40p,1069b,335s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1
 /public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
 c/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
@@ -526,12 +526,13 @@ nts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
 msy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.p
 fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share
-/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texliv
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on summary.pdf (4 pages, 434840 bytes).
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb>
+Output written on summary.pdf (4 pages, 445064 bytes).
 PDF statistics:
- 111 PDF objects out of 1000 (max. 8388607)
- 71 compressed objects within 1 object stream
+ 115 PDF objects out of 1000 (max. 8388607)
+ 74 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  56 words of extra memory for PDF output out of 10000 (max. 10000000)
 
